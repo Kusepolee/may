@@ -1,0 +1,49 @@
+@charset "utf-8";
+/* CSS Document */
+#tu1{
+	width: 45px ;
+	margin: -8px ;
+	padding: 0 ;
+}
+.xian{ 
+	margin-top: -20px;
+}
+
+
+
+.pull-right{ 
+	margin-top: 18px;
+}
+.footer {
+  	padding: 2.5em 0;
+  	text-align: center;
+} 
+
+#page-wrapper {
+    padding: 15px 15px;
+    background: #F3F3F3;
+}
+.page-subhead-line {
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    font-style:italic;
+    margin-bottom:30px;
+    border-bottom:1px dashed #7ecef4;
+
+}
+.page-head-line {
+    font-size: 23px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 800;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #7ecef4;
+    margin-bottom: 10px;
+}
+
+.pagination{ 
+	display:table;
+	margin:10px auto;
+}
+
