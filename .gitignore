@@ -12,5 +12,5 @@ storage/
 .env.php
 .env
 .env.example
-._.DS_store
+._.DS_Store
 Thumbs.db
