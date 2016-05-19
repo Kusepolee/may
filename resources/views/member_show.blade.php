@@ -1,7 +1,28 @@
 <?php
 $a = new FooWeChat\Authorize\Auth;
 $h = new FooWeChat\Helpers\Helper;
+
+$origin = $rec->name;
+$xing = mb_substr($origin,0,1,'utf-8');
+$ming = mb_substr($origin,1,mb_strlen($origin),'utf-8');
+
+$vcard = 'BEGIN:VCARD
+VERSION:2.1
+N:'.$xing.';'.$ming.';
+FN:'.$rec->name.'
+ORG:'.$h->custom('name').'
+TITLE:'.$rec->departmentName.'-'.$rec->positionName.'
+TEL;CELL;VOICE:'.$rec->mobile.'
+TEL;WORK;VOICE:'.$h->custom('tel').'
+URL:'.$h->custom('url').'
+EMAIL;PREF;INTERNET:'.$rec->email.'
+REV:20060220T180305Z
+END:VCARD';
+
+
 ?>
+
+
 
 @extends('head')
 
@@ -20,17 +41,32 @@ $h = new FooWeChat\Helpers\Helper;
 						</h1>
 					</div>
 				</div>
+
 				<div class="row">
-					<div class="col-md-12">
+				  <div class="col-md-4" id ="left">
+				  
+				    <div class="panel panel-info"  >
+				      <div class="panel-heading">
+				        <i class="glyphicon glyphicon-qrcode"></i>&nbsp电子名片: 请使用微信扫描
+				      </div>
+				      <div class="panel-body" style="display:table;margin:10px auto;">
+						{!! QrCode::encoding('UTF-8')->size(230)->generate($vcard);!!}
+				      </div>
+				    </div>
+
+				  </div>
+
+					<div class="col-md-8">
 
 					@if(isset($rec) && $rec->state === 0 && $rec->admin === 0)
-						<div class="alert alert-info">
+						<div class="alert alert-info" id= "right">
 					@elseif(isset($rec) && $rec->state === 0 && $rec->admin != 0)
-						<div class="alert alert-success">
+						<div class="alert alert-success" id = "right">
 					@else
-						<div class="alert alert-warning">
+						<div class="alert alert-warning" id= "right">
 					@endif
-
+							<strong>基本信息:</strong>
+							<p>--------------------</p>
 							<p>编号: {{ $rec->work_id or '编号' }}</p>
 							@if(isset($rec) && $rec->state === 0)
 								<p>账号状态: 正常</p>
@@ -116,5 +152,19 @@ $h = new FooWeChat\Helpers\Helper;
 		</div>
 		<hr>
 	</div>
+
+<script> 
+$(document).ready(function() { 
+      var r_height=$("#right").height(); 
+      var l_height=$("#left").height();
+
+      if(l_height > r_height){
+      	  $("#right").height(l_height-50); 
+      }else{
+      	  $("#left").height(r_height);
+      }
+      
+})
+</script>
 
 @endsection

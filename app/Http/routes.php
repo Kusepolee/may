@@ -75,6 +75,9 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::post('/product/store', 'ProductController@store');
 	Route::get('/product/quota/{id}', 'ProductController@quota');
 
+	//other
+	Route::get('/qrcode', function(){ return view('qrcode'); });
+
 });
 
 
@@ -86,24 +89,23 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 Route::get('/test', function () {
 
-$a = new FooWeChat\Helpers\Helper;
-print_r($a->ipToCity('218.93.233.222'));
+$a = new FooWeChat\Selector\Select;
+$b = new FooWeChat\Core\WeChatAPI;
 
+//$arr = ['user'=>'8', 'department'=>'市场部|技术部', 'seek'=>'>=:经理@生产部', 'self'=>'sub+'];
+//$arr = ['user'=>'1|15'];
+
+$arr = ['user'=>'1|8', 'department'=>'技术部|市场部'];
+$send = $a->select($arr);
+$body = "测试消息非常非常星光大jidp蝴蝶蝴蝶甲基橙 中中中 中吕吕中中中 吕骄傲了适当放宽姐";
+
+$b->angentID = 0;
+$b->sendText($send, $body);
 
 });
 
-
 Route::get('/t', function(){
-	//$arr = ['6', '倪昌盛'];
-	$str = '倪昌盛';
-	$arr = explode('|', $str);
-	foreach ($arr as $a) {
-		$recs = Member::orWhere('work_id', $a)->orWhere('name', $a)->get();
-		foreach ($recs as $r) {
-		# code...
-			echo '('.$r->id.$r->name.')';
-		}
-	}
+return view('qrcode');
 
 });
 

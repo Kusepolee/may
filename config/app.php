@@ -146,6 +146,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
         FooWeChat\Providers\RestRoseServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -197,6 +199,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Illuminate\Html\FormFacade::class, 
         'WeChatAPI' => FooWeChat\Facades\WeChatAPI::class, 
+        'QrCode'    => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

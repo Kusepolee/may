@@ -10,7 +10,9 @@
         "restrose/wechat": "dev-master",
         "illuminate/html": "~5.0",
         "nesbot/carbon": "~1.21",
-        "symfony/psr-http-message-bridge": "0.2.*"
+        "symfony/psr-http-message-bridge": "0.2.*",
+        "simplesoftwareio/simple-qrcode": "~1.4",
+        "maatwebsite/excel": "~2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -16,7 +16,7 @@
    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
    <link href="{{ URL::asset('asset/css/style.css') }}" rel="stylesheet" type="text/css" />
-   <link href="css/font-awesome.css" rel="stylesheet" />
+   <link href="{{ URL::asset('asset/css/font-awesome.css')}}" rel="stylesheet" />
 
 </head>
 
@@ -35,9 +35,11 @@
          {{ Session::get('name') }}
          </a>
            <ul class="dropdown-menu  pull-right">
-           <li><a href="/member/show/{{ Session::get('id') }}">我的资料</a></li>
+           <li><a href="/member/show/{{ Session::get('id') }}">我的电子名片</a></li>
+           <li><a href="/qrcode">关注{{ $h->custom('nic_name') }}</a></li>
            <li class="divider"></li>
-           <li><a href="#">设置</a></li>
+           <li><a href="/member/show/{{ Session::get('id') }}">个人资料</a></li>
+
 
            {{-- 使用微信 不显示'退出'项 --}}
            @if(!$a->usingWechat())

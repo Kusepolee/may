@@ -43,10 +43,12 @@ return [
         'email'      => 'hi@henjou.com',
         'domain'     => 'henjou',
         'domain_ex'  => '.com',
+        'url'        => 'www.henjou.com',
         'address'    => '江苏省沭阳县七雄工业园区',
         'posetcode'  => '223600',
         'bank'       => '中国农业银行股份有限公司沭阳建陵支行',
         'accunt'     => '1050 0601 0400 0666 0',
+        'qrcode'     => 'http://weixin.qq.com/r/40UUDDfEH2pgrXNv9xDx',
     ],
 
 ];
