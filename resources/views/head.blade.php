@@ -35,16 +35,16 @@
          {{ Session::get('name') }}
          </a>
            <ul class="dropdown-menu  pull-right">
-           <li><a href="/member/show/{{ Session::get('id') }}">我的电子名片</a></li>
-           <li><a href="/qrcode">关注{{ $h->custom('nic_name') }}</a></li>
+           <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
+           <li><a href="/qrcode"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp关注{{ $h->custom('nic_name') }}</a></li>
            <li class="divider"></li>
-           <li><a href="/member/show/{{ Session::get('id') }}">个人资料</a></li>
+           <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-user"></span>&nbsp&nbsp个人资料</a></li>
 
 
            {{-- 使用微信 不显示'退出'项 --}}
            @if(!$a->usingWechat())
            <li class="divider"></li>
-           <li><a href="/logout">退出</a></li>
+           <li><a href="/logout"><span class="pull-left glyphicon glyphicon-off"></span>&nbsp&nbsp退出</a></li>
            @endif
 
            </ul>

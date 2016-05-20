@@ -87,7 +87,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/test', function () {
+Route::get('/test1', function () {
 
 $a = new FooWeChat\Selector\Select;
 $b = new FooWeChat\Core\WeChatAPI;
@@ -108,6 +108,8 @@ Route::get('/t', function(){
 return view('qrcode');
 
 });
+
+Route::get('/test', 'ExcelController@getMembers');
 
 
 

@@ -6,6 +6,8 @@ $origin = $rec->name;
 $xing = mb_substr($origin,0,1,'utf-8');
 $ming = mb_substr($origin,1,mb_strlen($origin),'utf-8');
 
+$tel = str_replace(' ', '', $h->custom('tel'));
+
 $vcard = 'BEGIN:VCARD
 VERSION:2.1
 N:'.$xing.';'.$ming.';
@@ -13,7 +15,7 @@ FN:'.$rec->name.'
 ORG:'.$h->custom('name').'
 TITLE:'.$rec->departmentName.'-'.$rec->positionName.'
 TEL;CELL;VOICE:'.$rec->mobile.'
-TEL;WORK;VOICE:'.$h->custom('tel').'
+TEL;WORK;VOICE:'.$tel.'
 URL:'.$h->custom('url').'
 EMAIL;PREF;INTERNET:'.$rec->email.'
 REV:20060220T180305Z

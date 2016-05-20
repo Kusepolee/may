@@ -58,15 +58,15 @@ return array(
     ),
 
     'properties' => array(
-        'creator'        => 'Maatwebsite',
-        'lastModifiedBy' => 'Maatwebsite',
-        'title'          => 'Spreadsheet',
-        'description'    => 'Default spreadsheet export',
+        'creator'        => 'RestRose.net',
+        'lastModifiedBy' => 'RestRose.net',
+        'title'          => '标题',
+        'description'    => 'RestRose 自动生成',
         'subject'        => 'Spreadsheet export',
-        'keywords'       => 'maatwebsite, excel, export',
+        'keywords'       => 'RestRose.net, excel, export',
         'category'       => 'Excel',
-        'manager'        => 'Maatwebsite',
-        'company'        => 'Maatwebsite',
+        'manager'        => 'RestRose.net',
+        'company'        => 'RestRose.net',
     ),
 
     /*
