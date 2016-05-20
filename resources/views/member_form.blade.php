@@ -97,7 +97,7 @@ $allPositions = $h->getAllPositions();
            {!! Form::password('password_confirmation',['placeholder'=>'确认密码', 'class'=>'form-control']) !!}
       </div>
       
-      {!! Form::submit('提交', ['class'=>'btn btn-info btn-block']) !!}
+      {!! Form::submit("提交", ['class'=>'btn btn-info btn-block']) !!}
 
       {!! Form::close() !!}
 

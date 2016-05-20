@@ -105,7 +105,12 @@ $b->sendText($send, $body);
 });
 
 Route::get('/t', function(){
-return view('qrcode');
+
+ $h = new FooWeChat\Helpers\Helper;
+
+$s = $h->getDepartmentsInUse();
+$b = $h->getPositionsInUse();
+print_r($b);
 
 });
 

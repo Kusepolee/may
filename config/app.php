@@ -201,7 +201,7 @@ return [
         'WeChatAPI' => FooWeChat\Facades\WeChatAPI::class, 
         'QrCode'    => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'PDF'       => Barryvdh\DomPDF\Facade::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

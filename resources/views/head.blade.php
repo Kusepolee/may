@@ -36,6 +36,7 @@
          </a>
            <ul class="dropdown-menu  pull-right">
            <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
+           <li class="divider"></li>
            <li><a href="/qrcode"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp关注{{ $h->custom('nic_name') }}</a></li>
            <li class="divider"></li>
            <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-user"></span>&nbsp&nbsp个人资料</a></li>
