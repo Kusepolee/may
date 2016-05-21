@@ -101,7 +101,13 @@ $pos_list = $h->getPositionsInUse();
                         <div class="panel-heading">
 
                            {!! Form::open(['url'=>'member/store', 'role' => 'form']) !!}
+                           {!! Form::hidden('dp_operator','=',['id'=>'dp_operator']) !!}
+                           {!! Form::hidden('pos_operator','=',['id'=>'pos_operator']) !!}
 
+
+
+
+                      
                         <label id="dp_label">部门</label>
                         <div class="input-group">
                            <div class="input-group-btn">
@@ -120,7 +126,7 @@ $pos_list = $h->getPositionsInUse();
                               </ul>
                            </div><!-- /btn-group -->
 
-                           {!! Form::select('dp_val',$dp_list); !!}
+                           {!! Form::select('dp_val',$dp_list, null,['class'=>'form-control']); !!}
 
                         </div><!-- /input-group -->
                     <p></p>
@@ -142,7 +148,7 @@ $pos_list = $h->getPositionsInUse();
                               </ul>
                            </div><!-- /btn-group -->
 
-                           {!! Form::select('dp_val',$pos_list); !!}
+                           {!! Form::select('dp_val',$pos_list, null,['class'=>'form-control']); !!}
 
                         </div><!-- /input-group -->
                                 <p></p>
@@ -172,6 +178,9 @@ function set(key, pos){
     //alert(key);
     var v = "#"+pos;
     var l = "#"+pos+"_label";
+    var op = "#"+pos+"_operator";
+
+    $(op).val(key);
 
     var n = pos == "dp" ? "部门" : "职位";
 
