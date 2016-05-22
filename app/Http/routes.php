@@ -75,8 +75,9 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::post('/product/store', 'ProductController@store');
 	Route::get('/product/quota/{id}', 'ProductController@quota');
 
-	//other
-	Route::get('/qrcode', function(){ return view('qrcode'); });
+	//OA
+	//Route::get('/qrcode', function(){ return view('qrcode'); });
+	Route::get('/oa/qrcode/{id?}', 'OaController@qrcode');
 
 });
 
@@ -111,6 +112,8 @@ Route::get('/t', function(){
 $s = $h->getDepartmentsInUse();
 $b = $h->getPositionsInUse();
 print_r($b);
+
+//zb_JkYfEy9q0rcPy9_rf
 
 });
 

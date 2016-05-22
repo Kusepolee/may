@@ -27,7 +27,7 @@ class MemberSeekRquest extends Request
         return [
             'dp' => 'required|numeric',
             'pos' => 'required|numeric',
-            'key' => 'min:1|max:10',
+            'key' => 'min:1|max:20',
         ];
     }
 }

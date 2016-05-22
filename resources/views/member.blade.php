@@ -9,7 +9,7 @@ $pos_list = $h->getPositionsInUse();
 
 @section('content')
 
-
+<div class="container">
 <div class="col-md-16">
     <ol class="breadcrumb">
         <li class="active" >用户管理</li>
@@ -89,6 +89,9 @@ $pos_list = $h->getPositionsInUse();
                     @endforeach
                     </tbody>
                 </table>
+                    <div class="container"> 
+                        {!! $outs->render() !!}
+                    </div>
                 </div>
             </div>
             <!-- end of members list -->
@@ -103,11 +106,7 @@ $pos_list = $h->getPositionsInUse();
                            {!! Form::open(['url'=>'member/store', 'role' => 'form']) !!}
                            {!! Form::hidden('dp_operator','=',['id'=>'dp_operator']) !!}
                            {!! Form::hidden('pos_operator','=',['id'=>'pos_operator']) !!}
-
-
-
-
-                      
+                    
                         <label id="dp_label">部门</label>
                         <div class="input-group">
                            <div class="input-group-btn">
@@ -170,12 +169,8 @@ $pos_list = $h->getPositionsInUse();
         </div>
     </div>
 
-    <div class="container"> 
-        {!! $outs->render() !!}
-    </div>
 <script> 
 function set(key, pos){
-    //alert(key);
     var v = "#"+pos;
     var l = "#"+pos+"_label";
     var op = "#"+pos+"_operator";

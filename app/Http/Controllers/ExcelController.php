@@ -72,13 +72,24 @@ class ExcelController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * test
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function test()
     {
-        //
+        $b = 0;
+        $recs = Member::where(function ($query) {
+                $query->where('work_id', '<', 30);
+                if(Session::has('id')){
+                    $query->where('name', '=', '陆鹏');
+                }
+            })->get();
+
+
+        foreach ($recs as $c) {
+            echo $c->name;
+        }
     }
 
 

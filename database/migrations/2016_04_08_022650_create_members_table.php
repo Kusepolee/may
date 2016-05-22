@@ -28,8 +28,10 @@ class CreateMembersTable extends Migration
             $table->string('password');
             $table->integer('state');
             $table->integer('show');
+            $table->integer('new');
             $table->integer('admin')->nullable();
             $table->integer('created_by');
+            $table->string('wechat_code')->nullable();
             $table->string('img')->nullable();
             $table->string('content')->nullable();
             $table->timestamps();
