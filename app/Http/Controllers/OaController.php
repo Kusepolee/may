@@ -12,9 +12,11 @@ use FooWeChat\Helpers\Helper;
 class OaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 二维码
      *
-     * @return \Illuminate\Http\Response
+     * @param null or id of members
+     *
+     * @return qrcode
      */
     public function qrcode($id=0)
     {

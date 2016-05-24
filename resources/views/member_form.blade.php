@@ -18,6 +18,8 @@ if($a->isRoot()){
 
 $allPositions = $h->getAllPositions();
 
+$private = ['1'=>'更新到微信', '0'=>'非微信用户'];
+
 ?>
 @extends('head')
 
@@ -69,6 +71,14 @@ $allPositions = $h->getAllPositions();
         </div>
       @endif
 
+      @if($a->isAdmin())
+      <div class="form-group">
+          {!! Form::select('private', $private, isset($rec) ? $rec->private : null, ['class'=>'form-control']); !!}
+      </div>
+      @else
+      {!! Form::hidden('private', 1); !!}
+      @endif
+
       <div class="form-group">
           {!! Form::text('mobile',isset($rec) ? $rec->mobile : null,['placeholder'=>'手机号', 'class'=>'form-control']) !!}
       </div>
@@ -79,6 +89,10 @@ $allPositions = $h->getAllPositions();
 
       <div class="form-group">
           {!! Form::text('weixinid',isset($rec) ? $rec->weixinid : null,['placeholder'=>'微信号', 'class'=>'form-control']) !!}
+      </div>
+
+      <div class="form-group">
+          {!! Form::text('wechat_code',isset($rec) ? $rec->wechat_code : null,['placeholder'=>'个人微信识别码', 'class'=>'form-control']) !!}
       </div>
 
       <div class="form-group">

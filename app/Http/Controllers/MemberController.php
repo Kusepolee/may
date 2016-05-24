@@ -105,6 +105,7 @@ class MemberController extends Controller
     {
         $outs = Member::where('members.id', '>', 1)
                         ->where('members.show', 0)
+                        ->where('members.private', 1)
                         ->orderBy('members.position')
                         ->orderBy('members.work_id')
                         ->orderBy('members.department')
@@ -207,9 +208,10 @@ class MemberController extends Controller
                         'email'      => $input['email'],
                         'weixinid'   => $input['weixinid'],
                         ];
-
-        $wechatAPI = new WeChatAPI;
-        $wechatAPI->createUser($wechatAarry);
+        if($input['private'] == 1){
+            $wechatAPI = new WeChatAPI;
+            $wechatAPI->createUser($wechatAarry);
+        }
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);

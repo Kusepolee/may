@@ -170,6 +170,7 @@ $pos_list = $h->getPositionsInUse();
     </div>
 
 <script> 
+
 function set(key, pos){
     var v = "#"+pos;
     var l = "#"+pos+"_label";

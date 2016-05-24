@@ -29,6 +29,7 @@ class CreateMembersTable extends Migration
             $table->integer('state');
             $table->integer('show');
             $table->integer('new');
+            $table->integer('private');
             $table->integer('admin')->nullable();
             $table->integer('created_by');
             $table->string('wechat_code')->nullable();

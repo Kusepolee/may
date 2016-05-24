@@ -76,7 +76,6 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::get('/product/quota/{id}', 'ProductController@quota');
 
 	//OA
-	//Route::get('/qrcode', function(){ return view('qrcode'); });
 	Route::get('/oa/qrcode/{id?}', 'OaController@qrcode');
 
 });
@@ -107,11 +106,13 @@ $b->sendText($send, $body);
 
 Route::get('/t', function(){
 
- $h = new FooWeChat\Helpers\Helper;
+ $h = new FooWeChat\Core\WeChatAPI;
 
-$s = $h->getDepartmentsInUse();
-$b = $h->getPositionsInUse();
-print_r($b);
+// $s = $h->getDepartmentsInUse();
+// $b = $h->getPositionsInUse();
+// print_r($b);
+
+ echo $h->getJsapiTicket();
 
 //zb_JkYfEy9q0rcPy9_rf
 
