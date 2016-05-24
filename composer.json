@@ -13,7 +13,8 @@
         "symfony/psr-http-message-bridge": "0.2.*",
         "simplesoftwareio/simple-qrcode": "~1.4",
         "maatwebsite/excel": "~2.1.0",
-        "barryvdh/laravel-dompdf": "0.6.*"
+        "barryvdh/laravel-dompdf": "0.6.*",
+        "iscms/alisms-for-laravel": "0.0.2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

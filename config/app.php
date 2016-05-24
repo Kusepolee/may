@@ -149,6 +149,7 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        iscms\Alisms\AlidayuServiceProvider::class,
     ],
 
     /*

@@ -29,7 +29,8 @@ class Available
         $rec = Member::find($id);
 
         if($rec->state === 0 && $rec->show === 0) {
-            return $next($request);
+                return $next($request);
+
         }else{
             return view('40x',['color'=>'red', 'type'=>'2', 'code'=>'2.5']);
         }

@@ -207,7 +207,7 @@ class MemberTableSeeder extends Seeder
                 'private'        => 1,
                 'admin'          => 0,
                 'created_by'     => 1,
-                'wechat_code'    => '',
+                'wechat_code'    => 'rtTG3h-Ew0K8rVu994G8',
                 'img'            => '',
                 'content'        => '管理员',
             ],[

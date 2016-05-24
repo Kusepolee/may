@@ -8,9 +8,32 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Member;
 use FooWeChat\Helpers\Helper;
+use iscms\Alisms\SendsmsPusher as Sms;
 
 class OaController extends Controller
 {
+    public function __construct(Sms $sms)
+    {
+       $this->sms=$sms;
+    }
+    /**
+    * 发送手机短信
+    *
+    */
+    public function sendSms()
+    {
+        //$sms = new Sms;
+
+        $array = ['code'=>'1234', 'product'=>'alidayu'];
+        $content = json_encode($array, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+
+        $phone = '13901752021';
+        $name = '大鱼测试';
+        $code = 'SMS_8961325';
+        $result=$this->sms->send($phone,$name,$content,$code);
+        print_r($result);
+    }
+
     /**
      * 二维码
      *

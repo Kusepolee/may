@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed1874a2e5108f094e9909f50fdac5c3",
+    "hash": "fba5af0776b04aa655b6ef35c10415eb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -563,6 +563,54 @@
                 }
             ],
             "time": "2015-01-01 16:31:18"
+        },
+        {
+            "name": "iscms/alisms-for-laravel",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ISCLOUDX/alisms.git",
+                "reference": "eb531ecd9be49f3bcf59b2f8ecf7a1cffa2f1b05"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/ISCLOUDX/alisms/eb531ecd9be49f3bcf59b2f8ecf7a1cffa2f1b05.zip",
+                "reference": "eb531ecd9be49f3bcf59b2f8ecf7a1cffa2f1b05",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "iscms\\Alisms\\": "src/",
+                    "iscms\\AlismsSdk\\": "src/vendor/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "秋綾",
+                    "email": "root@iscloudx.com"
+                }
+            ],
+            "description": "阿里大鱼laravel5封装包,提供简单明确的调用方法",
+            "homepage": "https://www.iscloudx.com",
+            "keywords": [
+                "alisms",
+                "bigfish",
+                "大鱼",
+                "短信接口",
+                "阿里云",
+                "阿里云大鱼短信",
+                "阿里云短信",
+                "阿里大鱼"
+            ],
+            "time": "2016-04-27 05:17:26"
         },
         {
             "name": "jakub-onderka/php-console-color",

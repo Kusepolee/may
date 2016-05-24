@@ -189,6 +189,7 @@ class MemberController extends Controller
         $input['work_id'] = $myWorkId;
         $input['state'] = 0;
         $input['show'] = 0;
+        $input['new'] = 0;
         $input['admin'] = 1;
         $input['created_by'] = intval(Session::get('id'));
         $input['password'] = bcrypt($input['password']);;
