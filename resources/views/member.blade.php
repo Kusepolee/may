@@ -1,6 +1,7 @@
 <?php
 $a = new FooWeChat\Authorize\Auth;
 $h = new FooWeChat\Helpers\Helper;
+$w = new FooWeChat\Core\WeChatAPI;
 
 $dp_list  = $h->getDepartmentsInUse();
 $pos_list = $h->getPositionsInUse();
@@ -10,7 +11,7 @@ $pos_list = $h->getPositionsInUse();
 @section('content')
 
 <div class="container">
-<div class="col-md-16">
+  <div class="col-md-16">
     <ol class="breadcrumb">
         <li class="active" >用户管理</li>
         <li><a href="/member/create">添加用户</a></li>
@@ -46,19 +47,48 @@ $pos_list = $h->getPositionsInUse();
                     <tbody>
                     @foreach ($outs as $out)
                         <tr>
-                            <td>{{ $out->work_id }}</td>
-                            @if($out->state == 0 && $out->admin != 0)
-                            <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-success">{{ $out->name }}</a href="#">
-                            @elseif($out->state == 0 && $out->admin == 0)
-                            <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-info">{{ $out->name }}</a href="#">
+                            @if($a->isSelf($out->id))
+                            <td><span class="text-primary">{{ $out->work_id }}</span></td>
                             @else
-                            <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-warning">{{ $out->name }}</a href="#">
+                            <td>{{ $out->work_id }}</td>
                             @endif
-                        </td>
-                            <td>{{ $out->departmentName }}</td>
+                            
+
+                            @if($out->state == 0 && $out->admin != 0)
+                              @if(!$w->hasFollow($out->id))
+                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-default">{{ $out->name }}</a>
+                              @else 
+                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-success">{{ $out->name }}</a>
+                              @endif
+                            @elseif($out->state == 0 && $out->admin == 0)
+                              @if(!$w->hasFollow($out->id))
+                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-default">{{ $out->name }}</a>
+                              @else 
+                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-info">{{ $out->name }}</a>
+                              @endif
+                            @else
+                              <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-warning">{{ $out->name }}</a>
+                            @endif
+                            </td>
+                            @if($a->sameDepartment($out->id))
+                                <td><span class="text-primary">{{ $out->departmentName }}</span></td>
+                            @else 
+                                <td>{{ $out->departmentName }}</td>
+                            @endif
+
+                            @if($a->isSelf($out->id))
+                            <td><span class="text-primary">{{ $out->positionName }}</span></td>
+                            @else
                             <td>{{ $out->positionName }}</td>
+                            @endif
+
                             @if(!$a->usingWechat())
-                            <td>{{ $out->mobile }}</td>
+
+                            @if($a->sameDepartment($out->id) || $a->auth(['position'=>'>=总监']) || $a->auth(['position'=>'>员工', 'department'=>'>=运营部']))
+                                <td>{{ $out->mobile }}</td>
+                            @else
+                                <td>(已保护)</td>
+                            @endif
 
                                 @if($out->email != '' && $out->email != null)
                                 <td>{{ $out->email }}</td>
@@ -166,8 +196,7 @@ $pos_list = $h->getPositionsInUse();
 
             </div>
             <!-- seek -->
-        </div>
-    </div>
+</div>
 
 <script> 
 

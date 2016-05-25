@@ -1,6 +1,7 @@
 <?php
 $a = new FooWeChat\Authorize\Auth;
 $h = new FooWeChat\Helpers\Helper;
+$w = new FooWeChat\Core\WeChatAPI;
 
 $origin = $rec->name;
 $xing = mb_substr($origin,0,1,'utf-8');
@@ -76,8 +77,19 @@ END:VCARD';
 								<p>账号状态: 锁定</p>
 							@endif
 
+							@if(isset($rec) && $w->hasFollow($rec->id))
+								<p>微信已关注: 是</p>
+							@else
+								<p>微信已关注: 否</p>
+							@endif
+
+
 							@if(isset($rec) && $rec->mobile != '' && $rec->mobile != null)
+								@if($a->auth(['position'=>'>=经理']) || $a->samePosition($rec->id) || $a->sameDepartment($rec->id))
 								<p>电话: {{ $rec->mobile }}</p>
+								@else 
+								<p>电话: 已保护</p>
+								@endif
 							@endif
 
 							@if(isset($rec) && $rec->email != '' && $rec->email != null)

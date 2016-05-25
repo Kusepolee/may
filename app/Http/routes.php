@@ -58,6 +58,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::get('/member/unlock/{id}', 'MemberController@unlock');
 	Route::get('/member/admin_get/{id}', 'MemberController@adminGet');
 	Route::get('/member/admin_lost/{id}', 'MemberController@adminLost');
+	Route::post('/member/password/reset/{id}', 'MemberController@passwordReset');
 	
 	//资源
 	Route::get('/resource', 'ResourceController@index');
@@ -87,7 +88,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/test1', function () {
+Route::get('/test2', function () {
 
 $a = new FooWeChat\Selector\Select;
 $b = new FooWeChat\Core\WeChatAPI;
@@ -128,17 +129,10 @@ if ($w->hasFollow()) {
 
 });
 
-Route::get('/a', function(){
+Route::get('/test1', function(){
 
- $h = new FooWeChat\Core\WeChatAPI;
-
-// $s = $h->getDepartmentsInUse();
-// $b = $h->getPositionsInUse();
-// print_r($b);
-
- echo $h->getJsapiTicket();
-
-//zb_JkYfEy9q0rcPy9_rf
+$a = 'good';
+Logie::add(['important', '初始化'.$a]);
 
 });
 

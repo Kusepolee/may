@@ -11,6 +11,7 @@ use Cookie;
 use Hash;
 use Illuminate\Http\Request;
 use Input;
+use Logie;
 use FooWeChat\Authorize\Auth;
 use FooWeChat\Core\WeChatAPI;
 use FooWeChat\Helpers\Helper;
@@ -138,6 +139,9 @@ class MemberController extends Controller
 
         $api = new WeChatAPI;
         $api->initUsers();
+
+        // 日志
+        Logie::add(['important', '初始化微信用户群']);
     }
 
     /**
@@ -184,9 +188,9 @@ class MemberController extends Controller
         $input = $request->all();
 
         $h = new Helper;
-        $myWorkId = $h->getWorkId();
+        $my_work_id = $h->getWorkId();
 
-        $input['work_id'] = $myWorkId;
+        $input['work_id'] = $my_work_id;
         $input['state'] = 0;
         $input['show'] = 0;
         $input['new'] = 0;
@@ -200,7 +204,7 @@ class MemberController extends Controller
         $positionName = $position->name;
 
         $wechatAarry = [
-                        'userid'     => $myWorkId,
+                        'userid'     => $my_work_id,
                         'name'       => $input['name'],
                         'department' => $input['department'],
                         'position'   => $positionName,
@@ -213,6 +217,9 @@ class MemberController extends Controller
             $wechatAPI = new WeChatAPI;
             $wechatAPI->createUser($wechatAarry);
         }
+
+        //日志
+        Logie::add(['notice', '新建用户: 工号'.$my_work_id.','.$input['name']]);
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);
@@ -235,10 +242,17 @@ class MemberController extends Controller
         }
         // ^ 身份验证
 
-        Member::find($id)->update(['state' => 1]);
+        $target = Member::find($id);
+        $target->update(['state' => 1]);
         $home = '/member/show/'.$id;
+
+        //日志
+        Logie::add(['notice', '锁定用户:'.$target->work_id.','.$target->name]);
+
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member', 'btn1'=>'用户信息', 'link1'=>$home];
         return view('note',$arr);
+
+        
     }
     /**
      * 解除锁定
@@ -257,8 +271,13 @@ class MemberController extends Controller
         }
         // ^ 身份验证
 
-        Member::find($id)->update(['state' => 0]);
+        $target = Member::find($id);
+        $target->update(['state' => 0]);
         $home = '/member/show/'.$id;
+
+        //日志
+        Logie::add(['notice', '锁定用户:'.$target->work_id.','.$target->name]);
+
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member', 'btn1'=>'用户信息', 'link1'=>$home];
         return view('note',$arr);
     }
@@ -280,7 +299,11 @@ class MemberController extends Controller
         }
         // ^ 身份验证
 
-        Member::find($id)->update(['admin' => 1]);
+        $target = Member::find($id);
+        $target->update(['admin' => 1]);
+
+        //日志
+        Logie::add(['notice', '解除管理员:'.$target->work_id.','.$target->name]);
 
         $home = '/member/show/'.$id;
 
@@ -304,7 +327,11 @@ class MemberController extends Controller
         }
         // ^ 身份验证
 
-        Member::find($id)->update(['admin' => 0]);
+        $target = Member::find($id);
+        $target->update(['admin' => 0]);
+
+        //日志
+        Logie::add(['notice', '授于管理员:'.$target->work_id.','.$target->name]);
 
         $home = '/member/show/'.$id;
 
@@ -326,6 +353,8 @@ class MemberController extends Controller
                     ->leftJoin('positions', 'members.position', '=', 'positions.id')
                     ->select('members.*', 'a.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName')
                     ->find($id);
+        //日志
+        Logie::add(['info', '查看用户资料:'.$rec->work_id.','.$rec->name]);
 
         return view('member_show', ['rec'=>$rec]);
     }
@@ -425,7 +454,11 @@ class MemberController extends Controller
             $wechatAPI->updateUser($arr);
         }
 
-        Member::where('id', $id)->update($update);
+        $target = Member::find($id);
+        $target->update($update);
+
+        //日志
+        Logie::add(['info', '修改用户:'.$target->work_id.','.$target->name]);
 
         $home = '/member/show/'.$id;
 
@@ -476,20 +509,47 @@ class MemberController extends Controller
         $t =['members'=>'created_by']; 
 
         if($a->isRoot() || $a->isAdmin()){  
-            $work_id = Member::find($id)->work_id;
+            $target = Member::find($id);
+            $work_id = $target->work_id;
 
-            if(!$h->exsitsIn($t, $id)) Member::find($id)->delete();
+            if(!$h->exsitsIn($t, $id)) $target->delete();
     
             $wechat = new WeChatAPI;
             $wechat->deleteUser($work_id);
 
+            //日志
+            Logie::add(['important', '删除用户-删除本地和微信:'.$target->work_id.','.$target->name]);
+
+
         }else{
-            Member::find($id)->update(['show'=>1]);
+            $target = Member::find($id);
+            $target->update(['show'=>1]);
+
+            //日志
+            Logie::add(['important', '删除用户-隐藏:'.$target->work_id.','.$target->name]);
         }
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);
 
+    }
+
+    /**
+    * 密码修改
+    *
+    */
+    public function passwordReset(Requests\PasswordResetRquest $request, $id)
+    {
+        $new_password = $request->password;
+        $redirect_path = '/'.$request->path;
+        $target = Member::find($id);
+        $target->update(['new'=>1, 'password'=>bcrypt($new_password)]);
+
+        //日志
+        Logie::add(['info', '修改密码:'.$target->work_id.','.$target->name]);
+
+        return redirect($redirect_path);
+  
     }
 
     /**
