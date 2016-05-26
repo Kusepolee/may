@@ -8,17 +8,21 @@ use App\Member;
 use App\Position;
 use Config;
 use Cookie;
+use FooWeChat\Authorize\Auth;
+use FooWeChat\Core\WeChatAPI;
+use FooWeChat\Helpers\Helper;
+use FooWeChat\Selector\Select;
 use Hash;
 use Illuminate\Http\Request;
 use Input;
 use Logie;
-use FooWeChat\Authorize\Auth;
-use FooWeChat\Core\WeChatAPI;
-use FooWeChat\Helpers\Helper;
 use Session;
 
 class MemberController extends Controller
 {
+    protected $departmentsArray;
+    protected $positionsArray;
+    protected $key;
 
     /**
      * 登录
@@ -105,6 +109,16 @@ class MemberController extends Controller
     public function index()
     {
         $outs = Member::where('members.id', '>', 1)
+                      ->where(function ($query) { 
+                            if(count($this->departmentsArray)) $query->whereIn('members.department', $this->departmentsArray);
+                            if(count($this->positionsArray)) $query->whereIn('members.position', $this->positionsArray);
+                            if ($this->key != '' && $this->key != null) {
+                                $query->where('members.name', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.work_id', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.mobile', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.content', 'LIKE', '%'.$this->key.'%');
+                            }
+                        })
                         ->where('members.show', 0)
                         ->where('members.private', 1)
                         ->orderBy('members.position')
@@ -117,9 +131,47 @@ class MemberController extends Controller
                         ->select('members.id', 'members.work_id', 'members.mobile', 'members.position', 'members.department', 'members.name', 'members.email', 'members.weixinid','members.qq', 'members.content', 'members.admin', 'members.state', 'm.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName', 'config.name as genderName')
                         ->paginate(30);
 
-        return view('member', ['outs'=>$outs]);
+        return view('member', ['outs'=>$outs, 'dp'=>$this->departmentsArray, 'pos'=>$this->positionsArray, 'key'=>$this->key]);
     }
 
+    /**
+    * 查询
+    */
+    public function memberSeek(Requests\MemberSeekRequest $request)
+    {
+        $seek = $request->all();
+        
+
+        if ($seek['dp_val'] == 0 && $seek['pos_val'] == 0 && ($seek['key'] =='' || $seek['key'] == null)) {
+            //go on
+        }else{
+            $h = new Helper;
+
+            if($seek['dp_val'] != 0) {
+                $departments = $h->getDepartmentsArray($seek['dp_operator'], $seek['dp_val']);
+                if(count($departments)){
+                    $this->departmentsArray = $departments;
+                }else{
+                    $arr = ['color'=>'info', 'type'=>'6','code'=>'6.1', 'btn'=>'返回用户管理', 'link'=>'/member'];
+                    return view('note',$arr);
+                }
+            }
+
+            if($seek['pos_val'] != 0) {
+                $positions = $h->getPositionsArray($seek['pos_operator'], $seek['pos_val']);
+                if(count($positions)){
+                    $this->positionsArray = $positions;
+                }else{
+                    $arr = ['color'=>'info', 'type'=>'6','code'=>'6.1', 'btn'=>'返回用户管理', 'link'=>'/member'];
+                    return view('note',$arr);
+                }
+            }
+
+            if($seek['key'] != '' && $seek['key'] != null) $this->key= $seek['key'];
+        }
+
+        return $this->index();
+    }
 
     /**
      * 初始化微信用户群
@@ -550,6 +602,16 @@ class MemberController extends Controller
 
         return redirect($redirect_path);
   
+    }
+
+    /**
+    * test
+    */
+    public function test()
+    {
+        $arr = ['user'=>'8', 'department'=>'市场部|技术部', 'seek'=>'>=:经理@生产部', 'self'=>'sub+'];
+        $a = new Select;
+        print_r($a->select($arr));
     }
 
     /**

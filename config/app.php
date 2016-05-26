@@ -200,6 +200,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Illuminate\Html\FormFacade::class, 
         'WeChatAPI' => FooWeChat\Facades\WeChatAPI::class, 
+        'WechatSelect'    => FooWeChat\Selector\WechatSelect::class,
         'Logie'     => FooWeChat\Facades\Logie::class, 
         'QrCode'    => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'PDF'       => Barryvdh\DomPDF\Facade::class,

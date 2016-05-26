@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class MemberSeekRquest extends Request
+class MemberSeekRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class MemberSeekRquest extends Request
     public function rules()
     {
         return [
-            'dp' => 'required|numeric',
-            'pos' => 'required|numeric',
+            'dp_val' => 'required|numeric',
+            'pos_val' => 'required|numeric',
             'key' => 'min:1|max:20',
         ];
     }

@@ -15,9 +15,17 @@ $pos_list = $h->getPositionsInUse();
     <ol class="breadcrumb">
         <li class="active" >用户管理</li>
         <li><a href="/member/create">添加用户</a></li>
+        @if(count($dp) || count($pos) || ($key != '' && $key != null))
+          <li><a href="/member">重置查询条件</a></li>
+        @endif
+
     </ol>
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#members" data-toggle="tab">员工列表</a>
+        @if(count($dp) || count($pos) || ($key != '' && $key != null))
+            <li class="active"><a href="#members" data-toggle="tab">查询结果</a>
+        @else
+            <li class="active"><a href="#members" data-toggle="tab">用户列表</a>
+        @endif
             </li>
             <li class=""><a href="#seek" data-toggle="tab">查询</a>
             </li>
@@ -26,6 +34,7 @@ $pos_list = $h->getPositionsInUse();
             <!-- members list -->
             <div class="tab-pane fade active in" id="members">
                 <div class="table-responsive">
+            @if(count($outs))
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -45,80 +54,96 @@ $pos_list = $h->getPositionsInUse();
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($outs as $out)
-                        <tr>
-                            @if($a->isSelf($out->id))
-                            <td><span class="text-primary">{{ $out->work_id }}</span></td>
-                            @else
-                            <td>{{ $out->work_id }}</td>
-                            @endif
-                            
-
-                            @if($out->state == 0 && $out->admin != 0)
-                              @if(!$w->hasFollow($out->id))
-                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-default">{{ $out->name }}</a>
-                              @else 
-                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-success">{{ $out->name }}</a>
+                    
+                      @foreach ($outs as $out)
+                          <tr>
+                              @if($a->isSelf($out->id))
+                              <td><span class="text-primary">{{ $out->work_id }}</span></td>
+                              @else
+                              <td>{{ $out->work_id }}</td>
                               @endif
-                            @elseif($out->state == 0 && $out->admin == 0)
-                              @if(!$w->hasFollow($out->id))
-                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-default">{{ $out->name }}</a>
-                              @else 
-                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-info">{{ $out->name }}</a>
+                              
+
+                              @if($out->state == 0 && $out->admin != 0)
+                                @if(!$w->hasFollow($out->id))
+                                  <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-default">{{ $out->name }}</a>
+                                @else 
+                                  <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-success">{{ $out->name }}</a>
+                                @endif
+                              @elseif($out->state == 0 && $out->admin == 0)
+                                @if(!$w->hasFollow($out->id))
+                                  <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-default">{{ $out->name }}</a>
+                                @else 
+                                  <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-info">{{ $out->name }}</a>
+                                @endif
+                              @else
+                                <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-warning">{{ $out->name }}</a>
                               @endif
-                            @else
-                              <td> <a href="/member/show/{{ $out->id }}" class="btn btn-sm btn-warning">{{ $out->name }}</a>
-                            @endif
-                            </td>
-                            @if($a->sameDepartment($out->id))
-                                <td><span class="text-primary">{{ $out->departmentName }}</span></td>
-                            @else 
-                                <td>{{ $out->departmentName }}</td>
-                            @endif
+                              </td>
+                              @if($a->sameDepartment($out->id))
+                                  <td><span class="text-primary">{{ $out->departmentName }}</span></td>
+                              @else 
+                                  <td>{{ $out->departmentName }}</td>
+                              @endif
 
-                            @if($a->isSelf($out->id))
-                            <td><span class="text-primary">{{ $out->positionName }}</span></td>
-                            @else
-                            <td>{{ $out->positionName }}</td>
-                            @endif
+                              @if($a->isSelf($out->id))
+                              <td><span class="text-primary">{{ $out->positionName }}</span></td>
+                              @else
+                              <td>{{ $out->positionName }}</td>
+                              @endif
 
-                            @if(!$a->usingWechat())
+                              @if(!$a->usingWechat())
 
-                            @if($a->sameDepartment($out->id) || $a->auth(['position'=>'>=总监']) || $a->auth(['position'=>'>员工', 'department'=>'>=运营部']))
-                                <td>{{ $out->mobile }}</td>
-                            @else
-                                <td>(已保护)</td>
-                            @endif
+                              @if($a->sameDepartment($out->id) || $a->auth(['position'=>'>=总监']) || $a->auth(['position'=>'>员工', 'department'=>'>=运营部']))
+                                  <td>{{ $out->mobile }}</td>
+                              @else
+                                  <td>(已保护)</td>
+                              @endif
 
-                                @if($out->email != '' && $out->email != null)
-                                <td>{{ $out->email }}</td>
-                                @else
-                                <td>(无)</td>
-                                @endif
+                                  @if($out->email != '' && $out->email != null)
+                                  <td>{{ $out->email }}</td>
+                                  @else
+                                  <td>(无)</td>
+                                  @endif
 
-                                @if($out->qq != '' && $out->qq != null)
-                                <td>{{ $out->qq }}</td>
-                                @else
-                                <td>(无)</td>
-                                @endif
+                                  @if($out->qq != '' && $out->qq != null)
+                                  <td>{{ $out->qq }}</td>
+                                  @else
+                                  <td>(无)</td>
+                                  @endif
 
-                                @if($out->weixinid != '' && $out->weixinid != null)
-                                <td>{{ $out->weixinid }}</td>
-                                @else
-                                <td>(无)</td>
-                                @endif
+                                  @if($out->weixinid != '' && $out->weixinid != null)
+                                  <td>{{ $out->weixinid }}</td>
+                                  @else
+                                  <td>(无)</td>
+                                  @endif
 
-                                @if($out->content != '' && $out->content != null)
-                                <td>{{ $out->content }}</td>
-                                @else
-                                <td>(无)</td>
-                                @endif
+                                  @if($out->content != '' && $out->content != null)
+                                  <td>{{ $out->content }}</td>
+                                  @else
+                                  <td>(无)</td>
+                                  @endif
 
-                            @endif
-                        </tr>
-                    @endforeach
+                              @endif
+                          </tr>
+                      @endforeach
+
                     </tbody>
                 </table>
+              @else
+                <p></p>
+                <div class="col-md-4 col-sm-4 col-md-offset-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <em class="glyphicon glyphicon-info-sign"></em>&nbsp&nbsp提示
+                        </div>
+                        <div class="panel-body">
+                            <p>无记录: 可能因没有符合查询条件记录, 或尚未有数据录入</p>
+                        </div>
+                    </div>
+                </div>
+              @endif
+
                     <div class="container"> 
                         {!! $outs->render() !!}
                     </div>
@@ -133,7 +158,7 @@ $pos_list = $h->getPositionsInUse();
                         <div class="panel-heading"><em class="glyphicon glyphicon-th-list"></em>&nbsp&nbsp筛选条件:<a style=" float:right;" href="" class="glyphicon glyphicon-question-sign"></a></div>
                         <div class="panel-heading">
 
-                           {!! Form::open(['url'=>'member/store', 'role' => 'form']) !!}
+                           {!! Form::open(['url'=>'member/seek', 'role' => 'form']) !!}
                            {!! Form::hidden('dp_operator','=',['id'=>'dp_operator']) !!}
                            {!! Form::hidden('pos_operator','=',['id'=>'pos_operator']) !!}
                     
@@ -177,13 +202,13 @@ $pos_list = $h->getPositionsInUse();
                               </ul>
                            </div><!-- /btn-group -->
 
-                           {!! Form::select('dp_val',$pos_list, null,['class'=>'form-control']); !!}
+                           {!! Form::select('pos_val',$pos_list, null,['class'=>'form-control']); !!}
 
                         </div><!-- /input-group -->
                                 <p></p>
                                 <div class="form-group">
                                     <label>关键词</label>
-                                    <input class="form-control" type="text">
+                                {!! Form::text('key',null,['placeholder'=>'关键词', 'class'=>'form-control']) !!}
                                 </div>
 
                             {!! Form::submit("查询", ['class'=>'btn btn-info btn-block']) !!}
@@ -196,6 +221,7 @@ $pos_list = $h->getPositionsInUse();
 
             </div>
             <!-- seek -->
+      </div>
 </div>
 
 <script> 

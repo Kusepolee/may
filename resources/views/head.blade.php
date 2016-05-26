@@ -46,7 +46,7 @@
 
            <li><a href="/oa/qrcode"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp关注{{ $h->custom('nic_name') }}</a></li>
            <li class="divider"></li>
-           <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-user"></span>&nbsp&nbsp个人资料</a></li>
+           <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-cog"></span>&nbsp&nbsp个人中心</a></li>
 
 
            {{-- 使用微信 不显示'退出'项 --}}

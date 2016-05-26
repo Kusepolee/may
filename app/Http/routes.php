@@ -47,6 +47,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 	//用户
 	Route::get('/member', 'MemberController@index');
+	Route::post('/member/seek', 'MemberController@MemberSeek');
 	Route::get('/member/create', 'MemberController@create');
 	Route::post('/member/store', 'MemberController@store');
 	Route::get('/member/show/{id}', 'MemberController@show');
@@ -88,55 +89,18 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/test2', function () {
-
-$a = new FooWeChat\Selector\Select;
-$b = new FooWeChat\Core\WeChatAPI;
-
-$arr = ['user'=>'8', 'department'=>'市场部|技术部', 'seek'=>'>=:经理@生产部', 'self'=>'sub+'];
-//$arr = ['user'=>'1|15'];
-
-//$arr = ['user'=>'1|8', 'department'=>'>技术部|市场部'];
-$send = $a->select($arr);
-$body = "测试消息非常非常星光大jidp蝴蝶蝴蝶甲基橙 中中中 中吕吕中中中 吕骄傲了适当放宽姐";
-
-print_r($send);
-//$b->angentID = 0;
-//$b->sendText($send, $body);
-
-});
-
-Route::get('/t', function(){
-
- $w = new FooWeChat\Core\WeChatAPI;
-
-$a =  $w->getWechatUsersNotFollow();
-print_r($a);
-
-if ($w->hasFollow()) {
-	echo "OK";
-}else{
-	echo "bad";
-}
-
-// $s = $h->getDepartmentsInUse();
-// $b = $h->getPositionsInUse();
-// print_r($b);
-
- //echo $h->getJsapiTicket();
-
-//zb_JkYfEy9q0rcPy9_rf
-
-});
-
-Route::get('/test1', function(){
-
-$a = 'good';
-Logie::add(['important', '初始化'.$a]);
-
-});
 
 Route::get('/test', 'OaController@sendSms');
+Route::get('/test1', 'MemberController@test');
+
+Route::get('/test2', function () {
+    $h = new FooWeChat\Helpers\Helper;
+
+    //$arr = $h->getDepartmentsArray('<', 4);
+    $arr = $h->getPositionsArray('<', 7);
+
+    print_r($arr);
+});
 
 
 
