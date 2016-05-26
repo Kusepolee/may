@@ -79,6 +79,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 	//OA
 	Route::get('/oa/qrcode/{id?}', 'OaController@qrcode');
+	Route::get('/oa/vcard/{id?}', 'OaController@vcard');
 
 });
 
@@ -90,16 +91,11 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 */
 
 
-Route::get('/test', 'OaController@sendSms');
-Route::get('/test1', 'MemberController@test');
+Route::get('/test2', 'OaController@sendSms');
+Route::get('/test1', 'OaController@vcard');
 
-Route::get('/test2', function () {
-    $h = new FooWeChat\Helpers\Helper;
-
-    //$arr = $h->getDepartmentsArray('<', 4);
-    $arr = $h->getPositionsArray('<', 7);
-
-    print_r($arr);
+Route::get('/test', function () {
+	return view('upload_img');
 });
 
 

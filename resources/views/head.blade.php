@@ -12,11 +12,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 <title>{{ $title or 'title' }}</title>
-   <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-   <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-   <link href="{{ URL::asset('asset/css/style.css') }}" rel="stylesheet" type="text/css" />
-   <link href="{{ URL::asset('asset/css/font-awesome.css')}}" rel="stylesheet" />
+
+   <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+   <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+   <link rel="stylesheet" type="text/css" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+
+
+   <link href="{{ URL::asset('custom/css/style.css') }}" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -24,7 +27,7 @@
 <div class="container">
      <nav class="navbar">
        <div class="navbar-inner">
-       <a href="/" class="navbar-brand logo"><img id="tu1" src="{{ URL::asset('asset/img/logo.svg') }}" alt=""></a>
+       <a href="/" class="navbar-brand logo"><img id="tu1" src="{{ URL::asset('custom/image/logo.svg') }}" alt=""></a>
        </div>
 
       {{-- 用户菜单 --}}
@@ -35,7 +38,7 @@
          {{ Session::get('name') }}
          </a>
            <ul class="dropdown-menu  pull-right">
-           <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
+           <li><a href="/oa/vcard"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
             
           @if($h->hasWechatCode())
            <li><a href="/oa/qrcode/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的微信二维码</a></li>

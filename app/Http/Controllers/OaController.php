@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Member;
+use Session;
 use FooWeChat\Helpers\Helper;
 use iscms\Alisms\SendsmsPusher as Sms;
 
@@ -22,15 +23,13 @@ class OaController extends Controller
     */
     public function sendSms()
     {
-        //$sms = new Sms;
-
-        $array = ['code'=>'1234', 'product'=>'alidayu'];
+        $array = ['customer'=>'1234'];
         $content = json_encode($array, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 
         $phone = '13901752021';
         $name = '大鱼测试';
         $code = 'SMS_8961325';
-        $result=$this->sms->send($phone,$name,$content,$code);
+        $result = $this->sms->send($phone,$name,$content,$code);
         print_r($result);
     }
 
@@ -58,6 +57,29 @@ class OaController extends Controller
         }
 
         return view('qrcode', ['qrcode'=>$qrcode, 'name'=>$name]);
+    }
+
+    /**
+    * 电子名片
+    *
+    */
+    public function vcard($id=0)
+    {
+        if($id === 0) {
+            if(Session::has('id')){
+                $id = Session::get('id');
+            }else{
+                die('OaController\getVcard: 需要登录');
+            }
+        }
+
+        $rec = Member::leftJoin('departments', 'members.department', '=', 'departments.id')
+                    ->leftJoin('positions', 'members.position', '=', 'positions.id')
+                    ->select('members.name', 'members.mobile', 'members.email', 'departments.name as departmentName', 'positions.name as positionName')
+                    ->find($id);
+
+        if(!count($rec)) die('OaController\getVcard: 错误');
+        return view('vcard', ['rec'=>$rec]);
     }
 
     /**
