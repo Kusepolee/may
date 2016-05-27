@@ -6,21 +6,41 @@
 <link href="{{ URL::asset('bower_components/Croppie/croppie.css') }}" rel="stylesheet">
 
 
-<div class="container">
-   <div class="panel panel-default">
-    <div class="panel-heading">
-       File Uploads
-    </div>
-    <div class="form-group">
-        <div>
-			<span class="btn btn-file btn-info"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file"></span>      
-        </div>
-    </div>
 
-<div class="fileupload-preview thumbnail" style="width: 345px; height: 250px;"></div>
+<div class="container">
+	<div class="demo">
+		<div class="actions">
+            <button class="file-btn">
+                <span>上传</span>
+                <input type="file" id="upload" value="选择图片文件" />
+            </button>
+            <div class="crop">
+				<div id="upload-demo"></div>
+				<button class="upload-result">裁剪</button>
+			</div>
+			<div id="result"></div>
+        </div>
 	</div>
 </div>
 
+<div class="container"> 
+{!! Form::open(
+    array(
+        'url' => '/member/image/store', 
+        'class' => 'form', 
+        'novalidate' => 'novalidate', 
+        'files' => true)) !!}
+			<div class="form-group">
+			    {!! Form::label('Product Image') !!}
+			    {!! Form::file('image', null) !!}
+			</div>
+				<div class="form-group">
+	{!! Form::hidden('base64',null, ['id'=>'base64']) !!}
+    {!! Form::submit('store image!') !!}
+{!! Form::close() !!}
+</div>
+
+<div id= 'fuck'></div>
 
 
 <script>
@@ -62,7 +82,8 @@ $(function(){
 			readFile(this); 
 		});
 		$('.upload-result').on('click', function (ev) {
-			$uploadCrop.croppie('result', 'canvas').then(function (resp) {
+			$uploadCrop.croppie('result', {type: 'canvas', siez: 'viewport', format: 'png', quality:0.8}).then(function (resp) {
+				$("#base64").val(resp);
 				popupResult({
 					src: resp
 				});
@@ -81,4 +102,29 @@ $(function(){
 	}
 });
 </script>
+
+
+
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

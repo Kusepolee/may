@@ -605,13 +605,28 @@ class MemberController extends Controller
     }
 
     /**
-    * test
+    * 图片上传处理
+    *
+    * @param base64
+    *
+    * @return filse saved info
     */
-    public function test()
+    public function imageStore(Request $request, $id=0)
     {
-        $arr = ['user'=>'8', 'department'=>'市场部|技术部', 'seek'=>'>=:经理@生产部', 'self'=>'sub+'];
-        $a = new Select;
-        print_r($a->select($arr));
+        $input = $request->all();
+        $base64 = $input['base64'];
+        $base64_body = substr(strstr($base64,','),1);
+        $png= base64_decode($base64_body );
+
+        if($id === 0) $id = Session::get('id');
+        $work_id = Member::find($id)->work_id;
+
+        $png_name = $work_id.'-'.time().'.png';
+        $path = base_path().'/public/upload/member/'.$png_name;
+
+        file_put_contents($path,$png);
+
+
     }
 
     /**
