@@ -22,9 +22,9 @@ $pos_list = $h->getPositionsInUse();
     </ol>
         <ul class="nav nav-tabs">
         @if(count($dp) || count($pos) || ($key != '' && $key != null))
-            <li class="active"><a href="#members" data-toggle="tab">查询结果<span class="badge">{{ count($outs) }}</span></a>
+            <li class="active"><a href="#members" data-toggle="tab">{{ count($outs) }}<span class="text-primary">@</span>查询结果</a>
         @else
-            <li class="active"><a href="#members" data-toggle="tab">所有用户<span class="badge">{{ count($outs) }}</span></a>
+            <li class="active"><a href="#members" data-toggle="tab">{{ count($outs) }}<span class="text-primary">@</span>所有用户</a>
         @endif
             </li>
             <li class=""><a href="#seek" data-toggle="tab">查询</a>

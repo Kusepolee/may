@@ -48,3 +48,10 @@
 }
 .badge{ background:#7ecef4} 
 
+.form-group{ 
+    text-align:center;
+}
+.thumbnail{ 
+    margin:0px auto;
+}
+

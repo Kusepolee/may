@@ -94,7 +94,7 @@ Route::get('/test2', 'OaController@sendSms');
 Route::get('/test1', 'OaController@vcard');
 
 Route::get('/test', function () {
-	return view('calendar');
+	return view('upload_image');
 });
 
 
