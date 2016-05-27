@@ -13,13 +13,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 <title>{{ $title or 'title' }}</title>
 
+   <link rel="stylesheet" type="text/css" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" >
+   <link href="{{ URL::asset('custom/css/style.css') }}" rel="stylesheet" type="text/css" >
    <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
    <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-   <link rel="stylesheet" type="text/css" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-
-
-   <link href="{{ URL::asset('custom/css/style.css') }}" rel="stylesheet" type="text/css" />
-
 
 </head>
 

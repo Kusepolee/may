@@ -1,4 +1,3 @@
-
 <?php 
 $t = new FooWeChat\Helpers\Helper;
 $error = $t->errorCode($type, $code);

@@ -60,6 +60,10 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::get('/member/admin_get/{id}', 'MemberController@adminGet');
 	Route::get('/member/admin_lost/{id}', 'MemberController@adminLost');
 	Route::post('/member/password/reset/{id}', 'MemberController@passwordReset');
+
+	//OA
+	Route::get('/oa/qrcode/{id?}', 'OaController@qrcode');
+	Route::get('/oa/vcard/{id?}', 'OaController@vcard');
 	
 	//资源
 	Route::get('/resource', 'ResourceController@index');
@@ -76,11 +80,6 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::get('/product/create', 'ProductController@create');
 	Route::post('/product/store', 'ProductController@store');
 	Route::get('/product/quota/{id}', 'ProductController@quota');
-
-	//OA
-	Route::get('/oa/qrcode/{id?}', 'OaController@qrcode');
-	Route::get('/oa/vcard/{id?}', 'OaController@vcard');
-
 });
 
 
@@ -95,7 +94,7 @@ Route::get('/test2', 'OaController@sendSms');
 Route::get('/test1', 'OaController@vcard');
 
 Route::get('/test', function () {
-	return view('upload_img');
+	return view('calendar');
 });
 
 
