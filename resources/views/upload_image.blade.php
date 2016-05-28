@@ -82,7 +82,7 @@ $(function(){
 			readFile(this); 
 		});
 		$('.upload-result').on('click', function (ev) {
-			$uploadCrop.croppie('result', {type: 'canvas', siez: 'viewport', format: 'png', quality:0.8}).then(function (resp) {
+			$uploadCrop.croppie('result', {type: 'canvas', size: 'viewport', format: 'png', quality:0.8}).then(function (resp) {
 				$("#base64").val(resp);
 				popupResult({
 					src: resp

@@ -5,11 +5,59 @@
 	margin: -8px ;
 	padding: 0 ;
 }
+
+#tu2{ 
+    width:100px;
+    margin: -110px 0 0 0; 
+}
+
+.list_none{
+    list-style-type:none;
+}
+
+.menu_icon_info{
+    color: #31708f;
+    margin: 0 5px 0px 0px;
+}
+
+.menu_icon_success{
+    color: #5cb95c;
+    margin: 0 5px 0px 0px;
+}
+
+.menu_icon_warning{
+    color: #cd9342;
+    margin: 0 5px 0px 0px;
+}
+
+.menu_icon_danger{
+    color: #d9524e;
+    margin: 0 5px 0px 0px;
+}
+
+.badge {
+  background: #ff5454;
+  border: 2px solid white;
+  position: absolute;
+  top: -110px;
+  right: 3px;
+  line-height: 8px;
+  padding: 4px 6px;
+  margin: 15px -8px 0px 0px; 
+}
+#show{
+    margin: -15px 18px 0px 0px; 
+}
+
 .xian{ 
 	margin-top: -20px;
 }
 
-
+#head_image{
+    width: 50px;
+    padding: 0px;
+    margin: -15px 5px -10px 5px;
+}
 
 .pull-right{ 
 	margin-top: 18px;
@@ -46,7 +94,6 @@
 	display:table;
 	margin:10px auto;
 }
-.badge{ background:#7ecef4} 
 
 .form-group{ 
     text-align:center;

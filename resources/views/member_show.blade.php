@@ -37,27 +37,45 @@ END:VCARD';
 				<div class="row">
 					<div class="col-md-12">
 						<h1 class="page-head-line"><a href="/member"> {{ $rec->name or '姓名' }}</a> </h1>
+		<ul class="list_none">
+		<li class="dropdown pull-right">
+					@if($rec->img !='' && $rec->img != null)
+	        		<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img id="tu2" src="{{ URL::asset("upload/member/").'/'.$rec->img}}" class="img-thumbnail"/><span class="badge">{{$rec->work_id}}</span></a>
+	        		@else 
+	        			<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base.png'}}" class="img-thumbnail"/><span class="badge">{{$rec->work_id}}</span></a>
+	        		@endif 
+
+		<ul class="dropdown-menu" id = "show">
+						<li class="m_2"><a href="/member/edit/{{ $rec->id }}"><i class="glyphicon glyphicon-wrench menu_icon_info"></i> 修改资料 </a></li>
+						<li class="m_2"><a href="#"><i class="glyphicon glyphicon-user menu_icon_info"></i> 头像更新</a></li>
+						<li class="divider"></li>
+						<li class="m_2"><a href="#"><i class="glyphicon glyphicon-remove menu_icon_danger"></i> 删除用户</a></li>
+						<li class="divider"></li>
+						<li class="m_2"><a href="/member/lock/{{ $rec->id }}"><i class="glyphicon glyphicon-lock menu_icon_warning"></i> 锁定该用户</a></li>
+						<li class="m_2"><a href="/member/unlock/{{ $rec->id }}"><i class="glyphicon glyphicon-ok menu_icon_success"></i> 解锁该用户</a></li>
+						<li class="m_2"><a href="/member/admin_get/{{ $rec->id }}"><i class="glyphicon glyphicon-star menu_icon_danger"></i> 授予管理权限</a></li>
+						<li class="m_2"><a href="/member/admin_lost/{{ $rec->id }}"><i class="glyphicon glyphicon-star-empty menu_icon_success"></i> 取消管理权限</a></li>
+
+						<li class="divider"></li>
+						<li class="m_2"><a href="#"><i class="fa fa-shield"></i> Lock Profile</a></li>
+						<li class="m_2"><a href="#"><i class="fa fa-lock"></i> Logout</a></li>	
+	        		</ul>
+	      		</li>
+	      		</ul>
+
+
+
+
+
+
+
 						<h1 class="page-subhead-line">{{ $rec->departmentName or '部门' }} - {{ $rec->positionName or '职位' }}
-							@if(isset($rec) && $rec->admin === 0)
-								(系统管理员)
-							@endif
 						</h1>
 					</div>
 				</div>
 
 				<div class="row">
-				  <div class="col-md-4" id ="left">
-				  
-				    <div class="panel panel-info"  >
-				      <div class="panel-heading">
-				        <i class="glyphicon glyphicon-qrcode"></i>&nbsp电子名片: 请使用微信扫描
-				      </div>
-				      <div class="panel-body" style="display:table;margin:10px auto;">
-						{!! QrCode::encoding('UTF-8')->size(230)->generate($vcard);!!}
-				      </div>
-				    </div>
 
-				  </div>
 
 					<div class="col-md-8">
 
@@ -68,7 +86,9 @@ END:VCARD';
 					@else
 						<div class="alert alert-warning" id= "right">
 					@endif
-							<strong>基本信息:</strong>
+							<strong>基本信息:@if(isset($rec) && $rec->admin === 0)
+								(系统管理员)
+							@endif</strong>
 							<p>--------------------</p>
 							<p>编号: {{ $rec->work_id or '编号' }}</p>
 							@if(isset($rec) && $rec->state === 0)
@@ -121,6 +141,19 @@ END:VCARD';
 
 						</div>
 					</div>
+
+					<div class="col-md-4" id ="left">
+				  
+				    <div class="panel panel-info"  >
+				      <div class="panel-heading">
+				        <i class="glyphicon glyphicon-qrcode"></i>&nbsp电子名片: 请使用微信扫描
+				      </div>
+				      <div class="panel-body" style="display:table;margin:10px auto;">
+						{!! QrCode::encoding('UTF-8')->size(230)->generate($vcard);!!}
+				      </div>
+				    </div>
+
+				  </div>
 
 					@if($a->hasRights($rec->id))
 					<div class="col-md-12">

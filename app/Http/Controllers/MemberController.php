@@ -619,13 +619,21 @@ class MemberController extends Controller
         $png= base64_decode($base64_body );
 
         if($id === 0) $id = Session::get('id');
-        $work_id = Member::find($id)->work_id;
+        $target = Member::find($id);
 
-        $png_name = $work_id.'-'.time().'.png';
-        $path = base_path().'/public/upload/member/'.$png_name;
+        $png_name = $target->work_id.'-'.time().'.png';
+        $base_path_img =  base_path().'/public/upload/member/';
+        $path = $base_path_img.$png_name;
 
-        file_put_contents($path,$png);
+        file_put_contents($path, $png);
 
+        if($target->img != '' && $target->img != null) unlink($base_path_img.$target->img);
+
+        $target->update(['img'=>$png_name]);
+
+
+        $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'看看效果', 'link'=>'/member/show/'.$id];
+        return view('note',$arr);
 
     }
 

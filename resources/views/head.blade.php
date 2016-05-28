@@ -3,8 +3,10 @@
         $h = new FooWeChat\Helpers\Helper;
         $copyRight = $h->copyRight();
         $title = $h->custom('short_name');
-        $domain = $h->custom('domain');
-        $domain_ex = $h->custom('domain_ex');
+        // $domain = $h->custom('domain');
+        // $domain_ex = $h->custom('domain_ex');
+        if(Session::has('id')) $me = $h->getMemberItems(['img','name']);
+
 ?>
 <!doctype html>
 </html>
@@ -31,8 +33,12 @@
        @if(Session::has('name'))
        <ul class="pull-right" style="list-style-type:none">
          <li class="dropdown">
-         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-         {{ Session::get('name') }}
+         
+         @if($h->hasImage())
+         <span class="text-primary"> {{ $me[1] }}</span><a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id= "head_image" src="{{ URL::asset("upload/member/").'/'.$me[0]}}" class="img-circle">
+         @else
+         {{ $me[1] }}
+         @endif
          </a>
            <ul class="dropdown-menu  pull-right">
            <li><a href="/oa/vcard"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
