@@ -70,21 +70,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	//EXCEL
 	Route::post('excel/member', 'ExcelController@getMembers');
 	
-	//资源
-	Route::get('/resource', 'ResourceController@index');
-	Route::get('/resource/create', 'ResourceController@create');
-	Route::post('/resource/store', 'ResourceController@store');
-	Route::get('/resource/out/{id}', 'ResourceController@out');
-	Route::post('/resource/out/store', 'ResourceController@outStore');
-	Route::get('/resource/in/{id}', 'ResourceController@in');
-	Route::post('/resource/in/store', 'ResourceController@inStore');
-	Route::get('/resource/list/{id}', 'ResourceController@getList');
 
-	//产品
-	Route::get('/product', 'ProductController@index');
-	Route::get('/product/create', 'ProductController@create');
-	Route::post('/product/store', 'ProductController@store');
-	Route::get('/product/quota/{id}', 'ProductController@quota');
 });
 
 
