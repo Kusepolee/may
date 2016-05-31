@@ -14,7 +14,7 @@ if(!isset($path)) die('upload_image_blade.php : 缺少参数');
 <div class="container">
    <div class="panel panel-default">
     <div class="panel-heading">
-       <a href="/member">用户管理</a>&nbsp/&nbsp图片上传
+       <a href="{{ $link }}">{{ $name }}</a>&nbsp/&nbsp图片上传
     </div>
     <div id="upload-preview"></div>
 
