@@ -37,36 +37,73 @@ END:VCARD';
 				<div class="row">
 					<div class="col-md-12">
 						<h1 class="page-head-line"><a href="/member"> {{ $rec->name or '姓名' }}</a> </h1>
+		
+		@if(!$a->isSelf($rec->id) && !$a->hasRights($rec->id))
+		<ul class="list_none">
+		<li class="pull-right">
+			@if($rec->img != '' && $rec->img != null)
+			<img id="tu2" src="{{ URL::asset("upload/member/").'/'.$rec->img}}" class="img-thumbnail"/>
+			@else
+				@if($rec->gender === 1)
+					<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base_man.png'}}" class="img-thumbnail"/>
+				@else 
+					<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base_lady.png'}}" class="img-thumbnail"/>
+				@endif 
+			@endif 
+
+		</li></ul>
+		@else
 		<ul class="list_none">
 		<li class="dropdown pull-right">
 					@if($rec->img !='' && $rec->img != null)
 	        		<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img id="tu2" src="{{ URL::asset("upload/member/").'/'.$rec->img}}" class="img-thumbnail"/><span class="badge">{{$rec->work_id}}</span></a>
 	        		@else 
-	        			<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base.png'}}" class="img-thumbnail"/><span class="badge">{{$rec->work_id}}</span></a>
+	        			<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+							@if($rec->gender === 1)
+	        			<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base_man.png'}}" class="img-thumbnail"/>
+							@else
+						<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base_lady.png'}}" class="img-thumbnail"/> 
+							@endif 
+	        			<span class="badge">{{$rec->work_id}}</span></a>
+
 	        		@endif 
 
 		<ul class="dropdown-menu" id = "show">
-						<li class="m_2"><a href="/member/edit/{{ $rec->id }}"><i class="glyphicon glyphicon-wrench menu_icon_info"></i> 修改资料 </a></li>
-						<li class="m_2"><a href="#"><i class="glyphicon glyphicon-user menu_icon_info"></i> 头像更新</a></li>
+						@if($a->isSelf($rec->id) || $a->hasRights($rec->id))
+						<li class="m_2"><a href="/member/edit/{{ $rec->id }}"><i class="glyphicon glyphicon-edit menu_icon_info"></i> 修改资料 </a></li>
+						@endif
+
+						@if($a->isSelf($rec->id))
+						<li class="m_2"><a href="/member/image/set"><i class="glyphicon glyphicon-user menu_icon_info"></i> 头像更新</a></li>
+						@endif
+
+						@if($a->hasRights($rec->id) && !$a->isSelf($rec->id))
 						<li class="divider"></li>
-						<li class="m_2"><a href="#"><i class="glyphicon glyphicon-remove menu_icon_danger"></i> 删除用户</a></li>
-						<li class="divider"></li>
+						
+						
+							@if($rec->state === 0)
 						<li class="m_2"><a href="/member/lock/{{ $rec->id }}"><i class="glyphicon glyphicon-lock menu_icon_warning"></i> 锁定该用户</a></li>
+							@else
 						<li class="m_2"><a href="/member/unlock/{{ $rec->id }}"><i class="glyphicon glyphicon-ok menu_icon_success"></i> 解锁该用户</a></li>
-						<li class="m_2"><a href="/member/admin_get/{{ $rec->id }}"><i class="glyphicon glyphicon-star menu_icon_danger"></i> 授予管理权限</a></li>
-						<li class="m_2"><a href="/member/admin_lost/{{ $rec->id }}"><i class="glyphicon glyphicon-star-empty menu_icon_success"></i> 取消管理权限</a></li>
+							@endif
+							<li class="divider"></li>
+							<li class="m_2"><a href="/member/delete/{{$rec->id}}"><i class="glyphicon glyphicon-remove menu_icon_danger"></i> 删除用户</a></li>
 
+						@endif
+
+						@if(!$a->isSelf($rec->id) && $a->isRoot())
+							@if($rec->admin === 0)
+						<li class="m_2"><a href="/member/admin_lost/{{ $rec->id }}"><i class="glyphicon glyphicon-king menu_icon_success"></i> 取消管理权限</a></li>
+							@else
 						<li class="divider"></li>
-						<li class="m_2"><a href="#"><i class="fa fa-shield"></i> Lock Profile</a></li>
-						<li class="m_2"><a href="#"><i class="fa fa-lock"></i> Logout</a></li>	
-	        		</ul>
-	      		</li>
-	      		</ul>
+						<li class="m_2"><a href="/member/admin_get/{{ $rec->id }}"><i class="glyphicon glyphicon-king menu_icon_danger"></i> 授予管理权限</a></li>
+							@endif
+						@endif 
 
-
-
-
-
+	    </ul>
+	  
+	    </ul>
+	    @endif
 
 
 						<h1 class="page-subhead-line">{{ $rec->departmentName or '部门' }} - {{ $rec->positionName or '职位' }}
@@ -154,50 +191,9 @@ END:VCARD';
 				    </div>
 
 				  </div>
-
-					@if($a->hasRights($rec->id))
-					<div class="col-md-12">
-							<p><a href="/member/edit/{{ $rec->id }}" class="btn btn btn-success">修改</a>&nbsp
-							@if(!$a->isSelf($rec->id))
-								@if($rec->state === 0)
-									<a href="/member/lock/{{ $rec->id }}" class="btn btn btn-warning">锁定</a>&nbsp
-								@else
-									<a href="/member/unlock/{{ $rec->id }}" class="btn btn btn-warning">解除锁定</a>&nbsp
-								@endif
-
-								@if($a->isRoot())
-									@if($rec->admin === 0)
-									<a href="/member/admin_lost/{{ $rec->id }}" class="btn btn btn-info">- 管理</a>&nbsp
-									@else
-									<a href="/member/admin_get/{{ $rec->id }}" class="btn btn btn-info">+ 管理</a>&nbsp
-									@endif
-
-								@endif
-							@endif
-							
-					@endif
-
-					@if($a->isSelf($rec->id) && !$a->hasRights($rec->id))
-					<div class="col-md-12">
-					<a href="/member/edit/{{ $rec->id }}" class="btn btn btn-success">修改</a>&nbsp
-					</div>
-					@endif
-
-					@if($a->auth(['postion'=>'>=经理']) && $a->hasRights($rec->id) && !$a->isSelf($rec->id))
-
-					<a href="/member/delete/{{ $rec->id }}" class="btn btn btn-danger">删除</a>&nbsp
-
-					@endif
-					</p>
-					</div>
-					
-
-
-
 				</div>
 			</div>
 		</div>
-		<hr>
 	</div>
 
 <script> 

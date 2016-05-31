@@ -15,14 +15,17 @@ use Session;
 
 class ExcelController extends Controller
 {
+    protected $departmentsArray;
+    protected $positionsArray;
+    protected $key;
     /**
      * 获取用户信息: 员工
      *
      * @return excel download
      */
-    public function getMembers()
+    public function getMembers(Request $request)
     {
-        $arr = ['admin'=>'no', 'position'=>'>=副总经理'];
+        $arr = ['admin'=>'no', 'position'=>'>=总监', 'department' => '>=运营部'];
 
         $a = new Auth;
         if(!$a->auth($arr)){
@@ -30,17 +33,37 @@ class ExcelController extends Controller
         }
         // ^ 身份验证
 
+        $seek_string = $request->seek_string;
+        $seek_array = explode('-',$seek_string);
+
+        $seek_array[0] != '_not' ? $this->departmentsArray = explode("|", $seek_array[0]) : $this->departmentsArray = [];    
+        $seek_array[1] != '_not' ? $this->positionsArray = explode("|", $seek_array[1]) : $this->positionsArray = [];    
+        $seek_array[2] != '_not' ? $this->key = $seek_array[2] : $this->key = '';    
+
+        
+
         $recs = Member::where('members.id', '>', 1)
-                ->where('members.show', 0)
-                ->orderBy('members.position')
-                ->orderBy('members.work_id')
-                ->orderBy('members.department')
-                ->leftJoin('members as m', 'members.created_by', '=', 'm.id')
-                ->leftJoin('departments', 'members.department', '=', 'departments.id')
-                ->leftJoin('positions', 'members.position', '=', 'positions.id')
-                ->leftJoin('config', 'members.gender', '=', 'config.id')
-                ->select('members.id', 'members.work_id', 'members.mobile', 'members.position', 'members.department', 'members.name', 'members.email', 'members.weixinid','members.qq', 'members.content', 'members.admin', 'members.state', 'm.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName', 'config.name as genderName')
-                ->get();
+                      ->where(function ($query) { 
+                            if(count($this->departmentsArray)) $query->whereIn('members.department', $this->departmentsArray);
+                            if(count($this->positionsArray)) $query->whereIn('members.position', $this->positionsArray);
+                            if ($this->key != '' && $this->key != null) {
+                                $query->where('members.name', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.work_id', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.mobile', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.content', 'LIKE', '%'.$this->key.'%');
+                            }
+                        })
+                        ->where('members.show', 0)
+                        ->where('members.private', 1)
+                        ->orderBy('members.position')
+                        ->orderBy('members.work_id')
+                        ->orderBy('members.department')
+                        ->leftJoin('members as m', 'members.created_by', '=', 'm.id')
+                        ->leftJoin('departments', 'members.department', '=', 'departments.id')
+                        ->leftJoin('positions', 'members.position', '=', 'positions.id')
+                        ->leftJoin('config', 'members.gender', '=', 'config.id')
+                        ->select('members.id', 'members.work_id', 'members.mobile', 'members.position', 'members.department', 'members.name', 'members.email', 'members.weixinid','members.qq', 'members.content', 'members.admin', 'members.state', 'm.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName', 'config.name as genderName')
+                        ->get();
 
         $data_array = [['编号', '姓名', '性别', '部门', '职位', '手机', '邮件', '微信号', 'QQ号', '备注']];
 
@@ -52,17 +75,18 @@ class ExcelController extends Controller
                 $tmp_array[] = $rec->genderName;
                 $tmp_array[] = $rec->departmentName;
                 $tmp_array[] = $rec->positionName;
-                $tmp_array[] = $rec->mobile;
+                $tmp_array[] = '#'.$rec->mobile;
                 $tmp_array[] = $rec->email;
                 $tmp_array[] = $rec->weixinid;
-                $tmp_array[] = $rec->qq;
+                $tmp_array[] = '#'.$rec->qq;
                 $tmp_array[] = $rec->content;
 
                 $data_array[] = $tmp_array;
             }
         }
+        $name = date("Y-m-d-H-i",time()).'_users';
 
-        Excel::create('users',function($excel) use ($data_array){
+        Excel::create($name,function($excel) use ($data_array){
             $excel->sheet('员工', function($sheet) use ($data_array){
                 $sheet->setAutoSize(true);
                 $sheet->freezeFirstRow();

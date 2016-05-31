@@ -10,7 +10,19 @@
     width:100px;
     margin: -110px 0 0 0; 
 }
+.image_circle{
+	background-color:#31708f; border:10px; border-radius:50%;
+}
+/* 图片上传边框 */
+#upload_preview{
+    margin-right: -10px;
+}
+#result{
 
+    text-align:center;
+}
+/* 图片上传按钮 */
+.btn-file{overflow:hidden;position:relative;vertical-align:middle;}.btn-file>input{position:absolute;top:0;right:0;margin:0;opacity:0;filter:alpha(opacity=0);transform:translate(-300px, 0) scale(4);font-size:23px;direction:ltr;cursor:pointer;}
 .list_none{
     list-style-type:none;
 }

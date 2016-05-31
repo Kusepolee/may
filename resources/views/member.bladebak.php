@@ -5,47 +5,35 @@ $w = new FooWeChat\Core\WeChatAPI;
 
 $dp_list  = $h->getDepartmentsInUse();
 $pos_list = $h->getPositionsInUse();
-
-//设置EXCEL查询条件
-count($dp) ? $dp_string = implode("|", $dp) : $dp_string = '_not';
-count($pos) ? $pos_string = implode("|", $pos) :$pos_string = '_not';
-$key != '' && $key != null ? $key_string = $key : $key_string = '_not';
-$full_seek_string = $dp_string."-".$pos_string."-".$key_string;
-
 ?>
 @extends('head')
 
 @section('content')
-<!-- icheck -->
-<script src="{{ URL::asset('bower_components/iCheck/icheck.min.js') }}"></script>
-<link href="{{ URL::asset('bower_components/iCheck/skins/square/blue.css') }}" rel="stylesheet">
-<!-- end of ickeck -->
 
 <div class="container">
-		<!-- nav -->
-	    <ol class="breadcrumb">
+  <div class="col-md-16">
+    <ol class="breadcrumb">
         <li class="active" >用户管理</li>
         <li><a href="/member/create">添加用户</a></li>
         @if(count($dp) || count($pos) || ($key != '' && $key != null))
           <li><a href="/member">重置查询条件</a></li>
         @endif
-        </ol>
-        <!-- end nav -->
 
-	<!-- labels head-->
-	<ul id="myTab" class="nav nav-tabs">
-	   @if(count($dp) || count($pos) || ($key != '' && $key != null))
-            <li class="active"><a href="#members" data-toggle="tab">查询结果-{{ count($outs) }}</a>
+    </ol>
+        <ul class="nav nav-tabs">
+        @if(count($dp) || count($pos) || ($key != '' && $key != null))
+            <li class="active"><a href="#members" data-toggle="tab">{{ count($outs) }}<span class="text-primary">@</span>查询结果</a>
         @else
-            <li class="active"><a href="#members" data-toggle="tab">所有用户-{{ count($outs) }}</a>
+            <li class="active"><a href="#members" data-toggle="tab">{{ count($outs) }}<span class="text-primary">@</span>所有用户</a>
         @endif
-	   <li><a href="#seek" data-toggle="tab">查询</a></li>
-	   <li><a href="#manage" data-toggle="tab">功能</a></li>
-	</ul>
-	<!-- end of labels head -->
-	<!-- labels body -->
-	<div id="myTabContent" class="tab-content">
-	               <!-- members list -->
+            </li>
+            <li class=""><a href="#seek" data-toggle="tab">查询</a>
+            </li>
+            <li class=""><a href="#manage" data-toggle="tab">功能</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <!-- members list -->
             <div class="tab-pane fade active in" id="members">
                 <div class="table-responsive">
             @if(count($outs))
@@ -163,8 +151,9 @@ $full_seek_string = $dp_string."-".$pos_string."-".$key_string;
                     </div>
                 </div>
             </div>
-            <!-- end of members -->
-			<!-- seek -->
+            <!-- end of members list -->
+
+            <!-- seek -->
             <div class="tab-pane fade" id="seek">
 
                     <div class="col-md-4 col-md-offset-4">
@@ -230,81 +219,30 @@ $full_seek_string = $dp_string."-".$pos_string."-".$key_string;
 
                     </div>
               <!-- end of seek -->
-        <!-- manage -->
-        <p></p>
-	    <div class="tab-pane fade" id="manage">
-		    <div class="col-md-4 col-sm-4" id="excel_div">
-	        	<div class="panel panel-success">
-	            <div class="panel-heading">
-	                <i class="glyphicon glyphicon-th"></i>&nbsp&nbspExcel
-	            </div>
-	            <div class="panel-body">
-                  <span id="info_txt"></span>
-	                <blockquote>
-	                <small>将本次查询结果保存为Excel文件, 若有多页, 则所有结果都保存,但Excel文件中不再分页。</small>
-                  </blockquote>
-                          <!-- form excel -->
-                          {!! Form::open(['url'=>'/excel/member', 'role' => 'form', 'id'=>'excel_get']) !!}
-                          {!! Form::hidden('seek_string', $full_seek_string) !!}
-                          {!! Form::close() !!}
-                          <!-- end of form excel -->
 
-                  <input type="hidden" id="seek_string" value="{{$full_seek_string}}">
-                  <input type="hidden" id="_token" value="{{$full_seek_string}}">
-	            </div>
-	            <div class="panel-footer">
-                  @if($a->auth(['admin'=>'no', 'position'=>'>=总监', 'department' => '>=运营部']))
-	                <a class="btn btn-sm btn-success btn-block" href="javascript:getExcel();">保存</a>
-                  @else 
-                  没有权限
-                  @endif 
-	            </div>
-	        	</div>
-	    	</div>
+              <!-- manage -->
+              <div class="col-md-4 col-sm-4" id="manage">
+                  <div class="panel panel-success">
+                      <div class="panel-heading">
+                          Success Panel
+                      </div>
+                      <div class="panel-body">
+                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                      </div>
+                      <div class="panel-footer">
+                          Panel Footer
+                      </div>
+                  </div>
+              </div>
+              <!-- end of manage -->
 
-        <p></p>
-	    	<div class="col-md-4 col-sm-4" id="notice_div">
-	        	<div class="panel panel-info">
-	            <div class="panel-heading">
-	                <i class="glyphicon glyphicon-bullhorn"></i>&nbsp&nbsp通知查询结果中的用户
-	            </div>
-	            <div class="panel-body">
-                  <!-- form msg -->
-                  {!! Form::open(['url'=>'/oa/notice/member', 'role' => 'form', 'id'=>'notice_send']) !!}
-                  {!! Form::hidden('seek_string_notice', $full_seek_string) !!}
-                  {!! Form::textarea('notice', null, ['placeholder'=>'消息内容', 'class'=>'form-control']) !!}
-                  <p></p>
-                  <input type="checkbox" >&nbsp&nbsp若未关注, 则发送手机消息
-                  {!! Form::close() !!}
-                  <!-- end of form msg -->
+            </div>
 
-	            </div>
-	            <div class="panel-footer">
-                  @if($a->auth(['position'=>'>=经理', 'department' => '>=运营部']))
-                  <a class="btn btn-sm btn-info btn-block" href="#">现在发送</a>
-                  @else 
-                  没有权限
-                  @endif 
-	                
-	            </div>
-	        	</div>
-	    	</div>
-	   </div>
-	   <!-- end of manage -->
-	</div>
-	<!-- end of labels body -->
+      </div>
 </div>
-<script> 
-// init ichcek
-$(document).ready(function(){
-  $('input').iCheck({
-    checkboxClass: 'icheckbox_square-blue',
-    radioClass: 'iradio_square-blue',
-    increaseArea: '20%' // optional
-  });
-});
 
-//查询
+<script> 
+
 function set(key, pos){
     var v = "#"+pos;
     var l = "#"+pos+"_label";
@@ -322,22 +260,9 @@ function set(key, pos){
         $(l).html("<span class=\"text-info\">"+n+"&nbsp&nbsp</span>");
     }
 }
-// excel
-function getExcel(){
-  $("#excel_get").submit();
-}
-
-//notice
-function sendNotice(){
-  $("#notice_send").submit();
-}
 </script>
+
 @endsection
-
-
-
-
-
 
 
 

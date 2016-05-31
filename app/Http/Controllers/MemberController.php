@@ -406,7 +406,7 @@ class MemberController extends Controller
                     ->select('members.*', 'a.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName')
                     ->find($id);
         //日志
-        Logie::add(['info', '查看用户资料:'.$rec->work_id.','.$rec->name]);
+        //Logie::add(['info', '查看用户资料:'.$rec->work_id.','.$rec->name]);
 
         return view('member_show', ['rec'=>$rec]);
     }
@@ -539,7 +539,11 @@ class MemberController extends Controller
      *
      * 1. root, admin : 删除用户 --> 其他表存在记录 -> 删除微信用户, 保留本地数据库记录
      *                          |
-     *                          |-> 不存在 -> 删除本地数据和微信用户
+     *                          |-> 不存在 --> 删除本地数据
+     *                                    |
+     *                                    |-> 删除微信用户
+     *                                    |
+     *                                    |-> 删除图片
      * 1. 其他用户: 隐藏用户
      *
      * @param  int  $id
@@ -564,7 +568,12 @@ class MemberController extends Controller
             $target = Member::find($id);
             $work_id = $target->work_id;
 
-            if(!$h->exsitsIn($t, $id)) $target->delete();
+            $base_path_img =  base_path().'/public/upload/member/';
+
+            if(!$h->exsitsIn($t, $id)) {
+                if($target->img != '' && $target->img != null) unlink($base_path_img.$target->img);
+                $target->delete();
+            }
     
             $wechat = new WeChatAPI;
             $wechat->deleteUser($work_id);
@@ -589,6 +598,9 @@ class MemberController extends Controller
     /**
     * 密码修改
     *
+    * @param null
+    *
+    * @return redirect
     */
     public function passwordReset(Requests\PasswordResetRquest $request, $id)
     {
@@ -605,11 +617,23 @@ class MemberController extends Controller
     }
 
     /**
+    * 图片上传表单
+    *
+    * @param null
+    *
+    * @return view
+    */
+    public function image()
+    {
+        return view('upload_image');
+    }
+
+    /**
     * 图片上传处理
     *
     * @param base64
     *
-    * @return filse saved info
+    * @return filse saved view
     */
     public function imageStore(Request $request, $id=0)
     {
