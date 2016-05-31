@@ -1,3 +1,6 @@
+<?php
+if(!isset($path)) die('upload_image_blade.php : 缺少参数');
+?>
 @extends('head')
 
 @section('content')
@@ -30,7 +33,7 @@
 {!! Form::open(
     array(
     	'id' =>'upload_form',
-        'url' => '/member/image/store', 
+        'url' => $path, 
         'class' => 'form', 
         'novalidate' => 'novalidate', 
         'files' => true)) !!}

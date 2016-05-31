@@ -625,7 +625,7 @@ class MemberController extends Controller
     */
     public function image()
     {
-        return view('upload_image');
+        return view('upload_image', ['path'=>'/member/image/store']);
     }
 
     /**
