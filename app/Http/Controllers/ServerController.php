@@ -16,7 +16,10 @@ class ServerController extends Controller
      */
     public function GithubWebhook(Request $request)
     {
-        //$a = $request->all();
+        $hook = $request->all();
+        $code = json_decode($hook, true);
+
+
     }
 
     /**
