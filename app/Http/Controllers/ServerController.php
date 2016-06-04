@@ -18,7 +18,7 @@ class ServerController extends Controller
     {
         $hook = $request->all();
         $code = json_decode($hook, true);
-        //
+        Logie::add(['info', $hook]);
         return true;
 
     }
