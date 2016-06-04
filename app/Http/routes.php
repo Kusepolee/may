@@ -27,6 +27,8 @@ Route::get('/login', function () {
 Route::post('/login', 'MemberController@login');
 Route::get('/logout', 'MemberController@logout');
 
+//SERVER
+Route::get('server/hook', 'ServerController@GithubWebhook');
 
 /*
 |--------------------------------------------------------------------------
@@ -70,8 +72,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	//EXCEL
 	Route::post('excel/member', 'ExcelController@getMembers');
 
-	//SERVER
-	Route::get('server/hook', 'ServerController@GithubWebhook');
+	
 	
 
 });
