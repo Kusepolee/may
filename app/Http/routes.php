@@ -42,8 +42,8 @@ Route::get('/logout', 'MemberController@logout');
 Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 	//初始化
-	Route::get('/member/init', 'MemberController@weChatInitUsers');
-	Route::get('/department/init', 'DepartmentController@weChatInitDepartments');
+	Route::get('/init/member', 'MemberController@weChatInitUsers');
+	Route::get('/init/department', 'DepartmentController@weChatInitDepartments');
 
 	//用户
 	Route::get('/member', 'MemberController@index');
@@ -69,6 +69,9 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 	//EXCEL
 	Route::post('excel/member', 'ExcelController@getMembers');
+
+	//SERVER
+	Route::post('/server/hook', 'ServerController@GithubWebhook');
 	
 
 });
