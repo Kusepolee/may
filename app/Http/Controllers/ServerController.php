@@ -14,7 +14,7 @@ class ServerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function GithubWebhook(Request $request)
+    public function GithubWebhook()
     {
         //$a = $request->all();
         echo "fuck";

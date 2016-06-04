@@ -71,7 +71,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::post('excel/member', 'ExcelController@getMembers');
 
 	//SERVER
-	Route::get('/server/hook', 'ServerController@GithubWebhook');
+	Route::get('server/hook', 'ServerController@GithubWebhook');
 	
 
 });
