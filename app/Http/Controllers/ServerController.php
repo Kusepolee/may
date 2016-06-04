@@ -18,6 +18,7 @@ class ServerController extends Controller
     {
         $hook = $request->all();
         $code = json_decode($hook, true);
+        //
         return true;
 
     }
