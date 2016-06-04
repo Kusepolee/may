@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Crm;
 
 use App\Http\Requests\Request;
 

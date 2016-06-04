@@ -81,7 +81,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 */
 
 
-Route::get('/test2', 'NoticeController@sendSms');
+Route::get('/test2', 'Customer\CustomerController@index');
 Route::get('/test1', 'OaController@qrcode');
 
 Route::get('/test', function () {

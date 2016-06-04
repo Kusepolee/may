@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Crm;
 
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        return view('upload_image', ['path'=>'/member/image/store', 'name'=>'用户管理', 'link'=>'/member']);
     }
 
     /**
