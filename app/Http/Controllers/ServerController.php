@@ -28,7 +28,7 @@ class ServerController extends Controller
         $resault = 'git workd';
 
         Member::find(1)->update(['content'=>$resault]);
-        //fuck the github pull shit
+        //fuck the github pull shit the
 
         //Logie::add(['info', $hook]);
         //good
