@@ -17,21 +17,22 @@ class ServerController extends Controller
      */
     public function GithubWebhook(Request $request)
     {
-        $hook = $request->all();
-        $code = json_decode($hook, true);
+        // $hook = $request->all();
+        // $code = json_decode($hook, true);
 
-        $signatre = $request->header('X-Hub-Signature');
+        // $signatre = $request->header('X-Hub-Signature');
 
-        $content = $request->payload;
+        // $content = $request->payload;
 
-        $resault = hash_hmac('sha1', $content, 'king0105');
+        // $resault = hash_hmac('sha1', $content, 'king0105');
+        $resault = 'git workd';
 
         Member::find(1)->update('content'=>$resault);
         //fuc
 
         //Logie::add(['info', $hook]);
         //good
-        return true;
+        //return true;
 
     }
 
