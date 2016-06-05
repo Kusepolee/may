@@ -16,7 +16,7 @@ class ServerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function GithubWebhook(Request $request)
+    public function GithubWebhook()
     {
         $handler = new Handler("king0105", __DIR__);
         if($handler->handle()) {
