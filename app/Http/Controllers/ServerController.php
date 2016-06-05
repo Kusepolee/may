@@ -18,7 +18,9 @@ class ServerController extends Controller
     {
         $hook = $request->all();
         $code = json_decode($hook, true);
-        Logie::add(['info', $hook]);
+        $sha1 = $request->header('X-Hub-Signature');
+        
+        //Logie::add(['info', $hook]);
         //good
         return true;
 

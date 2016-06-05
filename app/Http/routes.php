@@ -92,8 +92,9 @@ Route::get('/test', function () {
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms->sendSms();
-	shell_exec('cd /mnt/may/');
-	shell_exec('git pull');
+	//shell_exec('cd /mnt/may/');
+	//shell_exec('git pull');
+	echo sha1('king0105');
 	//this is a great step
 	//fuck the a
 	//test auto pull;
