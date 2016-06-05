@@ -25,10 +25,10 @@ class ServerController extends Controller
         // $content = $request->payload;
 
         // $resault = hash_hmac('sha1', $content, 'king0105');
-        $resault = 'git workd fuck 200';
+        $resault = 'git workd fuck 200 +';
 
         Member::find(1)->update(['content'=>$resault]);
-        return 200;
+        //fuck
         return response('200');
         //fuck the github pull shit the
 
