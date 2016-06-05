@@ -283,6 +283,7 @@ Route::get('/test', function () {
 	//test auto pull;
 	//exec("git pull https://github.com/restrose/may.git master"); 
 	//fuck
+	//fuck good
 
 });
 
