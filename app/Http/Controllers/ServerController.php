@@ -29,6 +29,7 @@ class ServerController extends Controller
 
         Member::find(1)->update(['content'=>$resault]);
         return 200;
+        return response('200');
         //fuck the github pull shit the
 
         //Logie::add(['info', $hook]);
