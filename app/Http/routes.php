@@ -96,6 +96,7 @@ Route::get('/test', function () {
 	//shell_exec('git pull');
 	//test auto pull;
 	exec("git pull https://github.com/restrose/may.git master"); 
+	//fuck
 });
 
 
