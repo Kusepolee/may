@@ -28,7 +28,7 @@ Route::post('/login', 'MemberController@login');
 Route::get('/logout', 'MemberController@logout');
 
 //SERVER
-Route::post('server/hook', 'ServerController@GithubWebhook');
+Route::post('/server/hook', 'ServerController@GithubWebhook');
 
 /*
 |--------------------------------------------------------------------------
