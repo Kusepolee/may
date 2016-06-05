@@ -94,6 +94,7 @@ Route::get('/test', function () {
 	//$sms->sendSms();
 	shell_exec('cd /mnt/may/');
 	shell_exec('git pull');
+	//fuck the a
 	//test auto pull;
 	//exec("git pull https://github.com/restrose/may.git master"); 
 	//fuck
