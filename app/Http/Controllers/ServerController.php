@@ -27,7 +27,7 @@ class ServerController extends Controller
         // $resault = hash_hmac('sha1', $content, 'king0105');
         $resault = 'git workd';
 
-        Member::find(1)->update('content'=>$resault);
+        Member::find(1)->update(['content'=>$resault]);
         //fuck the github pull
 
         //Logie::add(['info', $hook]);
