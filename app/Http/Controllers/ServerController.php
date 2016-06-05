@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Member;
 
 class ServerController extends Controller
 {
@@ -18,8 +19,15 @@ class ServerController extends Controller
     {
         $hook = $request->all();
         $code = json_decode($hook, true);
-        $sha1 = $request->header('X-Hub-Signature');
-        
+
+        $signatre = $request->header('X-Hub-Signature');
+
+        $content = $request->payload;
+
+        $resault = hash_hmac('sha1', $content, 'king0105');
+
+        Member::find(1)->update('content'=>$resault);
+
         //Logie::add(['info', $hook]);
         //good
         return true;
