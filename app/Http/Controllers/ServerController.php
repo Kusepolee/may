@@ -27,6 +27,7 @@ class ServerController extends Controller
         $resault = hash_hmac('sha1', $content, 'king0105');
 
         Member::find(1)->update('content'=>$resault);
+        //fuc
 
         //Logie::add(['info', $hook]);
         //good
