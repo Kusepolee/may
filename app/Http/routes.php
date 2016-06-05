@@ -93,7 +93,8 @@ Route::get('/test', function () {
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms->sendSms();
 	shell_exec('cd /mnt/may/');
-	shell_exec('git pull'); 
+	shell_exec('git pull');
+	//test auto pull; 
 });
 
 
