@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Member;
+use FoooWehcat\Github\Webhook\Handler;
 
 class ServerController extends Controller
 {
@@ -17,24 +18,12 @@ class ServerController extends Controller
      */
     public function GithubWebhook(Request $request)
     {
-        // $hook = $request->all();
-        // $code = json_decode($hook, true);
-
-        // $signatre = $request->header('X-Hub-Signature');
-
-        // $content = $request->payload;
-
-        // $resault = hash_hmac('sha1', $content, 'king0105');
-        $resault = 'git workd fuck 200 +';
-
-        Member::find(1)->update(['content'=>$resault]);
-        //fuck
-        return response('200');
-        //fuck the github pull shit the
-
-        //Logie::add(['info', $hook]);
-        //good
-        //return true;
+        $handler = new Handler("king0105", __DIR__);
+        if($handler->handle()) {
+            echo "OK";
+        } else {
+            echo "Wrong secret";
+        }
 
     }
 
