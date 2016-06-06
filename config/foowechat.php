@@ -41,8 +41,6 @@ return [
         'tel'                  => '0527 - 8352 1018',
         'fax'                  => '0527 - 8777 4118',
         'email'                => 'hi@henjou.com',
-        'domain'               => 'henjou',
-        'domain_ex'            => '.com',
         'url'                  => 'www.henjou.com',
         'address'              => '江苏省沭阳县七雄工业园区',
         'posetcode'            => '223600',
@@ -50,6 +48,12 @@ return [
         'accunt'               => '1050 0601 0400 0666 0',
         'wechat_code'          => '40UUDDfEH2pgrXNv9xDx',
         'inside_department_id' => 2,
+    ],
+
+    'app' =>[
+        'dir'                 => '/mnt/may/',
+        'git_pull_key'        => 'king0105',
+        'composer_update_key' => 'king0105',
     ],
 
 ];
