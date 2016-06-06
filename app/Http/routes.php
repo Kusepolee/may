@@ -102,6 +102,7 @@ Route::get('/test', function () {
 
 	echo hash_hmac("sha1", $json, 'king0105');
 	return response('200');
+	//fuck ok
 	//this is a great step
 	//fuck the a
 	//test auto pull;
