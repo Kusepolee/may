@@ -95,6 +95,9 @@ Route::get('/test', function () {
 	//$sms->sendSms();
 	shell_exec('cd /mnt/may/');
 	shell_exec('git pull');
+
+	//fuck oof!
+
 	//echo sha1('king0105');
 	//echo sha1('king0105');
 	//echo hash_hmac('king0105');
