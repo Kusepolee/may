@@ -93,15 +93,15 @@ Route::get('/test', function () {
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms->sendSms();
-	//shell_exec('cd /mnt/may/');
-	//shell_exec('git pull');
+	shell_exec('cd /mnt/may/');
+	shell_exec('git pull');
 	//echo sha1('king0105');
 	//echo sha1('king0105');
 	//echo hash_hmac('king0105');
 	//what's the fuck OK
 
-	echo hash_hmac("sha1", $json, 'king0105');
-	return response('200');
+	//echo hash_hmac("sha1", $json, 'king0105');
+	//return response('200');
 	//fuck ok
 	//this is a great step
 	//fuck the a
