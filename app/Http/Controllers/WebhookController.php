@@ -22,20 +22,17 @@ class WebhookController extends Controller
         $github_signature = @$_SERVER['HTTP_X_HUB_SIGNATURE'];
         $payload = file_get_contents('php://input');
 
-        //list($algo, $signature)
         $arr = explode('=', $github_signature);
         $algo = $arr[0];
         $signature = $arr[1];
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
-        if($payload_hash == $signature) {
-            shell_exec('cd /mnt/may/');
-            shell_exec('git pull');
-            return 200;
-        }else{
-             return 'invalid';
-        }
+        if($payload_hash != $signature) return 'invalid key!';
+        
+        shell_exec('cd /mnt/may/');
+        shell_exec('git pull');
+        return 200;
     }
 
     /**
@@ -43,7 +40,7 @@ class WebhookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function test()
     {
         //
     }
