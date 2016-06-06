@@ -19,8 +19,9 @@ class WebhookController extends Controller
     public function GithubWebhook(Request $request)
 
     {
-        $github_signature = $request->header(‘X_HUB_SIGNATURE’);
-        $payload = Input::all();
+        $github_signature = @$_SERVER['HTTP_X_HUB_SIGNATURE'];
+        $payload = file_get_contents('php://input');
+        
         list($algo, $signature) = explode('=', $github_signature);
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
