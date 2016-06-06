@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
-use App\Member;
 
 class WebhookController extends Controller
 {
@@ -30,8 +29,8 @@ class WebhookController extends Controller
 
         if($payload_hash != $signature) return 'invalid key!';
         
-        shell_exec('cd /mnt/may/');
-        shell_exec('git pull');
+        shell_exec('cd /mnt/may/  && git pull');
+        //shell_exec('git pull');
         return 200;
     }
 
