@@ -21,8 +21,11 @@ class WebhookController extends Controller
     {
         $github_signature = @$_SERVER['HTTP_X_HUB_SIGNATURE'];
         $payload = file_get_contents('php://input');
-        
-        list($algo, $signature) = explode('=', $github_signature);
+
+        //list($algo, $signature)
+        $arr = explode('=', $github_signature);
+        $algo = $arr[0];
+        $signature = $arr[1];
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
