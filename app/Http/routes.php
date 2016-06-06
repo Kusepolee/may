@@ -96,7 +96,7 @@ Route::get('/test', function () {
 	shell_exec('cd /mnt/may/');
 	shell_exec('git pull');
 
-	//fuck off you
+	//Fuck the goo !
 
 	//echo sha1('king0105');
 	//echo sha1('king0105');
