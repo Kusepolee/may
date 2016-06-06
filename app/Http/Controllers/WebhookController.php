@@ -29,7 +29,7 @@ class WebhookController extends Controller
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
-        if($payload_hash == signature) {
+        if($payload_hash == $signature) {
             shell_exec('cd /mnt/may/');
             shell_exec('git pull');
             return 200;
