@@ -30,10 +30,10 @@ class ServerController extends Controller
         //     shell_exec('git pull');
         //     return 200;
         // }else{
-        //     return 202;
-        //     //fuck
+             return 200;
+        //     //fuckok
         // }
-        Member::find(1)->update(['content'=>'fuck']);
+        //Member::find(1)->update(['content'=>'fuck']);
 
 
 
