@@ -30,7 +30,7 @@ class WebhookController extends Controller
         if($payload_hash != $signature) return 'invalid key!';
         
         shell_exec('cd /mnt/may/  && git pull');
-        //shell_exec('git pull');
+        //shell_exec('git pull'); //?
         return 200;
     }
 
