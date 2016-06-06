@@ -98,7 +98,7 @@ Route::get('/test', function () {
 	//echo sha1('king0105');
 	//echo sha1('king0105');
 	//echo hash_hmac('king0105');
-	//what's the fuck
+	//what's the fuck OK
 
 	echo hash_hmac("sha1", $json, 'king0105');
 	return response('200');
