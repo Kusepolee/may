@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
+use App\Member;
 
 class ServerController extends Controller
 {
@@ -18,20 +19,21 @@ class ServerController extends Controller
     public function GithubWebhook(Request $request)
 
     {
-        $github_signature = $request->header(‘HTTP_X_HUB_SIGNATURE’);
-        $payload = Input::all();
-        list($algo, $signature) = explode('=', $github_signature);
+        // $github_signature = $request->header(‘HTTP_X_HUB_SIGNATURE’);
+        // $payload = Input::all();
+        // list($algo, $signature) = explode('=', $github_signature);
 
-        $payload_hash = hash_hmac($algo, $payload, 'king0105');
+        // $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
-        if($payload_hash == signature) {
-            shell_exec('cd /mnt/may/');
-            shell_exec('git pull');
-            return 200;
-        }else{
-            return 202;
-            //fuck
-        }
+        // if($payload_hash == signature) {
+        //     shell_exec('cd /mnt/may/');
+        //     shell_exec('git pull');
+        //     return 200;
+        // }else{
+        //     return 202;
+        //     //fuck
+        // }
+        Member::find(1)->update(['content'=>'fuck']);
 
 
 
