@@ -29,7 +29,10 @@ class WebhookController extends Controller
 
         if($payload_hash != $signature) return 'invalid key!';
         
-        shell_exec('cd /mnt/may/  && git pull');
+        shell_exec('cd /mnt/may/');
+        shell_exec('git pull');
+        shell_exec('chgrp -R gitwriters /mnt/may/');
+        shell_exec('chmod o+rw -R /mnt/may/');
         return 200;
     }
 
