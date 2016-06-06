@@ -31,7 +31,6 @@ class WebhookController extends Controller
             return 200;
         }else{
              return 'invalid';
-            //fuckok
         }
         //Member::find(1)->update(['content'=>'fuck']);
 
