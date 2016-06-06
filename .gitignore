@@ -15,8 +15,6 @@ storage/
 ._.DS_Sortore
 Thumbs.db
 
-composer.lock
-
 #uploads
 public/upload/crm/
 public/upload/member/
