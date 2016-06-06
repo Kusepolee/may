@@ -27,7 +27,7 @@ Route::get('/login', function () {
 Route::post('/login', 'MemberController@login');
 Route::get('/logout', 'MemberController@logout');
 
-//SERVER
+//SERVER OK
 Route::post('/payload', 'ServerController@GithubWebhook');
 
 /*
