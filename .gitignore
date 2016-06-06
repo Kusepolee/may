@@ -29,3 +29,6 @@ public/custom/
 
 #ico
 public/favicon.*
+
+#sublime-project files
+*.sublime-workspace
