@@ -11,7 +11,7 @@ use Input;
 class WebhookController extends Controller
 {
     /**
-     * Github webhooks
+     * Github webhooks -> git pull
      *
      * @return \Illuminate\Http\Response
      */

@@ -20,3 +20,12 @@ public/upload/crm/
 public/upload/member/
 public/upload/product/
 public/upload/resource/
+
+#config files
+config/restrose.*
+
+#custom filse
+public/custom/
+
+#ico
+public/favicon.*
