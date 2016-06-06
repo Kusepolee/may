@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Input;
 use App\Member;
 
-class ServerController extends Controller
+class WebhookController extends Controller
 {
     /**
      * Github webhooks
