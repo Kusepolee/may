@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Member;
-use FoooWehcat\Github\Webhook\Handler;
+use Input;
 
 class ServerController extends Controller
 {
@@ -16,14 +15,24 @@ class ServerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function GithubWebhook()
+    public function GithubWebhook(Request $request)
+
     {
-        $handler = new Handler("king0105", __DIR__);
-        if($handler->handle()) {
-            echo "OK";
-        } else {
-            echo "Wrong secret";
+        $github_signature = $request->header(‘HTTP_X_HUB_SIGNATURE’);
+        $payload = Input::all();
+        list($algo, $signature) = explode('=', $github_signature);
+
+        $payload_hash = hash_hmac($algo, $payload, 'king0105');
+
+        if($payload_hash == signature) {
+            shell_exec('cd /mnt/may/');
+            shell_exec('git pull');
+            return 200;
+        }else{
+            return 202;
         }
+
+
 
     }
 
