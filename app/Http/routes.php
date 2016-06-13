@@ -72,7 +72,23 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	//EXCEL
 	Route::post('excel/member', 'ExcelController@getMembers');
 
-	
+	//资源
+	Route::get('/resource', 'Resource\ResourceController@index');
+	Route::get('/resource/create', 'Resource\ResourceController@create');
+	Route::post('/resource/store', 'Resource\ResourceController@store');
+	Route::post('/resource/seek', 'Resource\ResourceController@resourceSeek');
+	Route::get('/resource/show/{id}', 'Resource\ResourceController@show');
+	Route::get('/resource/edit/{id}', 'Resource\ResourceController@edit');
+	Route::post('/resource/update/{id}', 'Resource\ResourceController@update');
+	Route::get('/resource/delete/{id}', 'Resource\ResourceController@deleteNote');
+	Route::get('/resource/delete_do/{id}', 'Resource\ResourceController@delete');
+	Route::get('/resource/out/{id}', 'Resource\ResourceController@out');
+	Route::post('/resource/out/store', 'Resource\ResourceController@outStore');
+	Route::get('/resource/in/{id}', 'Resource\ResourceController@in');
+	Route::post('/resource/in/store', 'Resource\ResourceController@inStore');
+	// Route::get('/resource/list/{id}', 'Resource\ResourceController@getList');
+	Route::get('/resource/image/set/{id}', 'Resource\ResourceController@image');
+	Route::post('/resource/image/store/{id?}', 'Resource\ResourceController@imageStore');
 	
 
 });
