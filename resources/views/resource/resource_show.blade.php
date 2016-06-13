@@ -54,7 +54,7 @@ $h = new FooWeChat\Helpers\Helper;
             
 					            <div class="panel panel-info">
 					            @if($resource_records === 0)
-					            	<div class="panel-heading">尚无出入记录</div>
+					            	<div class="panel-heading">尚无出入库记录</div>
 					            @else
 					                <div class="panel-heading">出入库记录</div>
 					                <table class="table table-hover">
