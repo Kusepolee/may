@@ -27,7 +27,7 @@ class WebhookController extends Controller
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
-        $arr = json_decode($payload, true);
+        $arr = json_decode($payload);
        // $composer_josn = $arr['commits']['modified'];
 
 
