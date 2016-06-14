@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
+use FooWeChat\Helpers\Helper;
 
 class WebhookController extends Controller
 {
@@ -21,28 +22,23 @@ class WebhookController extends Controller
         $github_signature = @$_SERVER['HTTP_X_HUB_SIGNATURE'];
         $payload = file_get_contents('php://input');
 
-        $data = json_decode($payload);
-        $composer = $data['commits']['modified'];
+        //$data = json_decode($payload);
+        //$composer = $data['commits']['modified'];
+        $h = new Helper;
 
         $arr = explode('=', $github_signature);
         $algo = $arr[0];
         $signature = $arr[1];
 
-        $payload_hash = hash_hmac($algo, $payload, 'king0105');
+        $payload_hash = hash_hmac($algo, $payload, $h->app('git_pull_key'));
 
         if($payload_hash != $signature) return 'invalid key!';
         
-
-        shell_exec('cd /mnt/may/');
+        shell_exec('cd '.$h->app('dir'));
         shell_exec('git pull');
-        shell_exec('chgrp -R gitwriters /mnt/may/');
-        shell_exec('chmod o+rw -R /mnt/may/');
+        shell_exec('chgrp -R gitwriters '.$h->app('dir'));
+        shell_exec('chmod o+rw -R '.$h->app('dir'));
         return 200;
-        //good;
-        //return $composer_josn[0];
-        //ok
-        //shit
-        return print_r($composer);
     }
 
     /**
