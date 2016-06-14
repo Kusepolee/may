@@ -278,7 +278,7 @@ class MemberController extends Controller
         $user = Session::get('name');
         $dp = Department::find($input['department'])->name;
 
-        $body = $dp.'新人员: '.$input['name'].', 职位:'.$positionName.', -'.$user;
+        $body = $dp.'新人员: '.$input['name'].', 职位:'.$positionName.', 工号:'.$my_work_id.'. --'.$user;
         $array = [
                    //'user'       => '编号1|编号2', // all -所有
                    'department' => '运营部|self', //self-本部门, self+包括管辖部门
@@ -428,7 +428,7 @@ class MemberController extends Controller
                     ->select('members.*', 'a.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName')
                     ->find($id);
         //日志
-        //Logie::add(['info', '查看用户资料:'.$rec->work_id.','.$rec->name]);
+        Logie::add(['info', '查看用户资料:'.$rec->work_id.','.$rec->name]);
 
         return view('member_show', ['rec'=>$rec]);
     }
@@ -462,6 +462,7 @@ class MemberController extends Controller
                        ->leftJoin('positions', 'members.position', '=', 'positions.id')
                        ->select('members.*', 'departments.name as departmentName', 'positions.name as positionName')
                        ->find($id);
+
         return view('member_form', ['act'=>'修改资料', 'rec'=>$rec]);
     }
 
@@ -611,6 +612,8 @@ class MemberController extends Controller
             //日志
             Logie::add(['important', '删除用户-隐藏:'.$target->work_id.','.$target->name]);
         }
+
+        
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);

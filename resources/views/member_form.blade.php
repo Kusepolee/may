@@ -102,14 +102,6 @@ $private = ['1'=>'更新到微信', '0'=>'非微信用户'];
       <div class="form-group">
           {!! Form::text('content',isset($rec) ? $rec->content : null,['placeholder'=>'备注', 'class'=>'form-control']) !!}
       </div>
-
-      <div class="form-group">
-           {!! Form::password('password',['placeholder'=>'密码', 'class'=>'form-control']) !!}
-      </div>
-
-      <div class="form-group">
-           {!! Form::password('password_confirmation',['placeholder'=>'确认密码', 'class'=>'form-control']) !!}
-      </div>
       
       {!! Form::submit("提交", ['class'=>'btn btn-info btn-block']) !!}
 
