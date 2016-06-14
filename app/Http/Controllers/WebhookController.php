@@ -36,15 +36,15 @@ class WebhookController extends Controller
 
         if($payload_hash != $signature) return 'invalid key!';
         
-        // shell_exec('cd '.$path);
-        // shell_exec('/usr/bin/git pull');
-        // shell_exec('chgrp -R gitwriters '.$path);
-        // shell_exec('chmod o+rw -R '.$path);
-
-        shell_exec('cd /mnt/RestRose/henjou_com');
+        shell_exec('cd '.$path);
         shell_exec('/usr/bin/git pull');
-        shell_exec('chgrp -R gitwriters /mnt/RestRose/henjou_com');
-        shell_exec('chmod o+rw -R /mnt/RestRose/henjou_com');
+        shell_exec('chgrp -R gitwriters '.$path);
+        shell_exec('chmod o+rw -R '.$path);
+
+        // shell_exec('cd /mnt/RestRose/henjou_com');
+        // shell_exec('/usr/bin/git pull');
+        // shell_exec('chgrp -R gitwriters /mnt/RestRose/henjou_com');
+        // shell_exec('chmod o+rw -R /mnt/RestRose/henjou_com');
 
         return 200;
        //return    'cd '.$path;
