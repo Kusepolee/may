@@ -27,13 +27,19 @@ class WebhookController extends Controller
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
+        $arr = json_decode($payload, true);
+        $composer_josn = $arr['commits']['modified'];
+
+
         if($payload_hash != $signature) return 'invalid key!';
         
+
         shell_exec('cd /mnt/may/');
         shell_exec('git pull');
         shell_exec('chgrp -R gitwriters /mnt/may/');
         shell_exec('chmod o+rw -R /mnt/may/');
-        return 200;
+        //return 200;
+        return $composer_josn[0];
     }
 
     /**
