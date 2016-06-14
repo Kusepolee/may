@@ -26,6 +26,7 @@ class WebhookController extends Controller
         //$composer = $data['commits']['modified'];
 
         $h = new Helper;
+        $path = $h->app('dir');
 
         $arr = explode('=', $github_signature);
         $algo = $arr[0];
@@ -35,11 +36,12 @@ class WebhookController extends Controller
 
         if($payload_hash != $signature) return 'invalid key!';
         
-        shell_exec('cd '.$h->app('dir'));
+        shell_exec('cd '.$path);
         shell_exec('git pull');
-        shell_exec('chgrp -R gitwriters '.$h->app('dir'));
-        shell_exec('chmod o+rw -R '.$h->app('dir'));
-        return 200;
+        shell_exec('chgrp -R gitwriters '.$path);
+        shell_exec('chmod o+rw -R '.$path);
+        //return 200;
+        return    'cd '.$path;
     }
 
     /**
