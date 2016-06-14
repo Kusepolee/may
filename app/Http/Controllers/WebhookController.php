@@ -43,8 +43,8 @@ class WebhookController extends Controller
 
         shell_exec('cd /mnt/RestRose/henjou_com/');
         shell_exec('/usr/bin/git pull');
-        shell_exec('chgrp -R gitwriters /mnt/RestRose/henjou_com/');
-        shell_exec('chmod o+rw -R /mnt/RestRose/henjou_com/');
+        //shell_exec('chgrp -R gitwriters /mnt/RestRose/henjou_com/');
+        //shell_exec('chmod o+rw -R /mnt/RestRose/henjou_com/');
 
         return 200;
        //return    'cd '.$path;
