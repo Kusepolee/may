@@ -41,7 +41,8 @@ class WebhookController extends Controller
         //return 200;
         //good;
         //return $composer_josn[0];
-        echo print_r($arr);
+        //ok
+        return print_r($arr);
     }
 
     /**
