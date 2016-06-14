@@ -106,11 +106,13 @@ Route::get('/test1', 'OaController@qrcode');
 
 Route::get('/test', function () {
 
+echo mt_rand(100000,999999);
+
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms = new FooWeChat\Notice\Alidayu;
 	//$sms->sendSms();
-	shell_exec('cd /mnt/may/');
-	shell_exec('git pull');
+	// shell_exec('cd /mnt/may/');
+	// shell_exec('git pull');
 
 	//Fuck the git hub at  1:36
 

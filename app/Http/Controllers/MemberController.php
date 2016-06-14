@@ -18,12 +18,23 @@ use Illuminate\Http\Request;
 use Input;
 use Logie;
 use Session;
+use iscms\Alisms\SendsmsPusher as Sms;
 
 class MemberController extends Controller
 {
     protected $departmentsArray;
     protected $positionsArray;
     protected $key;
+
+    /**
+     *
+     * init sms
+     *
+     */
+    public function __construct(Sms $sms)
+    {
+       $this->sms=$sms;
+    }
 
     /**
      * 登录
@@ -249,7 +260,10 @@ class MemberController extends Controller
         $input['new'] = 0;
         $input['admin'] = 1;
         $input['created_by'] = intval(Session::get('id'));
-        $input['password'] = bcrypt($input['password']);;
+        //$input['password'] = bcrypt($input['password']);;
+        $sms_key = mt_rand(100000,999999);
+
+        $input['password'] = bcrypt($sms_key);
 
         Member::create($input);
 
@@ -274,11 +288,11 @@ class MemberController extends Controller
         //日志
         Logie::add(['notice', '新建用户: 工号'.$my_work_id.','.$input['name']]);
 
-        //通知
+        //微信通知
         $user = Session::get('name');
         $dp = Department::find($input['department'])->name;
 
-        $body = $dp.'新人员: '.$input['name'].', 职位:'.$positionName.', 工号:'.$my_work_id.'. --'.$user;
+        $body = '[员工]新进提醒: '.$dp.', '.$input['name'].', 职位:'.$positionName.', 工号:'.$my_work_id.'. --'.$user;
         $array = [
                    //'user'       => '编号1|编号2', // all -所有
                    'department' => '运营部|self', //self-本部门, self+包括管辖部门
@@ -292,9 +306,17 @@ class MemberController extends Controller
 
         $wechat->sendText($select->select($array), $body);
 
+        //sms通知
+        $mobile = strval($input['mobile']);
+        $signature = $h->app('alidayu_signature');
+        $templet = 'SMS_10160512';
 
-        
+        $con = ['name'=>$input['name'], 'code'=>strval($sms_key)];
+        $json = json_encode($con, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 
+        $result=$this->sms->send($mobile,$signature,$json,$templet);
+
+        //界面
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);
     }
@@ -587,8 +609,10 @@ class MemberController extends Controller
         // 检查存在: ['table'=>'list1|list2|list3', 'table1'=>'list']
         $t =['members'=>'created_by']; 
 
+        $target = Member::find($id);
+
         if($a->isRoot() || $a->isAdmin()){  
-            $target = Member::find($id);
+            //$target = Member::find($id);
             $work_id = $target->work_id;
 
             $base_path_img =  base_path().'/public/upload/member/';
@@ -606,14 +630,33 @@ class MemberController extends Controller
 
 
         }else{
-            $target = Member::find($id);
+            //$target = Member::find($id);
             $target->update(['show'=>1]);
 
             //日志
             Logie::add(['important', '删除用户-隐藏:'.$target->work_id.','.$target->name]);
         }
 
-        
+        //微信通知
+        $user = Session::get('name');
+        $dp = Department::find($target->department)->name;
+        $positionName = Position::find($target->position)->name;
+
+        $body = '[员工]删除提醒: '.$dp.': '.$target->name.', 职位:'.$positionName.', 工号:'.$target->work_id.'. 操作人: '.$user;
+        $array = [
+                   //'user'       => '编号1|编号2', // all -所有
+                   'department' => '运营部|self', //self-本部门, self+包括管辖部门
+                   //'seek'       => '>:经理@市场部|>=:总监@生产部', //指定角色
+                   'self'       => 'own|master', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
+                 ];
+        $select = new Select;
+        $wechat = new WeChatAPI;
+
+        $wechat->safe = 0;
+
+        $wechat->sendText($select->select($array), $body);
+
+
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);
@@ -680,6 +723,8 @@ class MemberController extends Controller
 
         $target->update(['img'=>$png_name]);
 
+        //日志
+        Logie::add(['info', '头像修改'.$target->work_id.','.$target->name]);
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'看看效果', 'link'=>'/member/show/'.$id];
         return view('note',$arr);
