@@ -21,15 +21,14 @@ class WebhookController extends Controller
         $github_signature = @$_SERVER['HTTP_X_HUB_SIGNATURE'];
         $payload = file_get_contents('php://input');
 
+        $data = json_decode($payload);
+        $composer = $data['commits']['modified'];
+
         $arr = explode('=', $github_signature);
         $algo = $arr[0];
         $signature = $arr[1];
 
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
-
-        $arr = json_decode($payload);
-       // $composer_josn = $arr['commits']['modified'];
-
 
         if($payload_hash != $signature) return 'invalid key!';
         
@@ -38,11 +37,11 @@ class WebhookController extends Controller
         shell_exec('git pull');
         shell_exec('chgrp -R gitwriters /mnt/may/');
         shell_exec('chmod o+rw -R /mnt/may/');
-        //return 200;
+        return 200;
         //good;
         //return $composer_josn[0];
         //ok
-        return print_r($arr);
+        //return print_r($arr);
     }
 
     /**
