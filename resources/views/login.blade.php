@@ -36,7 +36,7 @@ $err = $error[0].': '.$error[1];
         {!! Form::close() !!}
       </div>
     </div>
-      <!-- 错误信息 haha-->
+      <!-- 错误信息 shit-->
 
 	    @if($errors->any())  
 			<div class="panel-body">
