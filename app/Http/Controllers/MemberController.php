@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Member;
 use App\Position;
+use App\Department;
 use Config;
 use Cookie;
 use FooWeChat\Authorize\Auth;
@@ -272,6 +273,27 @@ class MemberController extends Controller
 
         //日志
         Logie::add(['notice', '新建用户: 工号'.$my_work_id.','.$input['name']]);
+
+        //通知
+        $user = Session::get('name');
+        $dp = Department::find($input['department'])->name;
+
+        $body = $dp.'新人员: '.$input['name'].', 职位:'.$positionName.', -'.$user;
+        $array = [
+                   //'user'       => '编号1|编号2', // all -所有
+                   'department' => '运营部|self', //self-本部门, self+包括管辖部门
+                   //'seek'       => '>:经理@市场部|>=:总监@生产部', //指定角色
+                   'self'       => 'own|master', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
+                 ];
+        $select = new Select;
+        $wechat = new WeChatAPI;
+
+        $wechat->safe = 0;
+
+        $wechat->sendText($select->select($array), $body);
+
+
+        
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
         return view('note',$arr);
