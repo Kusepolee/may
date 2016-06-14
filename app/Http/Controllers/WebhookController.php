@@ -28,7 +28,7 @@ class WebhookController extends Controller
         $payload_hash = hash_hmac($algo, $payload, 'king0105');
 
         $arr = json_decode($payload, true);
-        $composer_josn = $arr['commits']['modified'];
+       // $composer_josn = $arr['commits']['modified'];
 
 
         if($payload_hash != $signature) return 'invalid key!';
@@ -40,7 +40,8 @@ class WebhookController extends Controller
         shell_exec('chmod o+rw -R /mnt/may/');
         //return 200;
         //good;
-        return $composer_josn[0];
+        //return $composer_josn[0];
+        echo print_r($arr);
     }
 
     /**
