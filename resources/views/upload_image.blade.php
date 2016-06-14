@@ -38,7 +38,9 @@ if(!isset($path)) die('upload_image_blade.php : 缺少参数');
         'novalidate' => 'novalidate', 
         'files' => true)) !!}
 	{!! Form::hidden('base64',null, ['id'=>'base64']) !!}
+	@if(isset($resId))
 	{!! Form::hidden('resId',$resId,null, ['id'=>'resId']) !!}
+	@endif
 {!! Form::close() !!}
 <script>
 $(function(){

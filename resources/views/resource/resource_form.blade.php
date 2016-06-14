@@ -20,7 +20,7 @@ $type = $t->getSelect('resourceType');
 
     <div class="panel panel-info">
       <div class="panel-heading">
-        <i class="glyphicon glyphicon-wrench"></i>{{ isset($rec) ? $rec->name.$rec->model : $act }}
+        <i class="glyphicon glyphicon-list-alt"></i>&nbsp{{ isset($rec) ? $rec->name.$rec->model : $act }}
         <!-- <a style=" float:right;" href="#" class="glyphicon glyphicon-question-sign"></a> -->
       </div>
       <div class="panel-body">
