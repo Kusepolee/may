@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Resource;
+use App\Member;
+use App\FormConfig;
 use App\ResourceRecord;
 use Config;
 use Cookie;
@@ -190,7 +192,7 @@ class ResourceController extends Controller
         $update = $request->all();
         unset($update['_token']);
         Resource::where('id', $id)->update($update);
-        $this->updateState($id);
+        $this->updateResourceState($id);
 
         return redirect('/resource/show/'.$id);
     }
@@ -225,12 +227,15 @@ class ResourceController extends Controller
         $input = $request->all();
         $input['out_or_in'] = 0;
         $input['to'] = Session::get('id');
+        $amount = $request->amount;
+        $type = $request->type;
 
         ResourceRecord::create($input);
 
         $id = $input['resource'];
         $this->updateResourceRemain($id);
-        $this->updateState($id);
+        $this->updateResourceState($id);
+        $this->messageSend($id,$amount,$type);
 
         return redirect('/resource/show/'.$id);
     }
@@ -274,12 +279,15 @@ class ResourceController extends Controller
         $input['out_or_in'] = 1;
         $input['to'] = Session::get('id');
         $input['from'] = 0;
+        $amount = $request->amount;
+        $type = $request->type;
 
         ResourceRecord::create($input);
 
         $id = $input['resource'];
         $this->updateResourceRemain($id);
-        $this->updateState($id);
+        $this->updateResourceState($id);
+        $this->messageSend($id,$amount,$type);
 
         return redirect('/resource/show/'.$id);
     }
@@ -350,10 +358,10 @@ class ResourceController extends Controller
     }
 
     /**
-     * 更新资源状态
+     * 计算最新资源状态
      *
      */
-    public function updateState($id)
+    public function getResourceState($id)
     {
         $remain = $this->getRemain($id);
         $rec = Resource::find($id);
@@ -369,6 +377,16 @@ class ResourceController extends Controller
             $state = 4;
         }
 
+        return $state;
+    }
+
+    /**
+     * 更新资源状态
+     *
+     */
+    public function updateResourceState($id)
+    {
+        $state = $this->getResourceState($id);
         Resource::find($id)->update(['state'=>$state]);
     }
 
@@ -478,6 +496,56 @@ class ResourceController extends Controller
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'看看效果', 'link'=>'/resource/show/'.$id];
         return view('note',$arr);
 
+    }
+
+    /**
+     * 
+     *
+     * @param  
+     * @return 
+     */
+    public function messageSend($id,$amount,$type)
+    {
+        $s = new Select;
+        $w = new WeChatAPI;
+
+        $state = $this->getResourceState($id);
+
+        $user_name = Session::get('name');
+        $cfg = FormConfig::find($type);
+        $type = $cfg->name;
+
+        $rec_r = Resource::leftJoin('config as a', 'resources.unit', '=', 'a.id')
+                        ->select('resources.*', 'a.name as unitName')
+                        ->find($id);
+        $resource_name = $rec_r->name;
+        $resource_model = $rec_r->model;
+        $resource_unit = $rec_r->unitName;
+        $resource_remain = floatval($rec_r->remain);
+        $resource_notice = floatval($rec_r->notice);
+        $resource_alert = floatval($rec_r->alert);
+
+        $body_1 = $resource_name.'('.$resource_model.') '.$type.' '.$amount.' '.$resource_unit.'--'.$user_name.';';
+        if ($state === 0) {
+            $body_2 = "\n".'库存为空 !';
+        }elseif ($state === 1) {
+            $body_2 = "\n".'进货报警: 库存为 '.$resource_remain.' '.$resource_unit.'  '.'报警值为 '.$resource_alert.' '.$resource_unit;
+        }elseif ($state === 2) {
+            $body_2 = "\n".'进货提醒: 库存为 '.$resource_remain.' '.$resource_unit.'  '.'提醒值为 '.$resource_notice.' '.$resource_unit;
+        }else {
+            $body_2 = '';
+        }
+        $body = $body_1.$body_2;
+
+        $array = [
+              'user'       => '15', // all -所有
+              //'department' => '资源部',
+              //'seek'       => '>:经理@资源部', //指定角色
+              //'self'       => 'own', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
+            ];
+        
+        $w->safe = 0;
+        $w->sendText($s->select($array), $body);
     }
 
     /**

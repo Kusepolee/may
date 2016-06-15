@@ -112,7 +112,7 @@ $rescType_list  = $h->getRescTypesInUse();
                                     {!! Form::open(['url'=>'resource/seek', 'role' => 'form']) !!}
                                 
                                     <label id="type_label">资源类型</label>
-                                    <div class="input-group">
+                                    <div class="form-group">
 
                                     {!! Form::select('rescType_val',$rescType_list, null,['class'=>'form-control']); !!}
 

@@ -22,15 +22,15 @@ $h = new FooWeChat\Helpers\Helper;
 			        		<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'qrcode_png.png' }}" class="img-thumbnail"/>
 			        		@endif 
 						<ul class="dropdown-menu" id = "show">	
-							<li class="m_2"><a href="/resource/image/set/{{ $rec->id }}"><i class="glyphicon glyphicon-picture menu_icon_info"></i> 图片更新</a></li>
 							@if($a->auth(['department'=>'=资源部']))
-							<li class="m_2"><a href="/resource/in/{{ $rec->id }}"><i class="glyphicon glyphicon-log-in menu_icon_info"></i>入库</a></li>
+							<li class="m_2"><a href="/resource/image/set/{{ $rec->id }}"><i class="glyphicon glyphicon-picture menu_icon_info"></i> 图片更新</a></li> 
+							<li class="m_2"><a href="/resource/in/{{ $rec->id }}"><i class="glyphicon glyphicon-log-in menu_icon_info"></i> 入库</a></li>
 							@endif
-							<li class="m_2"><a href="/resource/out/{{ $rec->id }}"><i class="glyphicon glyphicon-log-out menu_icon_info"></i>领用</a></li>
+							<li class="m_2"><a href="/resource/out/{{ $rec->id }}"><i class="glyphicon glyphicon-log-out menu_icon_info"></i> 领用</a></li>
 							<!-- <li class="m_2"><a href="/resource/list/{{ $rec->id }}"><i class="glyphicon glyphicon-list-alt menu_icon_info"></i>记录</a></li> -->
 							@if($a->auth(['department'=>'=资源部'])&&$a->auth(['position'=>'>=经理']))
-							<li class="m_2"><a href="/resource/edit/{{ $rec->id }}"><i class="glyphicon glyphicon-edit menu_icon_info"></i>修改</a></li>
-							<li class="m_2"><a href="/resource/delete/{{ $rec->id }}"><i class="glyphicon glyphicon-trash menu_icon_info"></i>删除</a></li>
+							<li class="m_2"><a href="/resource/edit/{{ $rec->id }}"><i class="glyphicon glyphicon-edit menu_icon_info"></i> 修改</a></li>
+							<li class="m_2"><a href="/resource/delete/{{ $rec->id }}"><i class="glyphicon glyphicon-trash menu_icon_info"></i> 删除</a></li>
 							@endif
 					    </ul>
 					  	</ul>
@@ -90,12 +90,11 @@ $h = new FooWeChat\Helpers\Helper;
 					                    @endforeach
 					                    </tbody>
 					                </table>
-								@endif
-									<div class="container"> 
-									@if($resource_records != 0)
+									<div class="container">
 		                            {!! $resource_records->render() !!}
-		                            @endif
 		                            </div>
+								@endif
+									
 					            </div>
 					    	</div>
 				
