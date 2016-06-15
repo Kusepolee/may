@@ -159,6 +159,10 @@ class ExcelController extends Controller
                 $data_array[] = $tmp_array;
             }
         }
+
+        //日志
+        Logie::add(['danger', '下载资源列表为excel']);
+
         $name = date("Y-m-d-H-i",time()).'_resources';
 
         Excel::create($name,function($excel) use ($data_array){

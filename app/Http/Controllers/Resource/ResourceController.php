@@ -114,6 +114,9 @@ class ResourceController extends Controller
         
         Resource::create($input);
 
+        //日志
+        Logie::add(['notice', '新建资源: '.$input['name'].'/'.$input['model']]);
+
         return redirect('/resource');
     }
 
@@ -194,6 +197,9 @@ class ResourceController extends Controller
         Resource::where('id', $id)->update($update);
         $this->updateResourceState($id);
 
+        //日志
+        Logie::add(['notice', '修改资源信息: '.$update['name'].'/'.$update['model']]);
+
         return redirect('/resource/show/'.$id);
     }
 
@@ -236,6 +242,10 @@ class ResourceController extends Controller
         $this->updateResourceRemain($id);
         $this->updateResourceState($id);
         $this->messageSend($id,$amount,$type);
+
+        //日志
+        $rec = Resource::find($id);
+        Logie::add(['notice', '资源出库: '.$rec['name'].'/'.$rec['model']]);
 
         return redirect('/resource/show/'.$id);
     }
@@ -288,6 +298,10 @@ class ResourceController extends Controller
         $this->updateResourceRemain($id);
         $this->updateResourceState($id);
         $this->messageSend($id,$amount,$type);
+
+        //日志
+        $rec = Resource::find($id);
+        Logie::add(['notice', '资源入库: '.$rec['name'].'/'.$rec['model']]);
 
         return redirect('/resource/show/'.$id);
     }
@@ -447,6 +461,10 @@ class ResourceController extends Controller
             Resource::find($id)->update(['show'=>1]);
         }
 
+        //日志
+        $rec = Resource::find($id);
+        Logie::add(['danger', '删除资源: '.$rec['name'].'/'.$rec['model']]);
+
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'资源管理', 'link'=>'/resource'];
         return view('note',$arr);
 
@@ -492,6 +510,8 @@ class ResourceController extends Controller
 
         $target->update(['img'=>$png_name]);
 
+        //日志
+        Logie::add(['info', '图片修改: '.$target->name.'/'.$target->model]);
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'看看效果', 'link'=>'/resource/show/'.$id];
         return view('note',$arr);
@@ -539,8 +559,8 @@ class ResourceController extends Controller
 
         $array = [
               //'user'       => '15', // all -所有
-              'department' => '资源部',
-              //'seek'       => '>:经理@资源部', //指定角色
+              //'department' => '资源部',
+              'seek'       => '>=:经理@资源部', //指定角色
               //'self'       => 'own', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
             ];
         
