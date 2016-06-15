@@ -441,8 +441,9 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id=0)
     {
+        if($id === 0) $id = Session::get('id');
 
         $rec = Member::leftJoin('departments', 'members.department', '=', 'departments.id')
                     ->leftJoin('members as a', 'members.created_by', '=', 'a.id')
