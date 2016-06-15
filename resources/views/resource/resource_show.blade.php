@@ -11,7 +11,7 @@ $h = new FooWeChat\Helpers\Helper;
 			<div id="page-inner">
 				<div class="row">
 					<div class="col-md-12">
-						<h1 class="page-head-line"><a href="/resource"> {{ $rec->name }}</a> <span style="font-size:15px; color:#8C8C8C; font-weight:200;">库存: {{ floatval($rec->remain) }} {{ $rec->unitName }}</span></h1>
+						<h1 class="page-head-line"><a href="/resource"> {{ $rec->name }}</a><p> <span style="font-size:15px; color:#8C8C8C; font-weight:200;">库存: {{ floatval($rec->remain) }} {{ $rec->unitName }}</span></p></h1>
 						<ul class="list_none">
 						<li class="dropdown pull-right">
 							@if($rec->img !='' && $rec->img != null)
