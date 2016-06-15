@@ -538,8 +538,8 @@ class ResourceController extends Controller
         $body = $body_1.$body_2;
 
         $array = [
-              'user'       => '15', // all -所有
-              //'department' => '资源部',
+              //'user'       => '15', // all -所有
+              'department' => '资源部',
               //'seek'       => '>:经理@资源部', //指定角色
               //'self'       => 'own', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
             ];
