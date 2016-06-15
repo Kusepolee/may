@@ -25,6 +25,7 @@ $path = Request::path();
            {!! Form::password('password',['placeholder'=>'密码', 'class'=>'form-control']) !!}
       </div>
       {!! Form::hidden('path',isset($path) ? $path : null) !!}
+      {!! Form::hidden('jump',isset($jump) ? $jump : 0) !!}
 
       <div class="form-group">
            {!! Form::password('password_confirmation',['placeholder'=>'确认密码', 'class'=>'form-control']) !!}

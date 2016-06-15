@@ -62,6 +62,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::get('/member/admin_get/{id}', 'MemberController@adminGet');
 	Route::get('/member/admin_lost/{id}', 'MemberController@adminLost');
 	Route::post('/member/password/reset/{id}', 'MemberController@passwordReset');
+	Route::get('/member/password/form', 'MemberController@passwordForm');
 	Route::get('/member/image/set', 'MemberController@image');
 	Route::post('/member/image/store/{id?}', 'MemberController@imageStore');
 
