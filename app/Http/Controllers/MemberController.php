@@ -455,6 +455,7 @@ class MemberController extends Controller
         return view('member_show', ['rec'=>$rec]);
     }
 
+
     /**
      * 修改用户
      *
@@ -664,6 +665,15 @@ class MemberController extends Controller
     }
 
     /**
+     * 修改密码表单
+     *
+     */
+    public function passwordForm()
+    {
+        return view('password_form', ['act'=>'密码修改', 'id'=>Session::get('id'), 'jump'=>1]);
+    }
+
+    /**
     * 密码修改
     *
     * @param null
@@ -680,7 +690,12 @@ class MemberController extends Controller
         //日志
         Logie::add(['info', '修改密码:'.$target->work_id.','.$target->name]);
 
-        return redirect($redirect_path);
+        if($request->jump == 0){ //中间件直接跳转
+            return redirect($redirect_path);
+        }else{
+            $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'我的资料', 'link'=>'/member/show/'.Session::get('id')];
+            return view('note',$arr);
+        }
   
     }
 
