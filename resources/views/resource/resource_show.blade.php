@@ -90,15 +90,8 @@ $h = new FooWeChat\Helpers\Helper;
 					                    @endforeach
 					                    </tbody>
 					                </table>
-<<<<<<< HEAD
 									<div class="container">
-=======
-								@endif
-									<div class="container"> 
-									@if($resource_records != 0)
->>>>>>> restrose/master
 		                            {!! $resource_records->render() !!}
-		                            @endif
 		                            </div>
 								@endif
 									
