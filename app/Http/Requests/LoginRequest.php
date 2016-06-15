@@ -26,7 +26,7 @@ class LoginRequest extends Request
     {
         return [
             'workid'   => 'required|max:11',
-            'password' => 'required|min:8'
+            'password' => 'required|min:6'
         ];
     }
 }
