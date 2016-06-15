@@ -6,7 +6,7 @@ $w = new FooWeChat\Core\WeChatAPI;
 $dp_list  = $h->getDepartmentsInUse();
 $pos_list = $h->getPositionsInUse();
 
-//设置EXCEL查询条件
+//设置EXCEL,微信通知查询条件
 count($dp) ? $dp_string = implode("|", $dp) : $dp_string = '_not';
 count($pos) ? $pos_string = implode("|", $pos) :$pos_string = '_not';
 $key != '' && $key != null ? $key_string = $key : $key_string = '_not';
@@ -270,18 +270,18 @@ $full_seek_string = $dp_string."-".$pos_string."-".$key_string;
 	            </div>
 	            <div class="panel-body">
                   <!-- form msg -->
-                  {!! Form::open(['url'=>'/oa/notice/member', 'role' => 'form', 'id'=>'notice_send']) !!}
+                  {!! Form::open(['url'=>'/notice/member', 'role' => 'form', 'id'=>'notice_send']) !!}
                   {!! Form::hidden('seek_string_notice', $full_seek_string) !!}
                   {!! Form::textarea('notice', null, ['placeholder'=>'消息内容', 'class'=>'form-control']) !!}
                   <p></p>
-                  <input type="checkbox" >&nbsp&nbsp若未关注, 则发送手机消息
+                  <input type="radio" checked="checked">&nbsp&nbsp若未关注微信或无管理权,则忽略相关人
                   {!! Form::close() !!}
                   <!-- end of form msg -->
 
 	            </div>
 	            <div class="panel-footer">
-                  @if($a->auth(['position'=>'>=经理', 'department' => '>=运营部']))
-                  <a class="btn btn-sm btn-info btn-block" href="#">现在发送</a>
+                  @if($a->auth(['position'=>'>=经理']))
+                  <a class="btn btn-sm btn-info btn-block" href="javascript:sendNotice();">发送微信通知</a>
                   @else 
                   没有权限
                   @endif 

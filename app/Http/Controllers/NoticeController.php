@@ -7,75 +7,114 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Member;
 use App\Http\Controllers\Controller;
-use iscms\Alisms\SendsmsPusher as Sms;
+use FooWeChat\Authorize\Auth;
+use FooWeChat\Core\WeChatAPI;
+use FooWeChat\Selector\Select;
+use Logie;
+use Session;
 
 class NoticeController extends Controller
 {
-    protected $smsSignature = '恒久滚塑';
+    protected $departmentsArray;
+    protected $positionsArray;
+    protected $key;
 
     /**
-    * SMS constract
-    *
-    */
-    public function __construct(Sms $sms)
+     * 通知查询清单中的员工
+     *
+     * @return wechat message or null
+     */
+    public function member(Request $request)
     {
-       $this->sms=$sms;
-    }
+        $arr = ['position'=>'>员工'];
 
-    /**
-    * SMS
-    *
-    * $array = ['signature'=>'恒久滚塑', 'templet'=>'SMS_10160512', 'content'=>['mobile'=>'1300000,1200000', 'name'=>'某人']];
-    *
-    * 一次最大调用: 200
-    *
-    * @param $array
-    *
-    * @return sms message
-    *
-    */
-    public function sendSms()
-    {
-        echo "fuck";
+        $a = new Auth;
+        if(!$a->auth($arr)){
+            return view('40x',['color'=>'warning', 'type'=>'3', 'code'=>'3.1']);
+        }
+        // ^ 身份验证
+
+        $seek_string = $request->seek_string_notice;
+        $seek_array = explode('-',$seek_string);
+
+        $seek_array[0] != '_not' ? $this->departmentsArray = explode("|", $seek_array[0]) : $this->departmentsArray = [];    
+        $seek_array[1] != '_not' ? $this->positionsArray = explode("|", $seek_array[1]) : $this->positionsArray = [];    
+        $seek_array[2] != '_not' ? $this->key = $seek_array[2] : $this->key = '';    
+
         
-        //$this->checkSmsArray($array);
 
-        //if(array_has('signature', $array)) $this->smsSignature = array_get('signature', $array);
+        $recs = Member::where('members.id', '>', 1)
+                      ->where(function ($query) { 
+                            if(count($this->departmentsArray)) $query->whereIn('members.department', $this->departmentsArray);
+                            if(count($this->positionsArray)) $query->whereIn('members.position', $this->positionsArray);
+                            if ($this->key != '' && $this->key != null) {
+                                $query->where('members.name', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.work_id', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.mobile', 'LIKE', '%'.$this->key.'%');
+                                $query->orWhere('members.content', 'LIKE', '%'.$this->key.'%');
+                            }
+                        })
+                        ->where('members.show', 0)
+                        ->where('members.private', 1)
+                        ->orderBy('members.position')
+                        ->orderBy('members.work_id')
+                        ->orderBy('members.department')
+                        ->select('members.id', 'members.work_id')
+                        ->get();
+        $work_ids = [];
 
-        $array = ['name'=>'RainMan', 'code'=>'12345'];
-        $content = json_encode($array, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
-        $phone = '13901752021';
-        $name = '恒久滚塑';
-        $code = 'SMS_10160512';
-        //$result = $this->sms->send($phone,$name,$content,$code);
-        //print_r($result);
-    }
+        $no_rigths = [];
+        $not_follow = [];
+        
+        $arr = ['position'=>'>=经理', 'department' => '>=运营部'];
 
+        $w = new WeChatAPI;
 
-    /**
-     * SMS array 验证
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function checkSmsArray($array)
-    {
+        if($a->auth($arr)){
+            foreach ($recs as $rec) {
+                if($w->hasFollow($rec->id)){
+                    $work_ids[] = $rec->work_id;
+                }else{
+                    $not_follow[] = $rec->work_id;
+                }  
+            }
 
-        if(!array_has('templet', $array)) die('FooWechat\NoticeControler\sendSms: 模板缺失');
-        if(!array_has('content', $array)) die('FooWechat\NoticeControler\sendSms: 内容缺失');
+        }else{
+            foreach ($recs as $rec) {
+                if($a->hasRights($rec->id)){
+                    if($w->hasFollow($rec->id)){
+                        $work_ids[] = $rec->work_id;
+                    }else{
+                        $not_follow[] = $rec->work_id;
+                    } 
 
-        $content_array = array_get('content', $array);
-        if(!array_has('mobile', $content_array))  die('FooWechat\NoticeControler\sendSms: 手机号缺失');
-    }
+                }else{
+                    $no_rigths[] = $rec->work_id;
+                }
+            }
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $my_work_id = Member::find(Session::get('id'))->work_id;
+
+        //发送统计结果
+        $body = '[微信通知群发统计] 总人数: '.count($recs).'其中无权发送的: '.count($no_rigths). ', 微信未关注的:'.count($not_follow).', 已经成功发送:'.count($work_ids);
+
+        $s = new Select;
+        $w->sendText($s->select(['user'=>$my_work_id]), $body);
+
+        //群发
+        if(count($work_ids)){
+            $work_ids_str = implode('|',$work_ids);
+            $w->sendText($s->select(['user'=>$work_ids_str]), $request->notice);
+        }
+
+        //日志
+        Logie::add(['warning', '群体发消息,'.$request->notice]);
+
+        //页面
+        $arr = ['color'=>'success', 'type'=>'5','code'=>'5.2', 'btn'=>'返回', 'link'=>'/member'];
+        return view('note',$arr);
+
     }
 
     /**
