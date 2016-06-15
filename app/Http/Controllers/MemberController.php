@@ -309,9 +309,9 @@ class MemberController extends Controller
         //sms通知
         $mobile = strval($input['mobile']);
         $signature = $h->app('alidayu_signature');
-        $templet = 'SMS_10160512';
+        $templet = 'SMS_10631252';
 
-        $con = ['name'=>$input['name'], 'code'=>strval($sms_key)];
+        $con = ['name'=>$input['name'], 'password'=>strval($sms_key)];
         $json = json_encode($con, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 
         $result=$this->sms->send($mobile,$signature,$json,$templet);
