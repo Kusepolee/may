@@ -72,6 +72,9 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	//EXCEL
 	Route::post('excel/member', 'ExcelController@getMembers');
 
+	//Notice 通知
+	Route::post('notice/member', 'NoticeController@member');
+
 	//资源
 	Route::get('/resource', 'Resource\ResourceController@index');
 	Route::get('/resource/create', 'Resource\ResourceController@create');
