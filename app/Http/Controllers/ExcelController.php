@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Member;
+use App\Resource;
 use Excel;
 use FooWeChat\Authorize\Auth;
 use FooWeChat\Helpers\Helper;
@@ -17,6 +18,7 @@ class ExcelController extends Controller
 {
     protected $departmentsArray;
     protected $positionsArray;
+    protected $rescTypesArray;
     protected $key;
     /**
      * 获取用户信息: 员工
@@ -88,6 +90,73 @@ class ExcelController extends Controller
 
         Excel::create($name,function($excel) use ($data_array){
             $excel->sheet('员工', function($sheet) use ($data_array){
+                $sheet->setAutoSize(true);
+                $sheet->freezeFirstRow();
+                $sheet->rows($data_array);
+            });
+        })->export('xls');
+    }
+
+    /**
+     * 获取资源信息
+     *
+     * @return excel download
+     */
+    public function getResources(Request $request)
+    {
+        $arr = ['admin'=>'no', 'position'=>'>=经理', 'department' => '>=资源部|生产部'];
+
+        $a = new Auth;
+        if(!$a->auth($arr)){
+            return view('40x',['color'=>'warning', 'type'=>'3', 'code'=>'3.1']);
+        }
+        // ^ 身份验证
+
+        $seek_string = $request->seek_string;
+        $seek_array = explode('-',$seek_string);
+
+        $seek_array[0] != '_not' ? $this->rescTypesArray = explode("|", $seek_array[0]) : $this->rescTypesArray = [];   
+        $seek_array[1] != '_not' ? $this->key = $seek_array[1] : $this->key = '';    
+
+        
+
+        $recs = Resource::where(function ($query) { 
+                            if(count($this->rescTypesArray)) $query->whereIn('resources.type', $this->rescTypesArray);
+                            if ($this->key != '' && $this->key != null) {
+                                $query->where('resources.name', 'LIKE', '%'.$this->key.'%');
+                            }
+                        })
+                          ->where('resources.show', 0)
+                          ->orderBy('updated_at', 'DESC')
+                          ->leftJoin('config as a', 'resources.type', '=', 'a.id')
+                          ->leftJoin('config as b', 'resources.unit', '=', 'b.id')
+                          ->leftJoin('members', 'resources.createBy', '=', 'members.id')
+                          ->select('resources.*', 'a.name as typeName', 'b.name as unitName', 'members.name as createByName')
+                          ->get();
+
+        $data_array = [['编号', '名称', '型号', '库存', '单位', '类型', '提醒值', '报警值', '创建人', '备注']];
+
+        if(count($recs)){
+            foreach ($recs as $rec) {
+                $tmp_array = [];
+                $tmp_array[] = $rec->id;
+                $tmp_array[] = $rec->name;
+                $tmp_array[] = $rec->model;
+                $tmp_array[] = floatval($rec->remain);
+                $tmp_array[] = $rec->unitName;
+                $tmp_array[] = $rec->typeName;
+                $tmp_array[] = floatval($rec->notice);
+                $tmp_array[] = floatval($rec->alert);
+                $tmp_array[] = $rec->createByName;
+                $tmp_array[] = $rec->content;
+
+                $data_array[] = $tmp_array;
+            }
+        }
+        $name = date("Y-m-d-H-i",time()).'_resources';
+
+        Excel::create($name,function($excel) use ($data_array){
+            $excel->sheet('资源', function($sheet) use ($data_array){
                 $sheet->setAutoSize(true);
                 $sheet->freezeFirstRow();
                 $sheet->rows($data_array);

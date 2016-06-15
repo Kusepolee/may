@@ -517,13 +517,13 @@ class MemberController extends Controller
         $update = $request->all();
 
         unset($update['_token']);
-        unset($update['password_confirmation']);
+        // unset($update['password_confirmation']);
 
-        if($update['password'] == '' || $update['password'] == null){
-            unset($update['password']);
-        }else{
-            $update['password'] = bcrypt($update['password']);
-        }
+        // if($update['password'] == '' || $update['password'] == null){
+        //     unset($update['password']);
+        // }else{
+        //     $update['password'] = bcrypt($update['password']);
+        // }
 
         $old = Member::find($id);
 

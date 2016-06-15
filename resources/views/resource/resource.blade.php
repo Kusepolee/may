@@ -3,6 +3,11 @@ $t = new FooWeChat\Authorize\Auth;
 $h = new FooWeChat\Helpers\Helper;
 
 $rescType_list  = $h->getRescTypesInUse();
+
+//设置EXCEL查询条件
+count($rescType) ? $rescType_string = implode("|", $rescType) : $rescType_string = '_not';
+$key != '' && $key != null ? $key_string = $key : $key_string = '_not';
+$full_seek_string = $rescType_string."-".$key_string;
 ?>
 @extends('head')
 
@@ -27,8 +32,8 @@ $rescType_list  = $h->getRescTypesInUse();
                 <li class="active"><a href="#resources" data-toggle="tab">资源</a>
             @endif
                 </li>
-                <li class=""><a href="#seek" data-toggle="tab">查询</a>
-                </li>
+                <li class=""><a href="#seek" data-toggle="tab">查询</a></li>
+                <li><a href="#manage" data-toggle="tab">功能</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
                 <!-- resources list -->
@@ -131,8 +136,45 @@ $rescType_list  = $h->getRescTypesInUse();
 
                         </div>
                 </div>
-                <!-- seek -->
+                <!-- end of seek -->
+                <p></p>
+                <div class="tab-pane fade" id="manage">
+                    <div class="col-md-4 col-sm-4" id="excel_div">
+                        <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <i class="glyphicon glyphicon-th"></i>&nbsp&nbspExcel
+                        </div>
+                        <div class="panel-body">
+                          <span id="info_txt"></span>
+                            <blockquote>
+                            <small>将本次查询结果保存为Excel文件, 若有多页, 则所有结果都保存,但Excel文件中不再分页。</small>
+                          </blockquote>
+                                  <!-- form excel -->
+                                  {!! Form::open(['url'=>'/excel/resource', 'role' => 'form', 'id'=>'excel_get']) !!}
+                                  {!! Form::hidden('seek_string', $full_seek_string) !!}
+                                  {!! Form::close() !!}
+                                  <!-- end of form excel -->
+
+                          <input type="hidden" id="seek_string" value="{{$full_seek_string}}">
+                          <input type="hidden" id="_token" value="{{$full_seek_string}}">
+                        </div>
+                        <div class="panel-footer">
+                          @if($t->auth(['admin'=>'no', 'position'=>'>=经理', 'department' => '>=资源部|生产部']))
+                            <a class="btn btn-sm btn-success btn-block" href="javascript:getExcel();">保存</a>
+                          @else 
+                          没有权限
+                          @endif 
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
     </div>
 </div>
+<script>
+    // excel
+function getExcel(){
+  $("#excel_get").submit();
+}
+</script>
 @endsection
