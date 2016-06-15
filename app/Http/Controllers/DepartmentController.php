@@ -6,56 +6,43 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Input;
-use FooWeChat\Helpers\Helper;
+use App\Department;
+use FooWeChat\Core\WeChatAPI;
 
-class WebhookController extends Controller
+class DepartmentController extends Controller
 {
     /**
-     * Github webhooks -> git pull
+     * 列出部门
      *
      * @return \Illuminate\Http\Response
      */
-    public function GithubWebhook(Request $request)
-
+    public function index()
     {
-        $github_signature = @$_SERVER['HTTP_X_HUB_SIGNATURE'];
-        $payload = file_get_contents('php://input');
-
-        //$data = json_decode($payload);
-        //$composer = $data['commits']['modified'];
-
-        $h = new Helper;
-        $path = $h->app('dir');
-
-        $arr = explode('=', $github_signature);
-        $algo = $arr[0];
-        $signature = $arr[1];
-
-        $payload_hash = hash_hmac($algo, $payload, $h->app('git_pull_key'));
-
-        if($payload_hash != $signature) return 'invalid key!';
-        
-        shell_exec('cd '.$path);
-        shell_exec('/usr/bin/git pull');
-        // shell_exec('chgrp -R gitwriters '.$path);
-        // shell_exec('chmod o+rw -R '.$path);
-
-        // shell_exec('cd /mnt/RestRose/henjou_com/');
-        // shell_exec('/usr/bin/git pull');
-        //shell_exec('chgrp -R gitwriters /mnt/RestRose/henjou_com/');
-        //shell_exec('chmod o+rw -R /mnt/RestRose/henjou_com/');
-
-        return 200;
-       //return    'cd '.$path;
+        $out = Department::orderBy('order')
+                         ->groupBy('parentid')
+                         ->get();
+        print_r($out);
     }
+
+    /**
+     * 同步至微信服务器
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function weChatInitDepartments()
+    {
+        $api = new WeChatAPI;
+        $a = $api->initDepartments();
+        //return $a;
+        //return $api;
+    }    
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function test()
+    public function create()
     {
         //
     }

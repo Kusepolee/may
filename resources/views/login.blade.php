@@ -19,11 +19,11 @@ $err = $error[0].': '.$error[1];
       <div class="panel-body">
       {!! Form::open(['url'=>'login', 'role' => 'form']) !!}
         <div class="form-group">
-          <label>账号</label>
+          <label>账号:</label>
           {!! Form::text('workid',null,['placeholder'=>'编号或手机号..', 'class'=>'form-control']) !!}
         </div>
         <div class="form-group">
-          <label>密码</label>
+          <label>密码:</label>
           {!! Form::password('password',['placeholder'=>'密码..', 'class'=>'form-control']) !!}
         </div>
 
@@ -36,7 +36,7 @@ $err = $error[0].': '.$error[1];
         {!! Form::close() !!}
       </div>
     </div>
-      <!-- 错误信息 -->
+      <!-- 错误信息 OK-->
 
 	    @if($errors->any())  
 			<div class="panel-body">
