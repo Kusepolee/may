@@ -9,6 +9,7 @@ use Excel;
 use FooWeChat\Authorize\Auth;
 use FooWeChat\Helpers\Helper;
 use Illuminate\Http\Request;
+use Logie;
 use Session;
 
 
@@ -84,6 +85,11 @@ class ExcelController extends Controller
                 $data_array[] = $tmp_array;
             }
         }
+
+        //日志
+        Logie::add(['danger', '下载用户列表为excel']);
+
+
         $name = date("Y-m-d-H-i",time()).'_users';
 
         Excel::create($name,function($excel) use ($data_array){
