@@ -56,12 +56,12 @@ $h = new FooWeChat\Helpers\Helper;
 					            @if($resource_records === 0)
 					            	<div class="panel-heading">尚无出入库记录</div>
 					            @else
-					                <div class="panel-heading">出入库记录</div>
+					                <div class="panel-heading">出入库记录({{ $rec->unitName }})</div>
 					                <table class="table table-hover">
 					                    <thead>
 					                        <tr>
 					                            <th>数量</th>
-					                            <th>出/入</th>
+					                            <th></th>
 					                            <th>类型</th>
 					                            <th>日期</th>
 					                            @if(!$a->usingWechat())                        
@@ -73,7 +73,7 @@ $h = new FooWeChat\Helpers\Helper;
 					                    <tbody>
 					                    @foreach($resource_records as $out)					                    	
 					                        <tr>
-					                            <td>{{ floatval($out->amount) }}&nbsp{{ $rec->unitName }}</td>
+					                            <td>{{ floatval($out->amount) }}</td>
 					                            <td>                     
 					                            @if($out->out_or_in === 0)
 					                            -

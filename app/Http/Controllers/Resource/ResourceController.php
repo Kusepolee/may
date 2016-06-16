@@ -117,6 +117,30 @@ class ResourceController extends Controller
         //日志
         Logie::add(['notice', '新建资源: '.$input['name'].'/'.$input['model']]);
 
+        //微信消息
+        $user = Session::get('name');
+
+        $body_1 = $user.' 新建: '.$input['name'].'('.$input['model'].')';
+        if($input['notice'] != 0 && $input['alert'] != 0){
+            $body_2 = "\n".'提醒值: '.$input['notice'].' 报警值: '.$input['alert'];
+        }else{
+            $body_2 = '';
+        }
+        $body = '[资源] '.$body_1.$body_2;
+
+        $s = new Select;
+        $w = new WeChatAPI;
+
+        $array = [
+              // 'user'       => '15',
+              'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              //'self'       => 'own',
+            ];
+        
+        $w->safe = 0;
+        $w->sendText($s->select($array), $body);
+
         return redirect('/resource');
     }
 
@@ -192,6 +216,7 @@ class ResourceController extends Controller
             exit;
         }
 
+        $rec = Resource::find($id);
         $update = $request->all();
         unset($update['_token']);
         Resource::where('id', $id)->update($update);
@@ -199,6 +224,52 @@ class ResourceController extends Controller
 
         //日志
         Logie::add(['notice', '修改资源信息: '.$update['name'].'/'.$update['model']]);
+
+        //微信消息
+        $user = Session::get('name');
+        $state = $this->getResourceState($id);
+        $rec_r = Resource::leftJoin('config as a', 'resources.unit', '=', 'a.id')
+                        ->select('resources.*', 'a.name as unitName')
+                        ->find($id);
+        $resource_name = $rec_r->name;
+        $resource_model = $rec_r->model;
+        $resource_unit = $rec_r->unitName;
+        $resource_remain = floatval($rec_r->remain);
+        $resource_notice = floatval($rec_r->notice);
+        $resource_alert = floatval($rec_r->alert);
+
+        $body_1 = $user.' 修改: '
+                        ."\n".'名称: '.$rec['name'].'->'.$update['name']
+                        ."\n".'型号: '.$rec['model'].'->'.$update['model'];
+        if($update['notice'] != 0 && $update['alert'] != 0){
+            $body_2 = "\n".'提醒值('.$resource_unit.'): '.floatval($rec['notice']).'->'.$update['notice']
+                    ."\n".'报警值('.$resource_unit.'): '.floatval($rec['alert']).'->'.$update['alert'];
+        }else{
+            $body_2 = '';
+        }
+        if ($state === 0) {
+            $body_3 = "\n".'库存为空';
+        }elseif ($state === 1) {
+            $body_3 = "\n".'进货报警: 库存为 '.$resource_remain;
+        }elseif ($state === 2) {
+            $body_3 = "\n".'进货提醒: 库存为 '.$resource_remain;
+        }else {
+            $body_3 = '';
+        }
+        $body = '[资源] '.$body_1.$body_2.$body_3;
+
+        $s = new Select;
+        $w = new WeChatAPI;
+
+        $array = [
+              // 'user'       => '15',
+              'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              //'self'       => 'own',
+            ];
+        
+        $w->safe = 0;
+        $w->sendText($s->select($array), $body);
 
         return redirect('/resource/show/'.$id);
     }
@@ -465,6 +536,24 @@ class ResourceController extends Controller
         $rec = Resource::find($id);
         Logie::add(['danger', '删除资源: '.$rec['name'].'/'.$rec['model']]);
 
+        //微信消息
+        $user = Session::get('name');
+
+        $body = '[资源] '.$user.' 删除: '.$rec['name'].'('.$rec['model'].')';
+
+        $s = new Select;
+        $w = new WeChatAPI;
+
+        $array = [
+              // 'user'       => '15',
+              'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              //'self'       => 'own',
+            ];
+        
+        $w->safe = 0;
+        $w->sendText($s->select($array), $body);
+
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'资源管理', 'link'=>'/resource'];
         return view('note',$arr);
 
@@ -547,7 +636,7 @@ class ResourceController extends Controller
 
         $body_1 = $resource_name.'('.$resource_model.') '.$type.' '.$amount.' '.$resource_unit.'--'.$user_name.';';
         if ($state === 0) {
-            $body_2 = "\n".'库存为空 !';
+            $body_2 = "\n".'库存为空';
         }elseif ($state === 1) {
             $body_2 = "\n".'进货报警: 库存为 '.$resource_remain.' '.$resource_unit.'  '.'报警值为 '.$resource_alert.' '.$resource_unit;
         }elseif ($state === 2) {
@@ -557,12 +646,22 @@ class ResourceController extends Controller
         }
         $body = $body_1.$body_2;
 
-        $array = [
-              'user'       => '8', // all -所有
-              //'department' => '资源部',
-              'seek'       => '>=:经理@资源部', //指定角色
-              //'self'       => 'own', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
+        if ($rec_r->type == 4 || $rec_r->type == 5) {
+            $array = [
+              'user'       => '8',
+              'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              'self'       => 'own',
             ];
+        } else {
+            $array = [
+              //'user'       => '8',
+              'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              'self'       => 'own',
+            ];
+        }
+        
         
         $w->safe = 0;
         $w->sendText($s->select($array), $body);
