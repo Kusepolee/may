@@ -274,7 +274,7 @@ $full_seek_string = $dp_string."-".$pos_string."-".$key_string;
                   {!! Form::hidden('seek_string_notice', $full_seek_string) !!}
                   {!! Form::textarea('notice', null, ['placeholder'=>'消息内容', 'class'=>'form-control']) !!}
                   <p></p>
-                  <input type="radio" checked="checked">&nbsp&nbsp若未关注微信或无管理权,则忽略相关人
+                  <input type="radio" checked="checked">&nbsp&nbsp忽略无权发送和未关注的
                   {!! Form::close() !!}
                   <!-- end of form msg -->
 
