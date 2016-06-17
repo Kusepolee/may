@@ -124,7 +124,7 @@ class NoticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function mail($id)
+    public function mail()
     {
         Mail::raw('这是一封测试邮件', function ($message) {
             $to = '7569300@qq.com';
