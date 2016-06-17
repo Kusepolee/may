@@ -11,6 +11,7 @@ use FooWeChat\Authorize\Auth;
 use FooWeChat\Core\WeChatAPI;
 use FooWeChat\Selector\Select;
 use Logie;
+use Mail;
 use Session;
 
 class NoticeController extends Controller
@@ -123,9 +124,15 @@ class NoticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function mail($id)
     {
-        //
+        Mail::send('emails.welcome', array(), function($message)
+        {
+            $message
+                ->to('7569300@qq.com')
+                ->from('notice@automail.henjou.com')
+                ->subject('TEST');
+        });
     }
 
     /**

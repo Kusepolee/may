@@ -1,4 +1,5 @@
 <?php
+
 /*
 |--------------------------------------------------------------------------
 | RestRose Wechat Application [FooWeChat]
@@ -107,16 +108,10 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 
 Route::get('/test2', 'Customer\CustomerController@index');
-Route::get('/test1', 'OaController@qrcode');
+Route::get('/test1', 'NoticeController@mail');
 
 Route::get('/test', function () {
-Mail::send('emails.welcome', array(), function($message)
-{
-    $message
-        ->to('7569300@qq.com')
-        ->from('notice@automail.henjou.com')
-        ->subject('TEST');
-});
+
 
 });
 
