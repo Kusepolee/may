@@ -126,7 +126,7 @@ class NoticeController extends Controller
      */
     public function mail()
     {
-        Mail::raw('这是一封测试邮件', function ($message) {
+        Mail::send('这是一封测试邮件', function ($message) {
             $to = '7569300@qq.com';
             $message ->to($to)->from('notice@automail.henjou.com')->subject('测试邮件');
         });
