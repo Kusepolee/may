@@ -14,17 +14,15 @@ class WeChatOrLogin
 {
     /**
      * 微信或者网页使用者验证中间件:
-     * 访问 --- session -----> 有 -> 完成
+     * 
+     * 访问 --- session -----> 有 --> 完成
      *                   |--> 无 但有cookie -> 以cookie信息设置session -> 完成
      *                   |--> 无session 也无cookie --> 非微信浏览器 --> 跳转登录页 ...
      *                                             |--> 微信 --> 带code --> 以code信息设置session cookie -> 完成
      *                                                       |     |_____________________________
      *                                                       |                                   |
      *                                                       |--> 不带code --> 获取code,重定向--->-
-     *                                                                                         
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     *
      */
     public function handle($request, Closure $next)
     {
