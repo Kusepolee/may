@@ -111,7 +111,7 @@ Route::get('/test2', 'Customer\CustomerController@index');
 Route::get('/test1', 'NoticeController@mail');
 
 Route::get('/test', function () {
-	//
+	//ok
 });
 
 
