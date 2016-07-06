@@ -292,7 +292,7 @@ class MemberController extends Controller
         $user = Session::get('name');
         $dp = Department::find($input['department'])->name;
 
-        $body = '[员工]新进提醒: '.$dp.', '.$input['name'].', 职位:'.$positionName.', 工号:'.$my_work_id.'. --'.$user;
+        $body = '员工新进提醒: '.$dp.', '.$input['name'].', 职位:'.$positionName.', 工号:'.$my_work_id.', 由'.$user.'创建';
         $array = [
                    //'user'       => '编号1|编号2', // all -所有
                    'department' => '运营部|self', //self-本部门, self+包括管辖部门
@@ -301,10 +301,16 @@ class MemberController extends Controller
                  ];
         $select = new Select;
         $wechat = new WeChatAPI;
+        $helper = new Helper;
 
-        $wechat->safe = 0;
+        //$wechat->safe = 0;
+        //$wechat->sendText($select->select($array), $body);
+        $target = Member::where('work_id',$my_work_id)->first();
+        $url = 'http://'.$helper->custom('url').'/member/show/'.$target->id;
 
-        $wechat->sendText($select->select($array), $body);
+        $arr = [['title'=>'新进员工','description'=>$body,'url'=>$url]];
+
+        $wechat->sendNews($select->select($array), $arr);
 
         //sms通知
         $mobile = strval($input['mobile']);
@@ -314,7 +320,7 @@ class MemberController extends Controller
         $con = ['name'=>$input['name'], 'password'=>strval($sms_key)];
         $json = json_encode($con, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 
-        $result=$this->sms->send($mobile,$signature,$json,$templet);
+        //$result=$this->sms->send($mobile,$signature,$json,$templet);
 
         //界面
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
@@ -368,6 +374,7 @@ class MemberController extends Controller
         // ^ 身份验证
 
         $target = Member::find($id);
+        if(!count($target)) return view('errors.404');
         $target->update(['state' => 0]);
         $home = '/member/show/'.$id;
 
@@ -396,6 +403,7 @@ class MemberController extends Controller
         // ^ 身份验证
 
         $target = Member::find($id);
+        if(!count($target)) return view('errors.404');
         $target->update(['admin' => 1]);
 
         //日志
@@ -424,6 +432,7 @@ class MemberController extends Controller
         // ^ 身份验证
 
         $target = Member::find($id);
+        if(!count($target)) return view('errors.404');
         $target->update(['admin' => 0]);
 
         //日志
@@ -450,6 +459,7 @@ class MemberController extends Controller
                     ->leftJoin('positions', 'members.position', '=', 'positions.id')
                     ->select('members.*', 'a.name as created_byName', 'departments.name as departmentName', 'positions.name as positionName')
                     ->find($id);
+        if(!count($rec)) return view('errors.404');
         //日志
         Logie::add(['info', '查看用户资料:'.$rec->work_id.','.$rec->name]);
 
@@ -486,6 +496,7 @@ class MemberController extends Controller
                        ->leftJoin('positions', 'members.position', '=', 'positions.id')
                        ->select('members.*', 'departments.name as departmentName', 'positions.name as positionName')
                        ->find($id);
+        if(!count($rec)) return view('errors.404');
 
         return view('member_form', ['act'=>'修改资料', 'rec'=>$rec]);
     }
@@ -554,6 +565,7 @@ class MemberController extends Controller
         }
 
         $target = Member::find($id);
+        if(!count($target)) return view('errors.404');
         $target->update($update);
 
         //日志
@@ -612,7 +624,7 @@ class MemberController extends Controller
         $t =['members'=>'created_by']; 
 
         $target = Member::find($id);
-
+        if(!count($target)) return view('errors.404');
         if($a->isRoot() || $a->isAdmin()){  
             //$target = Member::find($id);
             $work_id = $target->work_id;
@@ -654,7 +666,7 @@ class MemberController extends Controller
         $select = new Select;
         $wechat = new WeChatAPI;
 
-        $wechat->safe = 0;
+        //$wechat->safe = 0;
 
         $wechat->sendText($select->select($array), $body);
 
@@ -728,7 +740,8 @@ class MemberController extends Controller
 
         if($id === 0) $id = Session::get('id');
         $target = Member::find($id);
-
+        if(!count($target)) return view('errors.404');
+        
         $png_name = $target->work_id.'-'.time().'.png';
         $base_path_img =  base_path().'/public/upload/member/';
         $path = $base_path_img.$png_name;
