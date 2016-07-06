@@ -265,7 +265,7 @@ class MemberController extends Controller
 
         $input['password'] = bcrypt($sms_key);
 
-        Member::create($input);
+        $output_id = Member::create($input)->id;
 
         $position = Position::find($input['position']);
         $positionName = $position->name;
@@ -305,10 +305,11 @@ class MemberController extends Controller
 
         //$wechat->safe = 0;
         //$wechat->sendText($select->select($array), $body);
-        $target = Member::where('work_id',$my_work_id)->first();
-        $url = 'http://'.$helper->custom('url').'/member/show/'.$target->id;
+        
+        $url = 'http://'.$helper->custom('url').'/member/show/'.$output_id;
+        $picurl = 'http://'.$helper->custom('url').'/custom/hj.png';
 
-        $arr = [['title'=>'新进员工','description'=>$body,'url'=>$url]];
+        $arr = [['title'=>'新进员工','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
 
         $wechat->sendNews($select->select($array), $arr);
 

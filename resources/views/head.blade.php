@@ -3,8 +3,6 @@
         $h = new FooWeChat\Helpers\Helper;
         $copyRight = $h->copyRight();
         $title = $h->custom('short_name');
-        // $domain = $h->custom('domain');
-        // $domain_ex = $h->custom('domain_ex');
         if(Session::has('id')) $me = $h->getMemberItems(['img','name']);
 
 ?>
