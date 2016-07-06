@@ -44,7 +44,7 @@
            <li><a href="/oa/vcard"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
             
           @if($h->hasWechatCode())
-           <li><a href="/oa/qrcode/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode menu_icon_success"></span>&nbsp我的微信二维码</a></li>
+           <li><a href="/oa/qrcode/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode menu_icon_success"></span>&nbsp加我微信</a></li>
            @endif
 
 
