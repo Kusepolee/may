@@ -17,7 +17,7 @@ $full_seek_string = $rescType_string."-".$key_string;
 <link href="{{ URL::asset('bower_components/iCheck/skins/square/blue.css') }}" rel="stylesheet">
 
 <div class="container">
-    <div class="col-md-16">
+    <div class="col-md-12">
         <ol class="breadcrumb">
             <li class="active" >资源管理</li>
             <li><a href="/resource/create">添加资源</a></li>
