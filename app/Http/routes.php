@@ -73,6 +73,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	//EXCEL
 	Route::post('excel/member', 'ExcelController@getMembers');
 	Route::post('excel/resource', 'ExcelController@getResources');
+	Route::post('excel/finance', 'ExcelController@getFinance');
 
 	//Notice 通知
 	Route::post('notice/member', 'NoticeController@member');
@@ -95,6 +96,13 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::get('/resource/image/set/{id}', 'Resource\ResourceController@image');
 	Route::post('/resource/image/store/{id?}', 'Resource\ResourceController@imageStore');
 	
+	//财务
+	Route::get('/finance', 'Finance\FinanceController@index');
+	Route::get('/finance/outs', 'Finance\FinanceController@out');
+	Route::post('/finance/outs/store', 'Finance\FinanceController@outStore');
+	Route::get('/finance/trans', 'Finance\FinanceController@tran');
+	Route::post('/finance/trans/store', 'Finance\FinanceController@tranStore');
+	Route::post('/finance/seek', 'Finance\FinanceController@financeSeek');
 
 });
 

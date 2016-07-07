@@ -97,6 +97,30 @@ class ConfigTableSeeder extends Seeder
                 'name' => '盘亏(少)',
                 'list' => 'resourceOut',  // 结束: 资源操作类型
             ],[
+                'name' => '发票',
+                'list' => 'financeOut',   // 开始: 支出单据类型      
+            ],[
+                'name' => '合同',
+                'list' => 'financeOut',         
+            ],[
+                'name' => '收据',
+                'list' => 'financeOut',         
+            ],[
+                'name' => '无票据',
+                'list' => 'financeOut',         
+            ],[
+                'name' => '可统开',
+                'list' => 'financeOut',   // 结束: 支出单据类型      
+            ],[
+                'name' => '现金',
+                'list' => 'financetran',  // 开始: 收到资金类型       
+            ],[
+                'name' => '转账',
+                'list' => 'financetran',         
+            ],[
+                'name' => '其他',
+                'list' => 'financetran',  // 结束: 收到资金类型       
+            ],[
                 'name' => '塑料件',
                 'list' => 'productType',  // 开始: 产品类型
             ],[

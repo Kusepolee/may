@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Member;
 use App\Resource;
+use App\FinanceOuts;
+use App\FinanceTrans;
 use Excel;
 use FooWeChat\Authorize\Auth;
 use FooWeChat\Helpers\Helper;
@@ -20,6 +22,8 @@ class ExcelController extends Controller
     protected $departmentsArray;
     protected $positionsArray;
     protected $rescTypesArray;
+    protected $seekDpArray;
+    protected $seekName;
     protected $key;
     /**
      * 获取用户信息: 员工
@@ -175,6 +179,101 @@ class ExcelController extends Controller
     }
 
     /**
+     * 获取财务信息
+     *
+     * @return excel download
+     */
+    public function getFinance(Request $request)
+    {
+        $arr = ['admin'=>'no', 'user'=>'2', 'position'=>'>=总监', 'department' => '>=运营部|资源部'];
+
+        $a = new Auth;
+        if(!$a->auth($arr)){
+            return view('40x',['color'=>'warning', 'type'=>'3', 'code'=>'3.1']);
+        }
+        // ^ 身份验证
+
+        $seek_string = $request->seek_string;
+        $seek_array = explode('-',$seek_string);
+
+        $seek_array[0] != '_not' ? $this->seekDpArray = explode("|", $seek_array[0]) : $this->seekDpArray = [];   
+        $seek_array[1] != '_not' ? $this->seekName = $seek_array[1] : $this->seekName = '';    
+
+        $outs = FinanceOuts::where(function ($query) { 
+                            if(count($this->seekDpArray)) $query->whereIn('finance_outs.out_about', $this->seekDpArray);
+                            if ($this->seekName != '' && $this->seekName != null) {
+                                $query->where('finance_outs.out_user', 'LIKE', '%'.$this->seekName.'%');
+                            }
+                        })
+                        ->orderBy('out_date', 'desc')
+                        ->leftjoin('departments', 'finance_outs.out_about', '=', 'departments.id')
+                        ->leftjoin('config', 'finance_outs.out_bill', '=', 'config.id')
+                        ->select('finance_outs.*', 'config.name as outBill', 'departments.name as dpName')
+                        ->get();
+
+        $trans = FinanceTrans::where(function ($query) { 
+                            if ($this->seekName != '' && $this->seekName != null) {
+                                $query->where('finance_trans.tran_to', 'LIKE', '%'.$this->seekName.'%');
+                            }
+                        })
+                        ->orderBy('tran_date', 'desc')
+                        ->leftjoin('members as a', 'finance_trans.tran_from', '=', 'a.id')
+                        ->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
+                        ->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
+                        ->get();
+
+        $data_array1 = [['编号', '经手人', '金额', '日期', '支出项', '单据', '相关业务']];       
+
+        if(count($outs)){
+            foreach ($outs as $out) {
+                $tmp_array = [];
+                $tmp_array[] = $out->out_id;
+                $tmp_array[] = $out->out_user;
+                $tmp_array[] = $out->out_amount;
+                $tmp_array[] = $out->out_date;
+                $tmp_array[] = $out->out_item;
+                $tmp_array[] = $out->outBill;
+                $tmp_array[] = $out->dpName;
+
+                $data_array1[] = $tmp_array;
+            }
+        }
+
+        $data_array2 = [['编号', '金额', '流向', '日期', '方式', '内容']];
+
+        if(count($trans)){
+            foreach ($trans as $tran) {
+                $tmp_array = [];
+                $tmp_array[] = $tran->tran_id;
+                $tmp_array[] = $tran->tran_amount;
+                $tmp_array[] = $tran->fromName.' --> '.$tran->tran_to;
+                $tmp_array[] = $tran->tran_date;
+                $tmp_array[] = $tran->tranType;
+                $tmp_array[] = $tran->tran_item;
+
+                $data_array2[] = $tmp_array;
+            }
+        }
+
+        //日志
+        Logie::add(['danger', '下载财务信息为excel']);
+
+        $name = date("Y-m-d-H-i",time()).'_finance';
+
+        Excel::create($name,function($excel) use ($data_array1,$data_array2){
+            $excel->sheet('财务支出', function($sheet) use ($data_array1){
+                $sheet->setAutoSize(true);
+                $sheet->freezeFirstRow();
+                $sheet->rows($data_array1);
+            })->sheet('财务流向', function($sheet) use ($data_array2){
+                $sheet->setAutoSize(true);
+                $sheet->freezeFirstRow();
+                $sheet->rows($data_array2);
+            });
+        })->export('xls');
+    }
+
+    /**
      * test
      *
      * @return \Illuminate\Http\Response
@@ -194,7 +293,6 @@ class ExcelController extends Controller
             echo $c->name;
         }
     }
-
 
 }
 

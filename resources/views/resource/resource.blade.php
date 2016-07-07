@@ -102,7 +102,7 @@ $full_seek_string = $rescType_string."-".$key_string;
                                 </div>
                             </div>
                         @endif
-                            <div class="container"> 
+                            <div> 
                             {!! $outs->render() !!}
                             </div>
                     </div>
