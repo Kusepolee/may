@@ -185,7 +185,7 @@
                     <div class="panel-heading">
 
                         {!! Form::open(['url'=>'finance/seek', 'role' => 'form']) !!}
-                        
+
                         <p></p>
                         <label id="type_label">部门</label>
                         <div class="form-group">

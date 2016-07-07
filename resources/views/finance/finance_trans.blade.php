@@ -12,7 +12,7 @@ $type = $h->getSelect('financeTran');
   
 	<ol class="breadcrumb">
 		<li><a href="/finance">财务</a></li>
-		<li class="active" >资金给予</li>
+		<li class="active" >资金收到</li>
 	</ol>
 		<div class="panel panel-info">
 			<div class="panel-heading">

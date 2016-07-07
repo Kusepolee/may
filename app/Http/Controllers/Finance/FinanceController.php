@@ -11,6 +11,9 @@ use Session;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use FooWeChat\Authorize\Auth;
+use FooWeChat\Core\WeChatAPI;
+use FooWeChat\Helpers\Helper;
+use FooWeChat\Selector\Select;
 
 class FinanceController extends Controller
 {
@@ -47,7 +50,7 @@ class FinanceController extends Controller
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
 							->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
 							->paginate(30);
-			// $members = Member::orderBy('id', 'asc')->get();
+			$members = Member::orderBy('id', 'asc')->get();
 
 			foreach($members as $member){
 				$out_user[] = FinanceOuts::where('out_user', $member->name)->sum('out_amount');
@@ -59,8 +62,8 @@ class FinanceController extends Controller
 				$remain[0] = 0;
 				$remain[] = floatval($tran_to[$i] - $out_user[$i] - $tran_from[$i]);
 			}
-			var_dump($members);
-			exit;
+			// var_dump($members);
+			// exit;
 
 		}elseif ($a->auth(['admin'=>'no', 'position'=>'=总监'])) {
 
@@ -160,6 +163,27 @@ class FinanceController extends Controller
 		//var_dump($input);
 		FinanceOuts::create($input);
 
+		//微信通知		
+		$s = new Select;
+        $w = new WeChatAPI;
+        $h = new Helper;
+
+        $body = '[资金支出]'.$request->out_user.' 支出: ¥ '.$request->out_amount.' 用途: '.$request->out_item;
+
+        $array = [
+              'user'       => '15',
+              // 'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              //'self'       => 'own',
+            ];
+        
+        $url = 'http://'.$h->custom('url').'/finance';
+        $picurl = 'http://'.$h->custom('url').'/custom/image/news/finance.png';
+        $arr_news = [['title'=>'财务','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
+        
+        $w->safe = 0;
+        $w->sendNews($s->select($array), $arr_news);
+
 		return redirect('/finance');
 	}
 
@@ -191,7 +215,29 @@ class FinanceController extends Controller
 		$input = $request->all();
 		
 		//var_dump($input);
-		Financetrans::create($input);
+		// Financetrans::create($input);
+
+		//微信通知		
+		$s = new Select;
+        $w = new WeChatAPI;
+        $h = new Helper;
+        $giver = Member::find($request->tran_from)->name;
+
+        $body = '[资金流向]'.$giver.' -> '.$request->tran_to.' : ¥ '.$request->tran_amount.' 用途: '.$request->tran_item;
+
+        $array = [
+              'user'       => '15',
+              // 'department' => '资源部',
+              //'seek'       => '>=:经理@资源部',
+              //'self'       => 'own',
+            ];
+        
+        $url = 'http://'.$h->custom('url').'/finance';
+        $picurl = 'http://'.$h->custom('url').'/custom/image/news/finance.png';
+        $arr_news = [['title'=>'财务','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
+        
+        $w->safe = 0;
+        $w->sendNews($s->select($array), $arr_news);
 
 		return redirect('/finance');
 	}
