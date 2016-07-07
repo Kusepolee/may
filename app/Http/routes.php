@@ -1,4 +1,5 @@
 <?php
+
 /*
 |--------------------------------------------------------------------------
 | RestRose Wechat Application [FooWeChat]
@@ -115,35 +116,10 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 
 
 Route::get('/test2', 'Customer\CustomerController@index');
-Route::get('/test1', 'OaController@qrcode');
+Route::get('/test1', 'NoticeController@mail');
 
 Route::get('/test', function () {
-
-echo mt_rand(100000,999999);
-
-	//$sms = new FooWeChat\Notice\Alidayu;
-	//$sms = new FooWeChat\Notice\Alidayu;
-	//$sms->sendSms();
-	// shell_exec('cd /mnt/may/');
-	// shell_exec('git pull');
-
-	//Fuck the git hub at  1:36
-
-	//echo sha1('king0105');
-	//echo sha1('king0105');
-	//echo hash_hmac('king0105');
-	//what's the fuck OK
-
-	//echo hash_hmac("sha1", $json, 'king0105');
-	//return response('200');
-	//fuck ok
-	//this is a great step
-	//fuck the a
-	//test auto pull;
-	//exec("git pull https://github.com/restrose/may.git master"); 
-	//fuck
-	//fuck good
-
+	return view('calendar');
 });
 
 

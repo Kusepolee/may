@@ -75,8 +75,9 @@ END:VCARD';
 
 						@if($a->isSelf($rec->id))
 						<li class="m_2"><a href="/member/image/set"><i class="glyphicon glyphicon-user menu_icon_info"></i> 头像更新</a></li>
-						<li class="m_2"><a href="/member/password/form"><i class="glyphicon glyphicon-barcode menu_icon_success"></i>密码修改</a></li>
+						<li class="m_2"><a href="/member/password/form"><i class="glyphicon glyphicon-barcode menu_icon_success"></i> 密码修改</a></li>
 						@endif
+
 
 						@if($a->hasRights($rec->id) && !$a->isSelf($rec->id))
 						<li class="divider"></li>

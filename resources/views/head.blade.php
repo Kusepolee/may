@@ -3,8 +3,6 @@
         $h = new FooWeChat\Helpers\Helper;
         $copyRight = $h->copyRight();
         $title = $h->custom('short_name');
-        // $domain = $h->custom('domain');
-        // $domain_ex = $h->custom('domain_ex');
         if(Session::has('id')) $me = $h->getMemberItems(['img','name']);
 
 ?>
@@ -44,13 +42,13 @@
            <li><a href="/oa/vcard"><span class="pull-left glyphicon glyphicon-qrcode"></span>&nbsp&nbsp我的电子名片</a></li>
             
           @if($h->hasWechatCode())
-           <li><a href="/oa/qrcode/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode menu_icon_success"></span>&nbsp&nbsp我的微信二维码</a></li>
+           <li><a href="/oa/qrcode/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-qrcode menu_icon_success"></span>&nbsp加我微信</a></li>
            @endif
 
 
            <li class="divider"></li>
 
-           <li><a href="/oa/qrcode"><span class="pull-left glyphicon glyphicon-qrcode menu_icon_info"></span>&nbsp&nbsp关注{{ $h->custom('nic_name') }}</a></li>
+           <li><a href="/oa/qrcode"><span class="pull-left glyphicon glyphicon-qrcode menu_icon_info"></span>&nbsp关注{{ $h->custom('nic_name') }}</a></li>
            <li class="divider"></li>
            <li><a href="/member/show/{{ Session::get('id') }}"><span class="pull-left glyphicon glyphicon-cog"></span>&nbsp&nbsp个人中心</a></li>
 
