@@ -307,7 +307,7 @@ class MemberController extends Controller
         //$wechat->sendText($select->select($array), $body);
         
         $url = 'http://'.$helper->custom('url').'/member/show/'.$output_id;
-        $picurl = 'http://'.$helper->custom('url').'/custom/hj.png';
+        $picurl = 'http://'.$helper->custom('url').'/custom/image/news/member.png';
 
         $arr = [['title'=>'新进员工','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
 
