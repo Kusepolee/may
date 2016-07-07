@@ -40,7 +40,7 @@ class ResourceController extends Controller
                             }
                         })
                           ->where('resources.show', 0)
-                          ->orderBy('updated_at', 'DESC')
+                          ->orderBy('updated_at', 'desc')
                           ->leftJoin('config as a', 'resources.type', '=', 'a.id')
                           ->leftJoin('config as b', 'resources.unit', '=', 'b.id')
                           ->leftJoin('members', 'resources.createBy', '=', 'members.id')
@@ -111,8 +111,8 @@ class ResourceController extends Controller
         } else {
             $input['state'] = 4;
         }
-        
-        Resource::create($input);
+
+        $id = Resource::create($input)->id;
 
         //日志
         Logie::add(['notice', '新建资源: '.$input['name'].'/'.$input['model']]);
@@ -126,20 +126,25 @@ class ResourceController extends Controller
         }else{
             $body_2 = '';
         }
-        $body = '[资源] '.$body_1.$body_2;
+        $body = '[资源新建] '.$body_1.$body_2;
 
         $s = new Select;
         $w = new WeChatAPI;
+        $h = new Helper;
 
         $array = [
-              // 'user'       => '15',
-              'department' => '资源部',
+               'user'       => '15',
+              //'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
             ];
         
+        $url = 'http://'.$h->custom('url').'/resource/show/'.$id;
+        $picurl = 'http://'.$h->custom('url').'/custom/image/news/resource.png';
+        $arr_news = [['title'=>'资源','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
+        
         $w->safe = 0;
-        $w->sendText($s->select($array), $body);
+        $w->sendNews($s->select($array), $arr_news);
 
         return redirect('/resource');
     }
@@ -256,20 +261,25 @@ class ResourceController extends Controller
         }else {
             $body_3 = '';
         }
-        $body = '[资源] '.$body_1.$body_2.$body_3;
+        $body = '[资源修改] '.$body_1.$body_2.$body_3;
 
         $s = new Select;
         $w = new WeChatAPI;
+        $h = new Helper;
 
         $array = [
-              // 'user'       => '15',
-              'department' => '资源部',
+              'user'       => '15',
+              // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
             ];
         
+        $url = 'http://'.$h->custom('url').'/resource/show/'.$id;
+        $picurl = 'http://'.$h->custom('url').'/custom/image/news/resource.png';
+        $arr_news = [['title'=>'资源','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
+        
         $w->safe = 0;
-        $w->sendText($s->select($array), $body);
+        $w->sendNews($s->select($array), $arr_news);
 
         return redirect('/resource/show/'.$id);
     }
@@ -518,6 +528,7 @@ class ResourceController extends Controller
 
         // 检查存在: ['table'=>'list1|list2|list3', 'table1'=>'list']
         $t =['resource_records'=>'resource']; 
+        $rec = Resource::find($id);
 
         if($a->isRoot() || $a->isAdmin()){  
 
@@ -533,25 +544,31 @@ class ResourceController extends Controller
         }
 
         //日志
-        $rec = Resource::find($id);
         Logie::add(['danger', '删除资源: '.$rec['name'].'/'.$rec['model']]);
 
         //微信消息
         $user = Session::get('name');
 
-        $body = '[资源] '.$user.' 删除: '.$rec['name'].'('.$rec['model'].')';
+        if($rec['model'] != ''){
+            $body = '[资源删除] '.$user.' 删除: '.$rec['name'].'('.$rec['model'].')';
+        }else{
+            $body = '[资源删除] '.$user.' 删除: '.$rec['name'];
+        }
 
         $s = new Select;
         $w = new WeChatAPI;
 
         $array = [
-              // 'user'       => '15',
-              'department' => '资源部',
+              'user'       => '15',
+              // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
             ];
+
+        // $picurl = 'http://'.$h->custom('url').'/custom/image/news/resource.png';
+        // $arr_news = [['title'=>'资源','description'=>$body,'picurl'=>$picurl]];
         
-        $w->safe = 0;
+        // $w->safe = 0;
         $w->sendText($s->select($array), $body);
 
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'资源管理', 'link'=>'/resource'];
@@ -617,6 +634,7 @@ class ResourceController extends Controller
     {
         $s = new Select;
         $w = new WeChatAPI;
+        $h = new Helper;
 
         $state = $this->getResourceState($id);
 
@@ -634,37 +652,48 @@ class ResourceController extends Controller
         $resource_notice = floatval($rec_r->notice);
         $resource_alert = floatval($rec_r->alert);
 
-        $body_1 = $resource_name.'('.$resource_model.') '.$type.' '.$amount.' '.$resource_unit.'--'.$user_name.';';
+        if ($resource_model != ''){
+            $body_1 = $resource_name.'('.$resource_model.') '.$type.' '.$amount.' '.$resource_unit.' -- '.$user_name.';';
+        }else{
+            $body_1 = $resource_name.' '.$type.' '.$amount.' '.$resource_unit.' -- '.$user_name.';';
+        }
         if ($state === 0) {
+            $body_3 = '[库存报警]';
             $body_2 = "\n".'库存为空';
         }elseif ($state === 1) {
+            $body_3 = '[库存报警]';
             $body_2 = "\n".'进货报警: 库存为 '.$resource_remain.' '.$resource_unit.'  '.'报警值为 '.$resource_alert.' '.$resource_unit;
         }elseif ($state === 2) {
+            $body_3 = '[库存提醒]';
             $body_2 = "\n".'进货提醒: 库存为 '.$resource_remain.' '.$resource_unit.'  '.'提醒值为 '.$resource_notice.' '.$resource_unit;
         }else {
+            $body_3 = '';
             $body_2 = '';
         }
-        $body = $body_1.$body_2;
+        $body = $body_3.$body_1.$body_2;
 
         if ($rec_r->type == 4 || $rec_r->type == 5) {
             $array = [
-              'user'       => '8',
-              'department' => '资源部',
+              'user'       => '15',
+              // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               'self'       => 'own',
             ];
         } else {
             $array = [
-              //'user'       => '8',
+              // 'user'       => '8',
               'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               'self'       => 'own',
             ];
         }
-        
+
+        $url = 'http://'.$h->custom('url').'/resource/show/'.$id;
+        $picurl = 'http://'.$h->custom('url').'/custom/image/news/resource.png';
+        $arr_news = [['title'=>'资源','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
         
         $w->safe = 0;
-        $w->sendText($s->select($array), $body);
+        $w->sendNews($s->select($array), $arr_news);
     }
 
     /**

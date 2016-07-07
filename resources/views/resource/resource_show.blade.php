@@ -24,12 +24,16 @@ $h = new FooWeChat\Helpers\Helper;
 						<ul class="dropdown-menu" id = "show">	
 							@if($a->auth(['department'=>'=资源部']))
 							<li class="m_2"><a href="/resource/image/set/{{ $rec->id }}"><i class="glyphicon glyphicon-picture menu_icon_info"></i> 图片更新</a></li> 
+							<li class="divider"></li>
 							<li class="m_2"><a href="/resource/in/{{ $rec->id }}"><i class="glyphicon glyphicon-log-in menu_icon_info"></i> 入库</a></li>
+							<li class="divider"></li>
 							@endif
-							<li class="m_2"><a href="/resource/out/{{ $rec->id }}"><i class="glyphicon glyphicon-log-out menu_icon_info"></i> 领用</a></li>
+							<li class="m_2"><a href="/resource/out/{{ $rec->id }}"><i class="glyphicon glyphicon-log-out menu_icon_info"></i> 领用</a></li>							
 							<!-- <li class="m_2"><a href="/resource/list/{{ $rec->id }}"><i class="glyphicon glyphicon-list-alt menu_icon_info"></i>记录</a></li> -->
 							@if($a->auth(['department'=>'=资源部'])&&$a->auth(['position'=>'>=经理']))
+							<li class="divider"></li>
 							<li class="m_2"><a href="/resource/edit/{{ $rec->id }}"><i class="glyphicon glyphicon-edit menu_icon_info"></i> 修改</a></li>
+							<li class="divider"></li>
 							<li class="m_2"><a href="/resource/delete/{{ $rec->id }}"><i class="glyphicon glyphicon-trash menu_icon_info"></i> 删除</a></li>
 							@endif
 					    </ul>
@@ -64,8 +68,8 @@ $h = new FooWeChat\Helpers\Helper;
 					                            <th></th>
 					                            <th>类型</th>
 					                            <th>日期</th>
-					                            @if(!$a->usingWechat())                        
 					                            <th>接收人</th>
+					                            @if(!$a->usingWechat())
 					                            <th>说明</th>
 					                            @endif
 					                        </tr>
@@ -75,15 +79,12 @@ $h = new FooWeChat\Helpers\Helper;
 					                        <tr>
 					                            <td>{{ floatval($out->amount) }}</td>
 					                            <td>                     
-					                            @if($out->out_or_in === 0)
-					                            -
-					                            @else
-					                            +
+					                            @if($out->out_or_in === 0)-@else+
 					                            @endif</td>
 					                            <td>{{ $out->typeName }}</td>
 					                            <td>{{ $out->created_at }}</td>
-					                            @if(!$a->usingWechat())
 					                            <td>{{ $out->memberName }}</td>
+					                            @if(!$a->usingWechat())
 					                            <td>{{ $out->content }}</td>
 					                            @endif
 					                        </tr>
