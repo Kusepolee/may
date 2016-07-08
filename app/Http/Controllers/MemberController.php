@@ -66,6 +66,9 @@ class MemberController extends Controller
                     if(!Session::has('name')) Session::put('name', $rec->name);
 
                     //Cookie::queue('id', $rec->id, 20160);
+
+                    // 日志
+                    Logie::add(['info', '登录']);
                     
                     return redirect($redirect_path);
 
@@ -108,6 +111,9 @@ class MemberController extends Controller
 
         if (Session::has('id')) Session::flush();
         if (Cookie::get('id')) Cookie::forget('id');
+
+        // 日志
+        Logie::add(['info', '退出']);
 
         return redirect('/');
     }
