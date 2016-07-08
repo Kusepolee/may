@@ -21,11 +21,11 @@
     </ol>
         <ul id="myTab" class="nav nav-tabs">
         @if(count($seekDp) || ($seekName != '' && $seekName != null))
-            <li class="active"><a href="#outs" data-toggle="tab">支出明细</a>
-            <li class=""><a href="#trans" data-toggle="tab">资金流向</a>
+            <li class="active"><a href="#outs" data-toggle="tab">支出</a>
+            <li class=""><a href="#trans" data-toggle="tab">流向</a>
         @else
-            <li class="active"><a href="#outs" data-toggle="tab">支出明细</a>
-            <li class=""><a href="#trans" data-toggle="tab">资金流向</a>
+            <li class="active"><a href="#outs" data-toggle="tab">支出</a>
+            <li class=""><a href="#trans" data-toggle="tab">流向</a>
         @endif
             <!-- 余额 -->
         @if ($a->auth(['admin'=>'no', 'position'=>'>=总监']))
