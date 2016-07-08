@@ -24,6 +24,7 @@ $type = $h->getSelect('financeTran');
 			{!! Form::open(['url'=>'finance/trans/store', 'role' => 'form']) !!}
 			{!! Form::hidden('tran_to', $user) !!}
 			{!! Form::hidden('tran_from', $boss) !!}
+			{!! Form::hidden('work_id', $toId) !!}
 
 			<div class="form-group">
 			  {!! Form::text('tran_amount',null,['placeholder'=>'金额', 'class'=>'form-control']) !!}
