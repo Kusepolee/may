@@ -16,10 +16,10 @@ storage/
 Thumbs.db
 
 #uploads
-public/upload/crm/
-public/upload/member/
-public/upload/product/
-public/upload/resource/
+public/upload/crm/*
+public/upload/member/*
+public/upload/product/*
+public/upload/resource/*
 
 #config files
 config/restrose.*

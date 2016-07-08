@@ -103,7 +103,6 @@ class FinanceController extends Controller
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
 							->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
 							->paginate(30);
-
 		}
 
 		$recs = Department::where('id', '>', 1)
