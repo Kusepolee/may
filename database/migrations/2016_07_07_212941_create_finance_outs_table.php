@@ -20,6 +20,7 @@ class CreateFinanceOutsTable extends Migration
             $table->string('out_date');
             $table->integer('out_bill');
             $table->integer('out_about');
+            $table->timestamps();
         });
     }
 
