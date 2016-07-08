@@ -23,6 +23,7 @@ $type = $h->getSelect('financeTran');
 
 			{!! Form::open(['url'=>'finance/trans/store', 'role' => 'form']) !!}
 			{!! Form::hidden('tran_to', $user) !!}
+			{!! Form::hidden('tran_from', $boss) !!}
 
 			<div class="form-group">
 			  {!! Form::text('tran_amount',null,['placeholder'=>'金额', 'class'=>'form-control']) !!}
@@ -38,10 +39,6 @@ $type = $h->getSelect('financeTran');
 
 			<div class="form-group">
 			  {!! Form::select('tran_type',$type,null,['class'=>'form-control']); !!}
-			</div>
-
-			<div class="form-group">
-			  {!! Form::select('tran_from',$boss,null,['class'=>'form-control']); !!}
 			</div>
 
 			{!! Form::submit('提交', ['class'=>'btn btn-info btn-block']) !!}
