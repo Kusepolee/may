@@ -173,20 +173,11 @@ class FinanceController extends Controller
 	*/
 	public function tran($id)
 	{
+		$toId = Member::find($id)->work_id;
 		$user = Member::find($id)->name;
 		$boss = Session::get('id');
-		// $recs = Member::where('id', '>', 1)
-		// 			->where('position', '<',8)
-		// 			->get();
 
-		// if(count($recs)){
-		// 	$boss = [];
-		// 	foreach ($recs as $rec) {
-		// 		$boss = array_add($boss, $rec->id, $rec->name);
-		// 	}
-		// }
-
-		return view('finance.finance_trans', ['user'=>$user, 'boss'=>$boss]);
+		return view('finance.finance_trans', ['user'=>$user, 'boss'=>$boss, 'toId'=>$toId]);
 	}
 
 	/**
@@ -196,7 +187,6 @@ class FinanceController extends Controller
 	{
 		$input = $request->all();
 		
-		//var_dump($input);
 		Financetrans::create($input);
 
 		//微信通知		
@@ -207,7 +197,9 @@ class FinanceController extends Controller
 
         $body = '[资金流向]'.$giver.' -> '.$request->tran_to.' : ¥ '.$request->tran_amount.' 用途: '.$request->tran_item;
 
-        $user = '8|6|2'.$request->tran_to;
+        $work_id = $request->work_id;
+        
+        $user = '8|6|2|'.$work_id;
         $array = [
               'user'       => $user,//8|6|2
               // 'department' => '资源部',
