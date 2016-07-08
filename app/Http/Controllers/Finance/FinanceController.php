@@ -182,7 +182,7 @@ class FinanceController extends Controller
 	/**
 	* 支出信息存入数据库
 	*/
-	public function tranStore(Requests\Finance\FinancetranRequest $request)
+	public function tranStore(Requests\Finance\FinanceTranRequest $request)
 	{
 		$input = $request->all();
 		
