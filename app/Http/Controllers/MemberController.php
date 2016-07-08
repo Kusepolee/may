@@ -328,7 +328,7 @@ class MemberController extends Controller
         $con = ['name'=>$input['name'], 'password'=>strval($sms_key)];
         $json = json_encode($con, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 
-        $result=$this->sms->send($mobile,$signature,$json,$templet);
+        //$result=$this->sms->send($mobile,$signature,$json,$templet);
 
         //界面
         $arr = ['color'=>'success', 'type'=>'5','code'=>'5.1', 'btn'=>'用户管理', 'link'=>'/member'];
