@@ -15,7 +15,6 @@
     <ol class="breadcrumb">
         <li class="active" >财务</li>
         <li><a href="/finance/outs">支出</a></li>
-        <li><a href="/finance/trans">资金给予</a></li>
         @if(count($seekDp) || ($seekName != '' && $seekName != null))
         <li><a href="/finance">重置查询条件</a></li>
         @endif
@@ -28,8 +27,7 @@
             <li class="active"><a href="#outs" data-toggle="tab">支出明细</a>
             <li class=""><a href="#trans" data-toggle="tab">资金流向</a>
         @endif
-            </li>
-            <li class=""><a href="#remain" data-toggle="tab">余额</a></li>
+            <!-- 余额 -->
         @if ($a->auth(['admin'=>'no', 'position'=>'>=总监']))
             <li class=""><a href="#seek" data-toggle="tab">查询</a></li>
         @endif
@@ -140,44 +138,6 @@
                 </div>
             </div>
             <!-- end of trans list -->
-            <!-- remain list -->
-            <div class="tab-pane fade" id="remain">
-                <div class="table-responsive">
-                    @if(count($remains))
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>姓名</th>
-                                    <th>余额</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($remains as $remain)
-                                <tr>
-                                    @foreach($members as $member)
-                                        <td>{{ $member->name }}</td>
-                                    @endforeach
-                                        <td>{{ $remain }}</td>
-                                </tr>
-                            @endforeach      
-                            </tbody>
-                        </table>
-                    @else
-                        <p></p>
-                        <div class="col-md-4 col-sm-4 col-md-offset-4">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <em class="glyphicon glyphicon-info-sign"></em>&nbsp&nbsp提示
-                                </div>
-                                <div class="panel-body">
-                                    <p>无记录: 可能因没有符合查询条件记录, 或尚未有数据录入</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-            <!-- end of remain list -->
             <!-- seek -->
             <div class="tab-pane fade" id="seek">
                 <div class="col-md-4 col-md-offset-4">

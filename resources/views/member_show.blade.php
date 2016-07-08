@@ -40,17 +40,24 @@ END:VCARD';
 		
 		@if(!$a->isSelf($rec->id) && !$a->hasRights($rec->id))
 		<ul class="list_none">
-		<li class="pull-right">
+		<li class="dropdown pull-right">
 			@if($rec->img != '' && $rec->img != null)
-			<img id="tu2" src="{{ URL::asset("upload/member/").'/'.$rec->img}}" class="img-thumbnail"/>
+			<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img id="tu2" src="{{ URL::asset("upload/member/").'/'.$rec->img}}" class="img-thumbnail"/>
 			@else
+				<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
 				@if($rec->gender === 1)
 					<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base_man.png'}}" class="img-thumbnail"/>
 				@else 
 					<img id="tu2" src="{{ URL::asset("custom/image/").'/'.'member_base_lady.png'}}" class="img-thumbnail"/>
 				@endif 
-			@endif 
-
+			@endif
+		<!-- finance tran  -->
+		<ul class="dropdown-menu" id = "show">
+			@if($a->auth(['admin'=>'no', 'position'=>'>=经理']))
+			<li class="m_2"><a href="/finance/trans/{{$rec->id}}"><i class="glyphicon glyphicon-yen menu_icon_warning"></i> 资金给予</a></li>
+			@endif
+		</ul>	
+		<!-- finance tran end -->
 		</li></ul>
 		@else
 		<ul class="list_none">
@@ -88,6 +95,10 @@ END:VCARD';
 							@else
 						<li class="m_2"><a href="/member/unlock/{{ $rec->id }}"><i class="glyphicon glyphicon-ok menu_icon_success"></i> 解锁该用户</a></li>
 							@endif
+							<!-- finance tran -->
+							<li class="divider"></li>
+							<li class="m_2"><a href="/finance/trans/{{$rec->id}}"><i class="glyphicon glyphicon-yen menu_icon_warning"></i> 资金给予</a></li>
+							<!-- finance tran end -->
 							<li class="divider"></li>
 							<li class="m_2"><a href="/member/delete/{{$rec->id}}"><i class="glyphicon glyphicon-remove menu_icon_danger"></i> 删除用户</a></li>
 

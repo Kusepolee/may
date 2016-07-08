@@ -133,8 +133,8 @@ class ResourceController extends Controller
         $h = new Helper;
 
         $array = [
-               'user'       => '15',
-              //'department' => '资源部',
+               // 'user'       => '15',
+              'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
             ];
@@ -268,8 +268,8 @@ class ResourceController extends Controller
         $h = new Helper;
 
         $array = [
-              'user'       => '15',
-              // 'department' => '资源部',
+              // 'user'       => '15',
+              'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
             ];
@@ -559,8 +559,8 @@ class ResourceController extends Controller
         $w = new WeChatAPI;
 
         $array = [
-              'user'       => '15',
-              // 'department' => '资源部',
+              // 'user'       => '15',
+              'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
             ];
@@ -674,8 +674,8 @@ class ResourceController extends Controller
 
         if ($rec_r->type == 4 || $rec_r->type == 5) {
             $array = [
-              'user'       => '15',
-              // 'department' => '资源部',
+              'user'       => '8',
+              'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               'self'       => 'own',
             ];

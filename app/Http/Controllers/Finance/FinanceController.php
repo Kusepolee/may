@@ -50,20 +50,7 @@ class FinanceController extends Controller
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
 							->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
 							->paginate(30);
-			$members = Member::orderBy('id', 'asc')->get();
-
-			foreach($members as $member){
-				$out_user[] = FinanceOuts::where('out_user', $member->name)->sum('out_amount');
-				$tran_to[] = FinanceTrans::where('tran_to', $member->name)->sum('tran_amount');
-				$tran_from[] = FinanceTrans::where('tran_from', $member->id)->sum('tran_amount');
-			}
-			// $mbs = Member::where('id', '>', 1)->lists('name');
-			for ($i=0; $i < 12; $i++) { 
-				$remain[0] = 0;
-				$remain[] = floatval($tran_to[$i] - $out_user[$i] - $tran_from[$i]);
-			}
-			// var_dump($members);
-			// exit;
+			
 
 		}elseif ($a->auth(['admin'=>'no', 'position'=>'=总监'])) {
 
@@ -98,9 +85,6 @@ class FinanceController extends Controller
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
 							->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
 							->paginate(30);
-			$in = FinanceTrans::where('tran_to', $user)->sum('tran_amount');
-			$out = FinanceOuts::where('out_user', $user)->sum('out_amount');
-			$remain = floatval($in - $out);
 
 		}else{
 
@@ -117,9 +101,6 @@ class FinanceController extends Controller
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
 							->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
 							->paginate(30);
-			$in = FinanceTrans::where('tran_to', $members)->sum('tran_amount');
-			$out = FinanceOuts::where('out_user', $members)->sum('out_amount');
-			$remain = floatval($in - $out);
 
 		}
 
@@ -132,7 +113,7 @@ class FinanceController extends Controller
 			}
 		}
 		
-		return view('finance.finance', ['seekName'=>$this->seekName, 'seekDp'=>$this->seekDpArray, 'outs'=>$outs, 'trans'=>$trans, 'Dp'=>$dp, 'remains'=>$remain, 'members'=>$members]);
+		return view('finance.finance', ['seekName'=>$this->seekName, 'seekDp'=>$this->seekDpArray, 'outs'=>$outs, 'trans'=>$trans, 'Dp'=>$dp]);
 	}
 
 	/**
@@ -171,7 +152,7 @@ class FinanceController extends Controller
         $body = '[资金支出]'.$request->out_user.' 支出: ¥ '.$request->out_amount.' 用途: '.$request->out_item;
 
         $array = [
-              'user'       => '15',
+              'user'       => '8|6|2',//8|6|2
               // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
@@ -190,19 +171,20 @@ class FinanceController extends Controller
 	/**
 	* 支出页面
 	*/
-	public function tran()
+	public function tran($id)
 	{
-		$user = Session::get('name');
-		$recs = Member::where('id', '>', 1)
-					->where('position', '<',8)
-					->get();
+		$user = Member::find($id)->name;
+		$boss = Session::get('id');
+		// $recs = Member::where('id', '>', 1)
+		// 			->where('position', '<',8)
+		// 			->get();
 
-		if(count($recs)){
-			$boss = [];
-			foreach ($recs as $rec) {
-				$boss = array_add($boss, $rec->id, $rec->name);
-			}
-		}
+		// if(count($recs)){
+		// 	$boss = [];
+		// 	foreach ($recs as $rec) {
+		// 		$boss = array_add($boss, $rec->id, $rec->name);
+		// 	}
+		// }
 
 		return view('finance.finance_trans', ['user'=>$user, 'boss'=>$boss]);
 	}
@@ -215,7 +197,7 @@ class FinanceController extends Controller
 		$input = $request->all();
 		
 		//var_dump($input);
-		// Financetrans::create($input);
+		Financetrans::create($input);
 
 		//微信通知		
 		$s = new Select;
@@ -226,7 +208,7 @@ class FinanceController extends Controller
         $body = '[资金流向]'.$giver.' -> '.$request->tran_to.' : ¥ '.$request->tran_amount.' 用途: '.$request->tran_item;
 
         $array = [
-              'user'       => '15',
+              'user'       => '8|6|2',//8|6|2
               // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
               //'self'       => 'own',
