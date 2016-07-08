@@ -207,8 +207,9 @@ class FinanceController extends Controller
 
         $body = '[资金流向]'.$giver.' -> '.$request->tran_to.' : ¥ '.$request->tran_amount.' 用途: '.$request->tran_item;
 
+        $user = '8|6|2'.$request->tran_to;
         $array = [
-              'user'       => '8|6|2',//8|6|2
+              'user'       => $user,//8|6|2
               // 'department' => '资源部',
               'seek'       => '>=:经理@运营部',
               'self'       => 'own',
