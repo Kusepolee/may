@@ -89,6 +89,7 @@ class FinanceController extends Controller
 		}else{
 
 			$members = Session::get('name');
+			$id = Session::get('id');
 			$outs = FinanceOuts::where('out_user', $members)
 							->orderBy('out_date', 'desc')
 							->leftjoin('departments', 'finance_outs.out_about', '=', 'departments.id')
@@ -96,6 +97,7 @@ class FinanceController extends Controller
 							->select('finance_outs.*', 'config.name as outBill', 'departments.name as dpName')
 							->paginate(30);
 			$trans = FinanceTrans::where('tran_to', $members)
+							->orwhere('tran_from', $id)
 							->orderBy('tran_date', 'desc')
 							->leftjoin('members as a', 'finance_trans.tran_from', '=', 'a.id')
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
