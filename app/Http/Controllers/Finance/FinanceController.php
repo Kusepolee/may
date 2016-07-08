@@ -141,7 +141,6 @@ class FinanceController extends Controller
 	{
 		$input = $request->all();
 		
-		//var_dump($input);
 		FinanceOuts::create($input);
 
 		//微信通知		
@@ -154,7 +153,7 @@ class FinanceController extends Controller
         $array = [
               'user'       => '8|6|2',//8|6|2
               // 'department' => '资源部',
-              //'seek'       => '>=:经理@资源部',
+              'seek'       => '>=:经理@运营部',
               'self'       => 'own',
             ];
         
@@ -203,7 +202,7 @@ class FinanceController extends Controller
         $array = [
               'user'       => $user,//8|6|2
               // 'department' => '资源部',
-              //'seek'       => '>=:经理@资源部',
+              'seek'       => '>=:经理@运营部', 
               'self'       => 'own',
             ];
         
