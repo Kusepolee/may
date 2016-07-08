@@ -21,6 +21,7 @@ class CreateFinanceTransTable extends Migration
             $table->string('tran_item');
             $table->string('tran_date');
             $table->integer('tran_state');
+            $table->timestamps();
         });
     }
 
