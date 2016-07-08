@@ -57,7 +57,7 @@
                                 <tr>
                                 	<td>{{ $out->out_id }}</td>
                                 	<td>{{ $out->out_user }}</td>
-                                	<td>{{ $out->out_amount }}</td>
+                                	<td>{{ floatval($out->out_amount) }}</td>
                                 	<td>{{ $out->out_date }}</td>
                                 	@if(!$a->usingWechat())                        
                                     <td>{{ $out->out_item }}</td>
@@ -108,7 +108,7 @@
                             @foreach($trans as $tran)
                             	<tr>
                             		<td>{{ $tran->tran_id }}</td>
-                                	<td>{{ $tran->tran_amount }}</td>
+                                	<td>{{ floatval($tran->tran_amount) }}</td>
                                 	<td>{{ $tran->fromName }} --> {{ $tran->tran_to }}</td>
                                 	<td>{{ $tran->tran_date }}</td>
                                 	@if(!$a->usingWechat())                        

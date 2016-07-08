@@ -155,7 +155,7 @@ class FinanceController extends Controller
               'user'       => '8|6|2',//8|6|2
               // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
-              //'self'       => 'own',
+              'self'       => 'own',
             ];
         
         $url = 'http://'.$h->custom('url').'/finance';
@@ -211,7 +211,7 @@ class FinanceController extends Controller
               'user'       => '8|6|2',//8|6|2
               // 'department' => '资源部',
               //'seek'       => '>=:经理@资源部',
-              //'self'       => 'own',
+              'self'       => 'own',
             ];
         
         $url = 'http://'.$h->custom('url').'/finance';
