@@ -108,12 +108,13 @@ class MemberController extends Controller
      */
     public function logout()
     {
+        // 日志
+        Logie::add(['info', '退出']);
 
         if (Session::has('id')) Session::flush();
         if (Cookie::get('id')) Cookie::forget('id');
 
-        // 日志
-        Logie::add(['info', '退出']);
+        
 
         return redirect('/');
     }
