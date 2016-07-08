@@ -667,9 +667,9 @@ class MemberController extends Controller
         $body = '[员工]删除提醒: '.$dp.': '.$target->name.', 职位:'.$positionName.', 工号:'.$target->work_id.'. 操作人: '.$user;
         $array = [
                    //'user'       => '编号1|编号2', // all -所有
-                   'department' => '运营部|self', //self-本部门, self+包括管辖部门
+                   'department' => '运营部', //self-本部门, self+包括管辖部门
                    //'seek'       => '>:经理@市场部|>=:总监@生产部', //指定角色
-                   'self'       => 'own|master', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
+                   'self'       => 'own', //own = 本人, master = 领导, sub = 下属, 带+号:所有领导或下属
                  ];
         $select = new Select;
         $wechat = new WeChatAPI;
