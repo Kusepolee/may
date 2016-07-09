@@ -9,12 +9,14 @@ $ming = mb_substr($origin,1,mb_strlen($origin),'utf-8');
 
 $tel = str_replace(' ', '', $h->custom('tel'));
 
+$rec->positionName == '员工' ? $pos = '' : $pos = '-'.$rec->positionName;
+
 $vcard = 'BEGIN:VCARD
 VERSION:2.1
 N:'.$xing.';'.$ming.';
 FN:'.$rec->name.'
 ORG:'.$h->custom('name').'
-TITLE:'.$rec->departmentName.'-'.$rec->positionName.'
+TITLE:'.$rec->departmentName.$pos.'
 TEL;CELL;VOICE:'.$rec->mobile.'
 TEL;WORK;VOICE:'.$tel.'
 URL:'.$h->custom('url').'
