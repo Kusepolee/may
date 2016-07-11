@@ -9,6 +9,7 @@ $ming = mb_substr($origin,1,mb_strlen($origin),'utf-8');
 
 $tel = str_replace(' ', '', $h->custom('tel'));
 
+//员工不显示职位
 $rec->positionName == '员工' ? $pos = '' : $pos = '-'.$rec->positionName;
 
 $vcard = 'BEGIN:VCARD
