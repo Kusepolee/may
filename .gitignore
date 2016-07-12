@@ -33,4 +33,5 @@ public/favicon.*
 #sublime-project files
 *.sublime-workspace
 
-#composer.lock
+composer.lock
+composer-test.lock
