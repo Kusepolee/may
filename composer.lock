@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d26dfc2792a85ac130116d67cff84fcf",
-    "content-hash": "5fc1d206a1ce4efcacb31aa8504bc4fe",
+    "hash": "43880107c6e3679660c1dc8884b43d3c",
+    "content-hash": "813919836772045f6a32d6d465497dea",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2034,12 +2034,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/restrose/FooWeChat.git",
-                "reference": "fedf223a4feec27c196f5d9fbf22666df0b48c12"
+                "reference": "b1b83693fbf906fa873bf789a30759eebd25cbe0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/restrose/FooWeChat/fedf223a4feec27c196f5d9fbf22666df0b48c12.zip",
-                "reference": "fedf223a4feec27c196f5d9fbf22666df0b48c12",
+                "url": "https://packagist.phpcomposer.com/files/restrose/FooWeChat/b1b83693fbf906fa873bf789a30759eebd25cbe0.zip",
+                "reference": "b1b83693fbf906fa873bf789a30759eebd25cbe0",
                 "shasum": ""
             },
             "require": {
@@ -2071,7 +2071,7 @@
                 "wechat",
                 "weixin"
             ],
-            "time": "2016-07-05 07:34:50"
+            "time": "2016-07-08 01:36:33"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",
@@ -2126,23 +2126,23 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.2",
+            "version": "v5.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
+                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/swiftmailer/swiftmailer/d8db871a54619458a805229a057ea2af33c753e8.zip",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
+                "url": "https://packagist.phpcomposer.com/files/swiftmailer/swiftmailer/4cc92842069c2bbc1f28daaaf1d2576ec4dfe153.zip",
+                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.1,<0.9.4"
+                "mockery/mockery": "~0.9.1"
             },
             "type": "library",
             "extra": {
@@ -2175,7 +2175,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-05-01 08:45:47"
+            "time": "2016-07-08 11:51:25"
         },
         {
             "name": "symfony/console",
