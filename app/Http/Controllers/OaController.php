@@ -87,8 +87,10 @@ class OaController extends Controller
      */
     public function cookieClear()
     {
-        Cookie::forget('id');
-        Session::forget('id');
+        if (Session::has('id')) Session::flush();
+        if (Cookie::get('id')) Cookie::queue('id', null , -1);
+        
+        //Cookie::forget('id');
         //Cookie::queue('id', null , -1); // 销毁
         $url = '/member/show';
         return redirect($url);
