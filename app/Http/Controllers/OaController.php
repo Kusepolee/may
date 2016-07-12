@@ -10,7 +10,6 @@ use App\Member;
 use Cookie;
 use FooWeChat\Helpers\Helper;
 use Session;
-use Url;
 
 class OaController extends Controller
 {
@@ -89,7 +88,8 @@ class OaController extends Controller
     public function cookieClear()
     {
         Cookie::forget('id');
-        $url = Url::full();
+        //$url = $request->url();
+        $url = '/member/show';
         return redirect($url);
     }
 
