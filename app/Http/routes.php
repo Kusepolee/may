@@ -47,6 +47,7 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	//初始化
 	Route::get('/init/member', 'MemberController@weChatInitUsers');
 	Route::get('/init/department', 'DepartmentController@weChatInitDepartments');
+	Route::get('/cookie/clear', 'OaController@cookieClear');
 
 	//用户
 	Route::get('/member', 'MemberController@index');
