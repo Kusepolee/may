@@ -106,6 +106,15 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 	Route::post('/finance/trans/store', 'Finance\FinanceController@tranStore');
 	Route::post('/finance/seek', 'Finance\FinanceController@financeSeek');
 
+	//面板
+	Route::get('/panel', 'Panel\PanelController@index');
+	Route::get('/panel/complaints', 'Panel\PanelController@complaints');
+	Route::post('/panel/complaints/store', 'Panel\PanelController@complaintsStore');
+	Route::get('/panel/complaints/image/set/{id}', 'Panel\PanelController@image');
+	Route::post('/panel/complaints/image/store', 'Panel\PanelController@imageStore');
+	Route::get('/panel/complaints/record', 'Panel\PanelController@complaintsRecord');
+	Route::get('/panel/complaints/show/{id}', 'Panel\PanelController@complaintsShow');
+
 });
 
 
@@ -122,6 +131,9 @@ Route::get('/test1', 'NoticeController@mail');
 
 Route::get('/test', function () {
 	return view('upload_pic');
+});
+Route::get('/test1', function () {
+	return redirect('/panel');
 });
 
 
