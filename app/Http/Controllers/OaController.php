@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Member;
 use Cookie;
 use FooWeChat\Helpers\Helper;
+use Image;
+use Input;
 use Session;
 
 class OaController extends Controller
@@ -94,6 +96,15 @@ class OaController extends Controller
         //Cookie::queue('id', null , -1); // 销毁
         $url = '/member/show';
         return redirect($url);
+    }
+
+    public function test()
+    {
+
+        $file = Input::file('pic');
+        $image = $file->getRealPath();
+
+        Image::make($image)->save('upload/advice/foo.jpg');
     }
 
 

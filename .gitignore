@@ -1,3 +1,6 @@
+
+
+
 vendor/
 node_modules/
 
@@ -14,6 +17,7 @@ storage/
 .env.example
 ._.DS_Sortore
 Thumbs.db
+composer.lock
 
 #uploads
 public/upload/crm/*
@@ -33,5 +37,3 @@ public/favicon.*
 #sublime-project files
 *.sublime-workspace
 
-composer.lock
-composer-test.lock
