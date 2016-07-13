@@ -33,7 +33,7 @@ class MemberStoreRequest extends Request
                 'weixinid'   => 'max:32|min:3',
                 'qq'         => 'numeric|min:5',
                 //'password'   => 'required|max:32|min:8|confirmed',
-                'content'    => 'max:200|min:3',
+                'content'    => 'max:200|min:2',
         ];
     }
 }
