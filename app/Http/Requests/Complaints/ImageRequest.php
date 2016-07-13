@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Complaints;
 
 use App\Http\Requests\Request;
 
-class LoginRequest extends Request
+class ImageRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class LoginRequest extends Request
     public function rules()
     {
         return [
-            'workid'   => 'required|max:11',
-            'password' => 'required|min:6',
+            'pic' => 'required',
         ];
     }
 }

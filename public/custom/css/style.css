@@ -114,3 +114,54 @@
     margin:0px auto;
 }
 
+/*面板*/
+.hexagon {
+  display: inline-block;
+  position: relative;
+  padding: 45px 0;
+  margin-bottom: 20px;
+}
+.hexagon .inner {
+  vertical-align: middle;
+  display: table-cell;
+  width: 150px;
+  height: 87px;
+  border-left: 1px solid #28bbf8;
+  border-right: 1px solid #28bbf8;
+}
+.hexagon:before, .hexagon:after {
+  content: '';
+  position: absolute;
+  top: 45px;
+  left: 0;
+  width: 150px;
+  height: 87px;
+  -moz-transform: rotate(60deg);
+  -ms-transform: rotate(60deg);
+  -o-transform: rotate(60deg);
+  -webkit-transform: rotate(60deg);
+  transform: rotate(60deg);
+  border-right: 1px solid #28bbf8;
+  border-left: 1px solid #28bbf8;
+}
+.hexagon:after {
+  -moz-transform: rotate(-60deg);
+  -ms-transform: rotate(-60deg);
+  -o-transform: rotate(-60deg);
+  -webkit-transform: rotate(-60deg);
+  transform: rotate(-60deg);
+}
+.media.service-box {
+  margin: 25px 0 36px;
+  text-align: center;
+}
+ .hexagon .inner .glyphicon {
+    text-align: center;
+    font-size: 50px;
+    width: 100%;
+    color: #28bbf8;
+}
+.media.service-box {
+  margin: 25px 0 36px;
+  text-align: center;
+}
