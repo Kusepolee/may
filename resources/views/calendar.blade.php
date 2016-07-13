@@ -19,8 +19,23 @@
             },
             defaultDate: '2016-05-12',
             editable: true,
-            eventLimit: true, // allow "more" link when too many events
+            eventLimit: true, 
+            weekmode: 'variable',
+            dayClick: function(date, allDay, jsEvent, view) {
+ 
+                if (allDay) {
+                    alert('Clicked on the entire day: ' + date);
+                }else{
+                    alert('Clicked on the slot: ' + date);
+                }
+         
+                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                alert('Current view: ' + view.name);
+
+                $(this).css('background-color', 'red');
+            },
             events: [
+
                 {
                     title: 'All Day Event',
                     start: '2016-05-01'

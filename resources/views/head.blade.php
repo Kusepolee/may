@@ -57,6 +57,9 @@
            @if(!$a->usingWechat())
            <li class="divider"></li>
            <li><a href="/logout"><span class="pull-left glyphicon glyphicon-off"></span>&nbsp&nbsp退出</a></li>
+           @else
+           <li class="divider"></li>
+           <li><a href="/cookie/clear"><span class="pull-left glyphicon glyphicon-repeat"></span>&nbsp&nbsp初始化</a></li>
            @endif
 
            </ul>

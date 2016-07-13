@@ -103,7 +103,6 @@ class FinanceController extends Controller
 							->leftjoin('config', 'finance_trans.tran_type', '=', 'config.id')
 							->select('finance_trans.*', 'a.name as fromName', 'config.name as tranType')
 							->paginate(30);
-
 		}
 
 		$recs = Department::where('id', '>', 1)
@@ -159,8 +158,8 @@ class FinanceController extends Controller
               'self'       => 'own',
             ];
         
-        $url = 'http://'.$h->custom('url').'/finance';
-        $picurl = 'http://'.$h->custom('url').'/custom/image/news/finance.png';
+        $url = 'https://'.$h->custom('url').'/finance';
+        $picurl = 'https://'.$h->custom('url').'/custom/image/news/finance.png';
         $arr_news = [['title'=>'财务','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
         
         $w->safe = 0;
@@ -208,8 +207,8 @@ class FinanceController extends Controller
               'self'       => 'own',
             ];
         
-        $url = 'http://'.$h->custom('url').'/finance';
-        $picurl = 'http://'.$h->custom('url').'/custom/image/news/finance.png';
+        $url = 'https://'.$h->custom('url').'/finance';
+        $picurl = 'https://'.$h->custom('url').'/custom/image/news/finance.png';
         $arr_news = [['title'=>'财务','description'=>$body,'url'=>$url,'picurl'=>$picurl]];
         
         $w->safe = 0;
