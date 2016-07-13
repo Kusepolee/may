@@ -1,5 +1,6 @@
 composer.lock
 composer-test.lock
+
 vendor/
 node_modules/
 
@@ -35,7 +36,3 @@ public/favicon.*
 #sublime-project files
 *.sublime-workspace
 
-<<<<<<< HEAD
-=======
-#composer.lock
->>>>>>> parent of fd8c7ac... ok
