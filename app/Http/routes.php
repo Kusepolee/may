@@ -116,11 +116,12 @@ Route::group(['middleware' => ['wechat_or_login', 'available']], function () {
 */
 
 
-Route::get('/test2', 'Customer\CustomerController@index');
+Route::post('/upload_test', 'OaController@test');
+
 Route::get('/test1', 'NoticeController@mail');
 
 Route::get('/test', function () {
-	return view('calendar');
+	return view('upload_pic');
 });
 
 
