@@ -13,6 +13,7 @@ Thumbs.db
 composer.lock
 
 #uploads
+public/upload/advice/*
 public/upload/crm/*
 public/upload/member/*
 public/upload/product/*
