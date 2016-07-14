@@ -131,7 +131,7 @@ Route::post('/upload_test', 'OaController@test');
 Route::get('/test', function () {
 	$user = 'kris';
 
-	Mail::send('welcome', ['user' => $user], function ($m) use ($user) {
+	Mail::send('40x', ['user' => $user], function ($m) use ($user) {
             $m->from('note@mail.henjou.com', '恒久滚塑');
 
             $m->to('7569300@qq.com', 'kris Ni')->subject('自动通知');
