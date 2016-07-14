@@ -129,7 +129,13 @@ Route::post('/upload_test', 'OaController@test');
 
 
 Route::get('/test', function () {
-	return view('upload_pic');
+	$user = 'kris';
+
+	Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
+            $m->from('note@mail.henjou.com', '恒久滚塑');
+
+            $m->to('7569300@qq.com', 'kris Ni')->subject('自动通知');
+    });
 });
 
 Route::get('/test1', function () {
